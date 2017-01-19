@@ -20,22 +20,10 @@
 #
 # make clean = Clean out built project files.
 #
-# make coff = Convert ELF to AVR COFF.
-#
-# make extcoff = Convert ELF to AVR Extended COFF.
-#
 # make program = Download the hex file to the device, using avrdude.
 #                Please customize the avrdude settings below first!
 #
-# make debug = Start either simulavr or avarice as specified for debugging,
-#              with avr-gdb or avr-insight as the front end for debugging.
-#
 # make filename.s = Just compile filename.c into the assembler code only.
-#
-# make filename.i = Create a preprocessed source file for use in submitting
-#                   bug reports to the GCC project.
-#
-# To rebuild project do "make clean" then "make all".
 #----------------------------------------------------------------------------
 
 # MCU name
@@ -221,41 +209,10 @@ AVRDUDE_FLAGS += $(AVRDUDE_NO_VERIFY)
 AVRDUDE_FLAGS += $(AVRDUDE_VERBOSE)
 AVRDUDE_FLAGS += $(AVRDUDE_ERASE_COUNTER)
 
-
-#---------------- Debugging Options ----------------
-
-# For simulavr only - target MCU frequency.
-DEBUG_MFREQ = $(F_CPU)
-
-# Set the DEBUG_UI to either gdb or insight.
-# DEBUG_UI = gdb
-DEBUG_UI = insight
-
-# Set the debugging back-end to either avarice, simulavr.
-DEBUG_BACKEND = avarice
-#DEBUG_BACKEND = simulavr
-
-# GDB Init Filename.
-GDBINIT_FILE = __avr_gdbinit
-
-# When using avarice settings for the JTAG
-JTAG_DEV = /dev/com1
-
-# Debugging port used to communicate between GDB / avarice / simulavr.
-DEBUG_PORT = 4242
-
-# Debugging host used to communicate between GDB / avarice / simulavr, normally
-#     just set to localhost unless doing some sort of crazy debugging when
-#     avarice is running on a different computer.
-DEBUG_HOST = localhost
-
-
-
 #============================================================================
 
 
 # Define programs and commands.
-SHELL = sh
 CC = avr-gcc
 OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
@@ -322,55 +279,6 @@ size:
 program: $(OBJDIR)/$(TARGET).hex $(OBJDIR)/$(TARGET).eep
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
 
-# Generate avr-gdb config/init file which does the following:
-#     define the reset signal, load the target file, connect to target, and set
-#     a breakpoint at main().
-gdb-config:
-	@$(REMOVE) $(GDBINIT_FILE)
-	@echo define reset >> $(GDBINIT_FILE)
-	@echo SIGNAL SIGHUP >> $(GDBINIT_FILE)
-	@echo end >> $(GDBINIT_FILE)
-	@echo file $(OBJDIR)/$(TARGET).elf >> $(GDBINIT_FILE)
-	@echo target remote $(DEBUG_HOST):$(DEBUG_PORT)  >> $(GDBINIT_FILE)
-ifeq ($(DEBUG_BACKEND),simulavr)
-	@echo load  >> $(GDBINIT_FILE)
-endif
-	@echo break main >> $(GDBINIT_FILE)
-
-debug: gdb-config $(OBJDIR)/$(TARGET).elf
-ifeq ($(DEBUG_BACKEND), avarice)
-	@echo Starting AVaRICE - Press enter when "waiting to connect" message displays.
-	@$(WINSHELL) /c start avarice --jtag $(JTAG_DEV) --erase --program --file \
-	$(OBJDIR)/$(TARGET).elf $(DEBUG_HOST):$(DEBUG_PORT)
-	@$(WINSHELL) /c pause
-else
-	@$(WINSHELL) /c start simulavr --gdbserver --device $(MCU) --clock-freq \
-	$(DEBUG_MFREQ) --port $(DEBUG_PORT)
-endif
-	@$(WINSHELL) /c start avr-$(DEBUG_UI) --command=$(GDBINIT_FILE)
-
-
-
-# Convert ELF to COFF for use in debugging / simulating in AVR Studio or VMLAB.
-COFFCONVERT=$(OBJCOPY) --debugging \
---change-section-address .data-0x800000 \
---change-section-address .bss-0x800000 \
---change-section-address .noinit-0x800000 \
---change-section-address .eeprom-0x810000
-
-
-coff: $(OBJDIR)/$(TARGET).elf
-	@echo
-	@echo $(MSG_COFF) $(OBJDIR)/$(TARGET).cof
-	$(COFFCONVERT) -O coff-avr $< $(OBJDIR)/$(TARGET).cof
-
-
-extcoff: $(OBJDIR)/$(TARGET).elf
-	@echo
-	@echo $(MSG_EXTENDED_COFF) $(OBJDIR)/$(TARGET).cof
-	$(COFFCONVERT) -O coff-ext-avr $< $(OBJDIR)/$(TARGET).cof
-
-
 
 # Create final output files (.hex, .eep) from ELF output file.
 $(OBJDIR)/%.hex: $(OBJDIR)/%.elf
@@ -425,15 +333,11 @@ $(OBJDIR)/%.o : %.S
 	@echo $(MSG_ASSEMBLING) $<
 	$(CC) -c $(ALL_ASFLAGS) $< -o $@
 
-# Create preprocessed source for use in sending a bug report.
-$(OBJDIR)/%.i : %.c
-	$(CC) -E -mmcu=$(MCU) -I. $(CFLAGS) $< -o $@
-
 
 clean:
 	rm -fr $(OBJDIR)/*
 
 
 .PHONY : all finish size \
-build elf hex eep lss sym coff extcoff \
+build elf hex eep lss sym \
 clean clean_list program debug gdb-config
