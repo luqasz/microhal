@@ -290,12 +290,9 @@ OBJ = $(addprefix $(OBJDIR)/,$(SRC:.c=.o)) $(addprefix $(OBJDIR)/,$(ASRC:.S=.o))
 # Define all listing files.
 LST = $(addprefix $(OBJDIR)/,$(SRC:.c=.lst)) $(addprefix $(OBJDIR)/,$(ASRC:.S=.lst))
 
-# Compiler flags to generate dependency files.
-GENDEPFLAGS = -MD -MP -MF $(OBJDIR)/.dep/$(@F).d
-
 # Combine all necessary flags and optional flags.
 # Add target processor to flags.
-ALL_CFLAGS = -mmcu=$(MCU) -I. $(CFLAGS) $(GENDEPFLAGS)
+ALL_CFLAGS = -mmcu=$(MCU) -I. $(CFLAGS)
 ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 
 
@@ -454,11 +451,6 @@ clean_list :
 
 
 
-# Include the dependency files.
--include $(shell mkdir $(OBJDIR)/.dep 2>/dev/null) $(wildcard $(OBJDIR)/.dep/*)
-
-
-# Listing of phony targets.
 .PHONY : all finish size \
 build elf hex eep lss sym coff extcoff \
 clean clean_list program debug gdb-config
