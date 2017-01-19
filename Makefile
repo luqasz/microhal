@@ -317,14 +317,8 @@ $(OBJDIR):
 	@mkdir -p $@/.dep
 
 
-# Display size of file.
-ELFSIZE = $(SIZE) --mcu=$(MCU) --format=avr $(OBJDIR)/$(TARGET).elf
-
-
 size:
-	@if test -f $(OBJDIR)/$(TARGET).elf; then echo; $(ELFSIZE); \
-	2>/dev/null; echo; fi
-
+	@$(SIZE) --mcu=$(MCU) --format=avr $(OBJDIR)/$(TARGET).elf
 
 
 # Program the device.
