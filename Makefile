@@ -221,24 +221,6 @@ NM = avr-nm
 AVRDUDE = avrdude
 REMOVE = rm -f
 COPY = cp
-WINSHELL = cmd
-
-
-# Define Messages
-# English
-MSG_ERRORS_NONE = Errors: none
-MSG_COFF = Converting to AVR COFF:
-MSG_EXTENDED_COFF = Converting to AVR Extended COFF:
-MSG_FLASH = Creating load file for Flash:
-MSG_EEPROM = Creating load file for EEPROM:
-MSG_EXTENDED_LISTING = Creating Extended Listing:
-MSG_SYMBOL_TABLE = Creating Symbol Table:
-MSG_LINKING = Linking:
-MSG_COMPILING = Compiling:
-MSG_ASSEMBLING = Assembling:
-MSG_CLEANING = Cleaning project:
-
-
 
 
 # Define all object files.
@@ -283,25 +265,25 @@ program: $(OBJDIR)/$(TARGET).hex $(OBJDIR)/$(TARGET).eep
 # Create final output files (.hex, .eep) from ELF output file.
 $(OBJDIR)/%.hex: $(OBJDIR)/%.elf
 	@echo
-	@echo $(MSG_FLASH) $@
+	@echo Creating load file for Flash: $@
 	$(OBJCOPY) -O $(FORMAT) -R .eeprom $< $@
 
 $(OBJDIR)/%.eep: $(OBJDIR)/%.elf
 	@echo
-	@echo $(MSG_EEPROM) $@
+	@echo Creating load file for EEPROM: $@
 	-$(OBJCOPY) -j .eeprom --set-section-flags .eeprom=alloc,load \
 	--change-section-lma .eeprom=0 -O $(FORMAT) $< $@
 
 # Create extended listing file from ELF output file.
 $(OBJDIR)/%.lss: $(OBJDIR)/%.elf
 	@echo
-	@echo $(MSG_EXTENDED_LISTING) $@
+	@echo Creating Extended Listing: $@
 	$(OBJDUMP) -h -S $< > $@
 
 # Create a symbol table from ELF output file.
 $(OBJDIR)/%.sym: $(OBJDIR)/%.elf
 	@echo
-	@echo $(MSG_SYMBOL_TABLE) $@
+	@echo Creating Symbol Table: $@
 	$(NM) -n $< > $@
 
 
@@ -311,14 +293,14 @@ $(OBJDIR)/%.sym: $(OBJDIR)/%.elf
 .PRECIOUS : $(OBJ)
 $(OBJDIR)/%.elf: $(OBJ)
 	@echo
-	@echo $(MSG_LINKING) $@
+	@echo Linking: $@
 	$(CC) $(ALL_CFLAGS) $^ --output $@ $(LDFLAGS)
 
 
 # Compile: create object files from C source files.
 $(OBJDIR)/%.o : %.c
 	@echo
-	@echo $(MSG_COMPILING) $<
+	@echo Compiling: $<
 	$(CC) -c $(ALL_CFLAGS) $(abspath $<) -o $@
 
 
@@ -330,7 +312,7 @@ $(OBJDIR)/%.s : %.c
 # Assemble: create object files from assembler source files.
 $(OBJDIR)/%.o : %.S
 	@echo
-	@echo $(MSG_ASSEMBLING) $<
+	@echo Assembling: $<
 	$(CC) -c $(ALL_ASFLAGS) $< -o $@
 
 
