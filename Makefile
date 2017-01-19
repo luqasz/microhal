@@ -302,6 +302,8 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 # Default target.
 all: clean build program size
 
+ci: clean build size
+
 build: $(OBJDIR) elf hex eep lss sym
 
 elf: $(OBJDIR)/$(TARGET).elf

@@ -1,0 +1,9 @@
+language: c
+script: make ci
+addons:
+  apt:
+    packages:
+    - make
+    - avr-libc
+    - gcc-avr
+    - binutils-avr
