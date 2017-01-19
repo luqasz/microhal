@@ -314,6 +314,7 @@ sym: $(OBJDIR)/$(TARGET).sym
 
 $(OBJDIR):
 	@mkdir -p $@
+	@mkdir -p $@/.dep
 
 
 # Display size of file.
