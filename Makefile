@@ -212,17 +212,6 @@ AVRDUDE_FLAGS += $(AVRDUDE_ERASE_COUNTER)
 #============================================================================
 
 
-# Define programs and commands.
-CC = avr-gcc
-OBJCOPY = avr-objcopy
-OBJDUMP = avr-objdump
-SIZE = avr-size
-NM = avr-nm
-AVRDUDE = avrdude
-REMOVE = rm -f
-COPY = cp
-
-
 # Define all object files.
 OBJ = $(addprefix $(OBJDIR)/,$(SRC:.c=.o)) $(addprefix $(OBJDIR)/,$(ASRC:.S=.o))
 
@@ -254,37 +243,37 @@ $(OBJDIR):
 
 
 size:
-	@$(SIZE) --mcu=$(MCU) --format=avr $(OBJDIR)/$(TARGET).elf
+	avr-size --mcu=$(MCU) --format=avr $(OBJDIR)/$(TARGET).elf
 
 
 # Program the device.
 program: $(OBJDIR)/$(TARGET).hex $(OBJDIR)/$(TARGET).eep
-	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
+	avrdude $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
 
 
 # Create final output files (.hex, .eep) from ELF output file.
 $(OBJDIR)/%.hex: $(OBJDIR)/%.elf
 	@echo
 	@echo Creating load file for Flash: $@
-	$(OBJCOPY) -O $(FORMAT) -R .eeprom $< $@
+	avr-objcopy -O $(FORMAT) -R .eeprom $< $@
 
 $(OBJDIR)/%.eep: $(OBJDIR)/%.elf
 	@echo
 	@echo Creating load file for EEPROM: $@
-	-$(OBJCOPY) -j .eeprom --set-section-flags .eeprom=alloc,load \
+	-avr-objcopy -j .eeprom --set-section-flags .eeprom=alloc,load \
 	--change-section-lma .eeprom=0 -O $(FORMAT) $< $@
 
 # Create extended listing file from ELF output file.
 $(OBJDIR)/%.lss: $(OBJDIR)/%.elf
 	@echo
 	@echo Creating Extended Listing: $@
-	$(OBJDUMP) -h -S $< > $@
+	avr-objdump -h -S $< > $@
 
 # Create a symbol table from ELF output file.
 $(OBJDIR)/%.sym: $(OBJDIR)/%.elf
 	@echo
 	@echo Creating Symbol Table: $@
-	$(NM) -n $< > $@
+	avr-nm -n $< > $@
 
 
 
@@ -294,26 +283,26 @@ $(OBJDIR)/%.sym: $(OBJDIR)/%.elf
 $(OBJDIR)/%.elf: $(OBJ)
 	@echo
 	@echo Linking: $@
-	$(CC) $(ALL_CFLAGS) $^ --output $@ $(LDFLAGS)
+	avr-gcc $(ALL_CFLAGS) $^ --output $@ $(LDFLAGS)
 
 
 # Compile: create object files from C source files.
 $(OBJDIR)/%.o : %.c
 	@echo
 	@echo Compiling: $<
-	$(CC) -c $(ALL_CFLAGS) $(abspath $<) -o $@
+	avr-gcc -c $(ALL_CFLAGS) $(abspath $<) -o $@
 
 
 # Compile: create assembler files from C source files.
 $(OBJDIR)/%.s : %.c
-	$(CC) -S $(ALL_CFLAGS) $< -o $@
+	avr-gcc -S $(ALL_CFLAGS) $< -o $@
 
 
 # Assemble: create object files from assembler source files.
 $(OBJDIR)/%.o : %.S
 	@echo
 	@echo Assembling: $<
-	$(CC) -c $(ALL_ASFLAGS) $< -o $@
+	avr-gcc -c $(ALL_ASFLAGS) $< -o $@
 
 
 clean:
@@ -322,4 +311,4 @@ clean:
 
 .PHONY : all finish size \
 build elf hex eep lss sym \
-clean clean_list program debug gdb-config
+clean program debug gdb-config
