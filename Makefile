@@ -1,31 +1,5 @@
-# Hey Emacs, this is a -*- makefile -*-
-#----------------------------------------------------------------------------
-# WinAVR Makefile Template written by Eric B. Weddington, Jörg Wunsch, et al.
-#
-# Released to the Public Domain
-#
-# Additional material for this makefile was written by:
-# Peter Fleury
-# Tim Henigan
-# Colin O'Flynn
-# Reiner Patommel
-# Markus Pfaff
-# Sander Pool
-# Frederik Rouleau
-#
-#----------------------------------------------------------------------------
-# On command line:
-#
-# make all = Make software.
-#
-# make clean = Clean out built project files.
-#
-# make program = Download the hex file to the device, using avrdude.
-#                Please customize the avrdude settings below first!
-#----------------------------------------------------------------------------
-
-# MCU name
-MCU = atmega32
+# MCU name for avrdude and avr-gcc
+MCU = atmega328p
 
 # Processor frequency.
 #     This will define a symbol, F_CPU, in all source code files equal to the
@@ -50,62 +24,27 @@ SRC = $(wildcard *.c)
 # Relative path in which directory builds will be done.
 BUILDDIR = .builds
 
-
-# Place -D or -U options here
-CDEFS = -DF_CPU=$(F_CPU)UL
-
-
 #---------------- Compiler Options ----------------
 CFLAGS = -mmcu=$(MCU) -I.
-CFLAGS += $(CDEFS)
+CFLAGS += -DF_CPU=$(F_CPU)UL
+# Optimize for size
 CFLAGS += -Os
-CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
-CFLAGS += -Wall -Wstrict-prototypes
-CFLAGS += -Wa,-adhlns=$(addprefix $(BUILDDIR)/,$(<:.c=.lst))
-CFLAGS += -std=gnu99
-CFLAGS += -gstabs
-CFLAGS += -gstrict-dwarf
-
-
-#---------------- Library Options ----------------
-# Minimalistic printf version
-PRINTF_LIB_MIN = -Wl,-u,vfprintf -lprintf_min
-
-# Floating point printf version (requires MATH_LIB = -lm below)
-PRINTF_LIB_FLOAT = -Wl,-u,vfprintf -lprintf_flt
-
-# If this is left blank, then it will use the Standard printf version.
-PRINTF_LIB =
-
-
-# Minimalistic scanf version
-SCANF_LIB_MIN = -Wl,-u,vfscanf -lscanf_min
-
-# Floating point + %[ scanf version (requires MATH_LIB = -lm below)
-SCANF_LIB_FLOAT = -Wl,-u,vfscanf -lscanf_flt
-
-# If this is left blank, then it will use the Standard scanf version.
-SCANF_LIB =
-
-
-MATH_LIB = -lm
-
-
+CFLAGS += -Wall
+CFLAGS += -Wextra
+CFLAGS += -std=gnu11
+# Do not compile unused functions
+CFLAGS += -ffunction-sections
 #---------------- Linker Options ----------------
-#  -Wl,...:     tell GCC to pass this to linker.
-#    -Map:      create map file
-#    --cref:    add cross reference to  map file
-LDFLAGS = -Wl,-Map=$(BUILDDIR)/$(TARGET).map,--cref
-LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
-
-
+# Create map file
+LDFLAGS = -Wl,-Map=$(BUILDDIR)/$(TARGET).map
+# Add cross reference to  map file
+LDFLAGS += -Wl,--cref
+# Do not compile unused functions
+LDFLAGS += -Wl,--gc-sections
 #---------------- Programming Options (avrdude) ----------------
-
 AVRDUDE_FLAGS = -p $(MCU)
 AVRDUDE_FLAGS += -P $(AVRDUDE_PORT)
 AVRDUDE_FLAGS += -c $(AVRDUDE_PROGRAMMER)
-
-#============================================================================
 
 
 # Define all object files.
@@ -122,7 +61,6 @@ elf: $(BUILDDIR) $(BUILDDIR)/$(TARGET).elf
 hex: $(BUILDDIR) $(BUILDDIR)/$(TARGET).hex
 
 $(BUILDDIR):
-	@echo
 	mkdir -p $@
 
 
@@ -138,7 +76,6 @@ program: $(BUILDDIR)/$(TARGET).hex
 
 # Create final .hex from ELF output file.
 $(BUILDDIR)/%.hex: $(BUILDDIR)/%.elf
-	@echo
 	@echo Creating load file for Flash: $@
 	avr-objcopy -O $(FORMAT) $< $@
 
@@ -147,20 +84,18 @@ $(BUILDDIR)/%.hex: $(BUILDDIR)/%.elf
 .SECONDARY : $(BUILDDIR)/$(TARGET).elf
 .PRECIOUS : $(OBJ)
 $(BUILDDIR)/%.elf: $(OBJ)
-	@echo
 	@echo Linking: $@
 	avr-gcc $(CFLAGS) $^ --output $@ $(LDFLAGS)
 
 
 # Compile: create object files from C source files.
 $(BUILDDIR)/%.o: %.c $(BUILDDIR)
-	@echo
 	@echo Compiling: $<
 	avr-gcc -c $(CFLAGS) $(abspath $<) -o $@
 
 
 clean:
-	rm -fr $(BUILDDIR)/*
+	@rm -fr $(BUILDDIR)/*
 
 
 .PHONY : all \
