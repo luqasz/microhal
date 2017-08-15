@@ -19,17 +19,18 @@ FORMAT = ihex
 TARGET = main
 
 # List C source files here.
-SRC = $(wildcard *.c)
+SRC = $(wildcard src/*.c)
 
 # Relative path in which directory builds will be done.
 BUILDDIR = .builds
 
 #---------------- Compiler Options ----------------
 CFLAGS = -mmcu=$(MCU) -I.
-CFLAGS += -DF_CPU=$(F_CPU)UL
+CFLAGS += -DF_CPU=$(F_CPU)UL -DBAUD=9600UL
 # Optimize for size
 CFLAGS += -Os
 CFLAGS += -Wall
+CFLAGS += -Werror
 CFLAGS += -Wextra
 CFLAGS += -std=gnu11
 # Do not compile unused functions
@@ -61,7 +62,7 @@ elf: $(BUILDDIR) $(BUILDDIR)/$(TARGET).elf
 hex: $(BUILDDIR) $(BUILDDIR)/$(TARGET).hex
 
 $(BUILDDIR):
-	mkdir -p $@
+	mkdir -p $@/src
 
 
 size: elf
@@ -95,7 +96,7 @@ $(BUILDDIR)/%.o: %.c $(BUILDDIR)
 
 
 clean:
-	@rm -fr $(BUILDDIR)/*
+	@rm -fr $(BUILDDIR)
 
 
 .PHONY : all \
