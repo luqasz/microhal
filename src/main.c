@@ -2,16 +2,29 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "uart.h"
+#include "i2c.h"
 
-#define LED_ON PORTC &= ~(1<<PC0)
-#define LED_OFF PORTC |= (1<<PC0)
+#define PCF8591_ADDR 0x48
+
+void set_dac(uint8_t value) {
+    uint8_t data[] = {64, value};
+    i2c_write_buf(PCF8591_ADDR, sizeof(data), data);
+}
 
 int main(void) {
-    DDRC |= (1<<PC0);
     uart_start();
+    i2c_set_speed(100);
     sei();
+    uart_write("starting\r\n");
+    uint8_t i;
     while (1) {
-        DDRC ^= (1<<PC0);
-        uart_putchar('s');
+        for (i=0; i != 255; i++) {
+            _delay_ms(10);
+            set_dac(i);
+        }
+        for (i=255; i != 0; i--) {
+            _delay_ms(10);
+            set_dac(i);
+        }
     }
 }

@@ -3,5 +3,6 @@
 
 void uart_start(void);
 void uart_putchar(unsigned char byte);
+void uart_write(char *string);
 
 #endif

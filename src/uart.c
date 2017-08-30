@@ -30,11 +30,20 @@ void uart_start(void) {
 
 
 void uart_putchar(unsigned char byte) {
+    register uint8_t num = 0;
+    while (!num) {
+        num = buffer_write(byte, &tx_buf);
+    }
     // Enable data register empty interrupt.
     UCSR0B |= (1<<UDRIE0);
-    buffer_write(byte, &tx_buf);
 }
 
+void uart_write(char *string) {
+    register char c;
+    while ((c = *string++)) {
+        uart_putchar(c);
+    }
+}
 
 // Executed when data register is empty.
 ISR(USART_UDRE_vect) {
