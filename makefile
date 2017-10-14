@@ -9,7 +9,6 @@ BUILDDIR = .builds
 
 #---------------- Compiler Options ----------------
 CFLAGS = -mmcu=$(MCU)
-CFLAGS += -DDEVICE_NAME=\"registers/$(MCU).h\"
 CFLAGS += -DF_CPU=$(F_CPU)UL
 CFLAGS += -DBAUD=$(BAUD)UL
 # Optimize for size

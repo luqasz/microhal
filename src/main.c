@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
-#include DEVICE_NAME
+#include "registers.h"
 #include "uart.h"
 #include "spi.h"
 

@@ -1,8 +1,7 @@
 #include <avr/io.h>
 #include <util/setbaud.h>
 #include <avr/interrupt.h>
-
-#include DEVICE_NAME
+#include "registers.h"
 #include "uart.h"
 #include "buffer.h"
 
