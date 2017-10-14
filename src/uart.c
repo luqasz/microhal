@@ -2,6 +2,7 @@
 #include <util/setbaud.h>
 #include <avr/interrupt.h>
 
+#include DEVICE_NAME
 #include "uart.h"
 #include "buffer.h"
 
@@ -21,10 +22,10 @@ buffer tx_buf = {
 
 void uart_start(void) {
     // Set baud rate
-    UBRR0H = (uint8_t)(UBRRH_VALUE>>8);
-    UBRR0L = (uint8_t)UBRRL_VALUE;
+    UBRRH = (uint8_t)(UBRRH_VALUE>>8);
+    UBRRL = (uint8_t)UBRRL_VALUE;
     // Turn on RX and TX
-    UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+    UCSRB = (1<<RXEN)|(1<<TXEN);
     // atmega328p is already configured to 8n1
 }
 
@@ -35,7 +36,7 @@ void uart_putchar(unsigned char byte) {
         num = buffer_write(byte, &tx_buf);
     }
     // Enable data register empty interrupt.
-    UCSR0B |= (1<<UDRIE0);
+    UCSRB |= (1<<UDRIE);
 }
 
 void uart_write(char *string) {
@@ -49,16 +50,16 @@ void uart_write(char *string) {
 ISR(USART_UDRE_vect) {
     unsigned char byte;
     if (buffer_read(&byte, 1, &tx_buf) == 1) {
-        UDR0 = byte;
+        UDR = byte;
     }
     // Disable interrupt when no data in buffer.
     if ( buffer_size(&tx_buf) == 0 ) {
-        UCSR0B &= ~(1<<UDRIE0);
+        UCSRB &= (uint8_t) ~(1<<UDRIE);
     }
 }
 
 
 // Executed when data is received.
 /* ISR(USART_RX_vect) { */
-/*     unsigned int data = UDR0; */
+/*     unsigned int data = UDR; */
 /* } */

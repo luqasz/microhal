@@ -4,7 +4,7 @@
 
 
 uint8_t buffer_size(buffer *buf) {
-    return buf->head - buf->tail;
+    return (uint8_t) (buf->head - buf->tail);
 }
 
 
