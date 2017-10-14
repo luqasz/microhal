@@ -1,51 +1,40 @@
-# MCU name for avrdude and avr-gcc
-MCU = atmega328p
-
-# Processor frequency.
-#     This will define a symbol, F_CPU, in all source code files equal to the
-#     processor frequency. You can then use this symbol in your source code to
-#     calculate timings. Do NOT tack on a 'UL' at the end, this will be done
-#     automatically to create a 32-bit value in your source code.
-F_CPU = 8000000
-
-AVRDUDE_PROGRAMMER = stk500v2
-
-AVRDUDE_PORT = /dev/tty.usbserial-FTWAKGHJ
-
-# Output format. (can be srec, ihex, binary)
-FORMAT = ihex
+include hardware.mk
 
 # Target file name (without extension).
 TARGET = main
-
 # List C source files here.
 SRC = $(wildcard src/*.c)
-
 # Relative path in which directory builds will be done.
 BUILDDIR = .builds
 
 #---------------- Compiler Options ----------------
-CFLAGS = -mmcu=$(MCU) -I.
-CFLAGS += -DF_CPU=$(F_CPU)UL -DBAUD=9600UL
+CFLAGS = -mmcu=$(MCU)
+CFLAGS += -DDEVICE_NAME=\"registers/$(MCU).h\"
+CFLAGS += -DF_CPU=$(F_CPU)UL
+CFLAGS += -DBAUD=$(BAUD)UL
 # Optimize for size
 CFLAGS += -Os
 CFLAGS += -Wall
 CFLAGS += -Werror
 CFLAGS += -Wextra
-CFLAGS += -std=gnu11
+# Warn about implicit type conversions
+CFLAGS += -Wconversion
 # Do not compile unused functions
 CFLAGS += -ffunction-sections
+# Assume char to be unsigned
+CFLAGS += -funsigned-char
+CFLAGS += -std=gnu11
 #---------------- Linker Options ----------------
 # Create map file
 LDFLAGS = -Wl,-Map=$(BUILDDIR)/$(TARGET).map
-# Add cross reference to  map file
+# Add cross reference to map file
 LDFLAGS += -Wl,--cref
-# Do not compile unused functions
+# Do not link unused functions
 LDFLAGS += -Wl,--gc-sections
 #---------------- Programming Options (avrdude) ----------------
 AVRDUDE_FLAGS = -p $(MCU)
-AVRDUDE_FLAGS += -P $(AVRDUDE_PORT)
-AVRDUDE_FLAGS += -c $(AVRDUDE_PROGRAMMER)
+AVRDUDE_FLAGS += -P $(PROGRAMMER_PORT)
+AVRDUDE_FLAGS += -c $(PROGRAMMER)
 
 
 # Define all object files.
@@ -78,7 +67,7 @@ program: $(BUILDDIR)/$(TARGET).hex
 # Create final .hex from ELF output file.
 $(BUILDDIR)/%.hex: $(BUILDDIR)/%.elf
 	@echo Creating load file for Flash: $@
-	avr-objcopy -O $(FORMAT) $< $@
+	avr-objcopy -O ihex $< $@
 
 
 # Link: create ELF output file from object files.
