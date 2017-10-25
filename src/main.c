@@ -5,37 +5,16 @@
 #include "registers.h"
 #include "uart.h"
 #include "spi.h"
-
-#define CS PD4
-#define CS_LOW PORTD &= (uint8_t) ~(1<<CS)
-#define CS_HIGH PORTD |= (uint8_t) (1<<CS)
-
-void set_dac(uint16_t val) {
-    val = 4095 & val;
-    CS_LOW;
-    uint8_t right = (uint8_t) val;
-    uint8_t left = (uint8_t) (val >> 8);
-    left |= 0b00110000;
-    spi_send(left);
-    spi_send(right);
-    CS_HIGH;
-}
+#include "hwconfig.h"
 
 int main(void) {
-    DDRD |= 1<<CS;
-    CS_HIGH;
-    DDRB |= 1<<SS;
-    PORTB |= 1<<SS;
-    spi_master();
     uart_start();
     sei();
-    char string[30];
-    uint16_t value = 0;
+    uint8_t value = 0;
+    char str[32];
     while (1) {
-        sprintf(string, "setting DAC to %d\r\n", value);
-        uart_write(string);
-        set_dac(value);
+        sprintf(str, "value=%d\r\n", value);
+        uart_write(str);
         value ++;
-        _delay_ms(500);
     }
 }
