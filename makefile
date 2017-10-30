@@ -16,8 +16,8 @@ CFLAGS += -Os
 CFLAGS += -Wall
 CFLAGS += -Werror
 CFLAGS += -Wextra
-# Warn about implicit type conversions
-CFLAGS += -Wconversion
+CFLAGS += -Wsign-conversion
+CFLAGS += -Wfloat-conversion
 # Do not compile unused functions
 CFLAGS += -ffunction-sections
 # Assume char to be unsigned
