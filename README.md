@@ -1,3 +1,3 @@
-[![Build Status](https://travis-ci.org/luqasz/avr.svg)](https://travis-ci.org/luqasz/avr)
+[![CircleCI](https://circleci.com/gh/luqasz/avr.svg?style=svg)](https://circleci.com/gh/luqasz/avr)
 
 ### Personal collection of AVR programming stuff.
