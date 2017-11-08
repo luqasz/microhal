@@ -74,13 +74,13 @@ $(BUILDDIR)/%.hex: $(BUILDDIR)/%.elf
 .PRECIOUS : $(OBJ)
 $(BUILDDIR)/%.elf: $(OBJ)
 	@echo Linking: $@
-	avr-gcc $(CFLAGS) $^ --output $@ $(LDFLAGS)
+	@avr-gcc $(CFLAGS) $^ --output $@ $(LDFLAGS)
 
 
 # Compile: create object files from C source files.
 $(BUILDDIR)/%.o: %.c $(BUILDDIR)
 	@echo Compiling: $<
-	avr-gcc -c $(CFLAGS) $(abspath $<) -o $@
+	@avr-gcc -c $(CFLAGS) $(abspath $<) -o $@
 
 
 clean:
