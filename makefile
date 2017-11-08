@@ -85,6 +85,7 @@ $(BUILDDIR)/%.o: %.c $(BUILDDIR)
 
 clean:
 	@rm -fr $(BUILDDIR)
+	@find . -name "*.o" -delete
 
 
 .PHONY : all \
