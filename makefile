@@ -65,8 +65,8 @@ program: $(BUILDDIR)/$(TARGET).hex
 
 # Create final .hex from ELF output file.
 $(BUILDDIR)/%.hex: $(BUILDDIR)/%.elf
-	@echo Creating load file for Flash: $@
-	avr-objcopy -O ihex $< $@
+	@echo Creating hex file: $@
+	@avr-objcopy -O ihex $< $@
 
 
 # Link: create ELF output file from object files.
