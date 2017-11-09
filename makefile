@@ -70,8 +70,6 @@ $(BUILDDIR)/%.hex: $(BUILDDIR)/%.elf
 
 
 # Link: create ELF output file from object files.
-.SECONDARY : $(BUILDDIR)/$(TARGET).elf
-.PRECIOUS : $(OBJ)
 $(BUILDDIR)/%.elf: $(OBJ)
 	@echo Linking: $@
 	@avr-gcc $(CFLAGS) $^ --output $@ $(LDFLAGS)
