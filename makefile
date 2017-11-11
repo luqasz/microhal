@@ -2,10 +2,6 @@ include hardware.mk
 
 # Target file name (without extension).
 TARGET = main
-# List C source files here.
-SRC = $(wildcard src/*.c)
-# Relative path in which directory builds will be done.
-BUILDDIR = .builds
 
 #---------------- Compiler Options ----------------
 CFLAGS = -mmcu=$(MCU)
@@ -24,10 +20,6 @@ CFLAGS += -ffunction-sections
 CFLAGS += -funsigned-char
 CFLAGS += -std=gnu11
 #---------------- Linker Options ----------------
-# Create map file
-LDFLAGS = -Wl,-Map=$(BUILDDIR)/$(TARGET).map
-# Add cross reference to map file
-LDFLAGS += -Wl,--cref
 # Do not link unused functions
 LDFLAGS += -Wl,--gc-sections
 #---------------- Programming Options (avrdude) ----------------
@@ -36,60 +28,44 @@ AVRDUDE_FLAGS += -P $(PROGRAMMER_PORT)
 AVRDUDE_FLAGS += -c $(PROGRAMMER)
 
 
-# Define all object files.
-OBJ = $(addprefix $(BUILDDIR)/,$(SRC:.c=.o))
-
 # Default target.
-all: clean build program size
-
-ci: clean build size
-
-build: elf hex
-
-elf: $(BUILDDIR) $(BUILDDIR)/$(TARGET).elf
-hex: $(BUILDDIR) $(BUILDDIR)/$(TARGET).hex
-
-$(BUILDDIR):
-	mkdir -p $@/src
+all: program size
 
 
-size: elf
+ci: clean size
+
+
+size: $(TARGET).elf
 	@echo
-	avr-size --mcu=$(MCU) --format=avr $(BUILDDIR)/$(TARGET).elf
+	avr-size --mcu=$(MCU) --format=avr $(TARGET).elf
 
 
 # Program the device.
-program: $(BUILDDIR)/$(TARGET).hex
-	avrdude $(AVRDUDE_FLAGS) -U flash:w:$(BUILDDIR)/$(TARGET).hex
+program: $(TARGET).hex
+	avrdude $(AVRDUDE_FLAGS) -U flash:w:$(TARGET).hex
 
 
-# Create final .hex from ELF output file.
-$(BUILDDIR)/%.hex: $(BUILDDIR)/%.elf
-	@echo Creating hex file: $@
+%.hex: %.elf
+	@echo Creating: $@
 	@avr-objcopy -O ihex $< $@
 
 
 # Link: create ELF output file from object files.
-$(BUILDDIR)/%.elf: $(OBJ)
+%.elf: $(patsubst %.c,%.o,$(wildcard src/*.c))
 	@echo Linking: $@
 	@avr-gcc $(CFLAGS) $^ --output $@ $(LDFLAGS)
 
 
 # Compile: create object files from C source files.
-$(BUILDDIR)/%.o: %.c $(BUILDDIR)
+%.o: %.c
 	@echo Compiling: $<
-	@avr-gcc -c $(CFLAGS) $(abspath $<) -o $@
+	@avr-gcc -c $(CFLAGS) $< -o $@
 
 
 clean:
-	@rm -fr $(BUILDDIR)
+	@find . -name "*.elf" -delete
+	@find . -name "*.hex" -delete
 	@find . -name "*.o" -delete
 
 
-.PHONY : all \
-	size \
-	build \
-	elf \
-	hex \
-	clean \
-	program
+.PHONY : clean all ci
