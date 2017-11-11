@@ -1,6 +1,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "registers.h"
+#include "spi.h"
 
 void spi_master(void) {
 	// Set pins as output

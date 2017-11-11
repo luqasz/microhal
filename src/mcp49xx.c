@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include "spi.h"
+#include "mcp49xx.h"
 
 void mcp4922_send(uint8_t control_bits, uint16_t value) {
     // Mask out control bits
