@@ -11,4 +11,10 @@
 #define UDRIE   UDRIE0
 #define UDR     UDR0
 
+#define DDR_SPI DDRB
+#define MOSI    PB3
+#define MISO    PB4
+#define SCK     PB5
+#define SS      PB2
+
 #endif

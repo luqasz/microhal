@@ -5,7 +5,7 @@
 
 void spi_master(void) {
 	// Set pins as output
-	DDRB |= (1<<SCK)|(1<<MOSI);
+	DDR_SPI |= (1<<SCK)|(1<<MOSI);
 	// Set SPI as master. Clock rate at fosc/16
 	SPCR |= (1<<SPE)|(1<<MSTR)|(1<<SPR0);
 }
