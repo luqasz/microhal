@@ -41,18 +41,20 @@ uint8_t i2c_read_byte(uint8_t ack) {
     return TWDR;
 }
 
-void i2c_write_buf(uint8_t slave_address, uint8_t len, uint8_t *buf) {
+void i2c_write_buf(uint8_t slave_address, uint8_t address, uint8_t len, uint8_t *buf) {
     i2c_start();
     i2c_write_byte((uint8_t) (slave_address << 1));
+    i2c_write_byte(address);
     while (len--) {
         i2c_write_byte(*buf++);
     }
     i2c_stop();
 }
 
-void i2c_read_buf(uint8_t slave_address, uint8_t len, uint8_t *buf) {
+void i2c_read_buf(uint8_t slave_address, uint8_t address, uint8_t len, uint8_t *buf) {
     i2c_start();
-    i2c_write_byte(slave_address);
+    i2c_write_byte((uint8_t) (slave_address << 1));
+    i2c_write_byte(address);
     i2c_start();
     i2c_write_byte((uint8_t) ((slave_address << 1) + 1));
     while (len--) {
