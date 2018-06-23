@@ -68,4 +68,4 @@ clean:
 	find . -name "*.o" -delete
 
 
-.PHONY : clean all ci
+.PHONY : clean all ci size
