@@ -28,7 +28,7 @@ AVRDUDE_FLAGS += -P $(PROGRAMMER_PORT)
 AVRDUDE_FLAGS += -c $(PROGRAMMER)
 
 
-all: program size
+all: install size
 
 
 ci: clean size
@@ -39,7 +39,7 @@ size: $(TARGET)_$(MCU).elf
 	avr-size --mcu=$(MCU) --format=avr $(TARGET)_$(MCU).elf
 
 
-program: $(TARGET)_$(MCU).hex
+install: $(TARGET)_$(MCU).hex
 	avrdude $(AVRDUDE_FLAGS) -U flash:w:$(TARGET)_$(MCU).hex
 
 
@@ -64,4 +64,4 @@ clean:
 	find . -name "*.o" -delete
 
 
-.PHONY : clean all ci size program
+.PHONY : clean all ci size install
