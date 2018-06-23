@@ -5,4 +5,4 @@ jobs:
        - image: lukaszkostka/devbox:stretch
      steps:
        - checkout
-       - run: scons size
+       - run: make size
