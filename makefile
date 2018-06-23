@@ -28,7 +28,6 @@ AVRDUDE_FLAGS += -P $(PROGRAMMER_PORT)
 AVRDUDE_FLAGS += -c $(PROGRAMMER)
 
 
-# Default target.
 all: program size
 
 
@@ -40,7 +39,6 @@ size: $(TARGET)_$(MCU).elf
 	avr-size --mcu=$(MCU) --format=avr $(TARGET)_$(MCU).elf
 
 
-# Program the device.
 program: $(TARGET)_$(MCU).hex
 	avrdude $(AVRDUDE_FLAGS) -U flash:w:$(TARGET)_$(MCU).hex
 
@@ -50,13 +48,11 @@ program: $(TARGET)_$(MCU).hex
 	avr-objcopy -O ihex $< $@
 
 
-# Link: create ELF output file from object files.
 %.elf: $(patsubst %.c,%.o,$(wildcard src/*.c))
 	@echo Linking: $@
 	avr-gcc $(CFLAGS) $^ --output $@ $(LDFLAGS)
 
 
-# Compile: create object files from C source files.
 %.o: %.c
 	@echo Compiling: $<
 	avr-gcc -c $(CFLAGS) $< -o $@
