@@ -35,14 +35,14 @@ all: program size
 ci: clean size
 
 
-size: $(TARGET).elf
+size: $(TARGET)_$(MCU).elf
 	@echo
-	avr-size --mcu=$(MCU) --format=avr $(TARGET).elf
+	avr-size --mcu=$(MCU) --format=avr $(TARGET)_$(MCU).elf
 
 
 # Program the device.
-program: $(TARGET).hex
-	avrdude $(AVRDUDE_FLAGS) -U flash:w:$(TARGET).hex
+program: $(TARGET)_$(MCU).hex
+	avrdude $(AVRDUDE_FLAGS) -U flash:w:$(TARGET)_$(MCU).hex
 
 
 %.hex: %.elf
