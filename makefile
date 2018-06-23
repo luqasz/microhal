@@ -47,25 +47,25 @@ program: $(TARGET).hex
 
 %.hex: %.elf
 	@echo Creating: $@
-	@avr-objcopy -O ihex $< $@
+	avr-objcopy -O ihex $< $@
 
 
 # Link: create ELF output file from object files.
 %.elf: $(patsubst %.c,%.o,$(wildcard src/*.c))
 	@echo Linking: $@
-	@avr-gcc $(CFLAGS) $^ --output $@ $(LDFLAGS)
+	avr-gcc $(CFLAGS) $^ --output $@ $(LDFLAGS)
 
 
 # Compile: create object files from C source files.
 %.o: %.c
 	@echo Compiling: $<
-	@avr-gcc -c $(CFLAGS) $< -o $@
+	avr-gcc -c $(CFLAGS) $< -o $@
 
 
 clean:
-	@find . -name "*.elf" -delete
-	@find . -name "*.hex" -delete
-	@find . -name "*.o" -delete
+	find . -name "*.elf" -delete
+	find . -name "*.hex" -delete
+	find . -name "*.o" -delete
 
 
 .PHONY : clean all ci
