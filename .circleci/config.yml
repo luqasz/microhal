@@ -5,4 +5,13 @@ jobs:
        - image: lukaszkostka/devbox:stretch
      steps:
        - checkout
-       - run: make size
+       - run:
+          name: Run cmake
+          command: |
+            cd build
+            cmake -DBAUD=115200 -DF_CPU=11059200 ..
+       - run:
+          name: Build
+          command: |
+            cd build
+            make -j
