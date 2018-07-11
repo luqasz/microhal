@@ -2,16 +2,21 @@ version: 2
 jobs:
    build:
      docker:
-       - image: lukaszkostka/devbox:stretch
+       - image: lukaszkostka/avr:debian_stretch
      steps:
        - checkout
        - run:
           name: Run cmake
-          command: |
-            cd build
-            cmake -DBAUD=115200 -DF_CPU=11059200 ..
+          environment:
+            CC: avr-gcc
+            CXX: avr-g++
+          command: >
+            cmake
+            -DBAUD=115200
+            -DF_CPU=11059200
+            -H.
+            -GNinja
+            -Bbuild
        - run:
           name: Build
-          command: |
-            cd build
-            make -j
+          command: ninja -C build
