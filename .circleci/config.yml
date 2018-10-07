@@ -2,7 +2,7 @@ version: 2
 jobs:
    build:
      docker:
-       - image: lukaszkostka/avr:debian_stretch
+       - image: lukaszkostka/avr:alpine_3.8
      steps:
        - checkout
        - run:
