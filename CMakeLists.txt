@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 project(avr_libs)
-set(C_STANDARD 11)
-set(C_STANDARD_REQUIRED 11)
 
 set(AVR_PROGRAMMER usbasp)
 set(AVR_PROGRAMMER_PORT usb)
@@ -35,6 +33,7 @@ target_compile_options(
     -funsigned-bitfields
     -funsigned-char
     -ffunction-sections
+    -std=c11
     )
 
 set_target_properties(
