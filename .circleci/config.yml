@@ -22,4 +22,4 @@ jobs:
           command: ninja -C build
        - run:
           name: Size
-          command: ninja -C size
+          command: ninja -C build size
