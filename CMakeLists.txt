@@ -9,6 +9,8 @@ set(EXECUTABLE_NAME ${PROJECT_NAME}_${AVR_MCU})
 add_executable(
     ${EXECUTABLE_NAME}
     src/main.c
+    src/uart.c
+    src/buffer.c
     )
 
 target_compile_definitions(
