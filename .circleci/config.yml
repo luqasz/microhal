@@ -20,3 +20,6 @@ jobs:
        - run:
           name: Build
           command: ninja -C build
+       - run:
+          name: Size
+          command: ninja -C size
