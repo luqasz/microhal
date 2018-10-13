@@ -12,8 +12,6 @@ jobs:
             CXX: avr-g++
           command: >
             cmake
-            -DBAUD=115200
-            -DF_CPU=11059200
             -H.
             -GNinja
             -Bbuild

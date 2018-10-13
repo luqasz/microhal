@@ -3,8 +3,10 @@ project(avr_libs)
 
 set(AVR_PROGRAMMER usbasp)
 set(AVR_PROGRAMMER_PORT usb)
-set(AVR_MCU atmega328p)
+set(AVR_MCU atmega32)
+set(F_CPU 11059200)
 set(EXECUTABLE_NAME ${PROJECT_NAME}_${AVR_MCU})
+set(CMAKE_BUILD_TYPE MinSizeRel)
 
 add_executable(
     ${EXECUTABLE_NAME}
@@ -16,7 +18,7 @@ add_executable(
 target_compile_definitions(
     ${EXECUTABLE_NAME}
     PUBLIC
-    BAUD=${BAUD}
+    BAUD=115200
     )
 
 
