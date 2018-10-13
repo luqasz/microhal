@@ -16,11 +16,6 @@ target_compile_options(
     -mmcu=${AVR_MCU} 
 )
 
-# Without this, avr-gcc throws:
-# avr-ld: warning: cannot find entry symbol arch_paths_first; defaulting to 0000000000000000
-string(REPLACE "-Wl,-search_paths_first" "" CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS}")
-string(REPLACE "-Wl,-search_paths_first" "" CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS}")
-
 target_compile_definitions(
     ${EXECUTABLE_NAME}
     PUBLIC
