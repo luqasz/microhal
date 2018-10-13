@@ -10,18 +10,27 @@ set(hex_file ${EXECUTABLE_NAME}.hex)
 set(eeprom_file ${EXECUTABLE_NAME}.eeprom)
 set(dis_file ${EXECUTABLE_NAME}.dis)
 
-
-set_target_properties(
+target_compile_options(
     ${EXECUTABLE_NAME}
-    PROPERTIES
-    COMPILE_FLAGS "-mmcu=${AVR_MCU} -DF_CPU=${F_CPU}UL"
-    LINK_FLAGS "-mmcu=${AVR_MCU} -DF_CPU=${F_CPU}UL"
+    PUBLIC
+    -mmcu=${AVR_MCU} 
 )
 
 # Without this, avr-gcc throws:
 # avr-ld: warning: cannot find entry symbol arch_paths_first; defaulting to 0000000000000000
 string(REPLACE "-Wl,-search_paths_first" "" CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS}")
 string(REPLACE "-Wl,-search_paths_first" "" CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS}")
+
+target_compile_definitions(
+    ${EXECUTABLE_NAME}
+    PUBLIC
+    F_CPU=${F_CPU}UL
+    )
+
+set_property(
+    TARGET ${EXECUTABLE_NAME} 
+    APPEND_STRING PROPERTY 
+    LINK_FLAGS " -mmcu=${AVR_MCU}")
 
 add_custom_command(
    OUTPUT ${dis_file}
