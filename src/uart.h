@@ -10,5 +10,8 @@ void uart_putchar (
 void uart_write (
     char *string
 );
+uint8_t uart_read (
+    void
+);
 
 #endif

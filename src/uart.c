@@ -17,7 +17,7 @@ uart_start (
     UBRRH = (uint8_t) (UBRRH_VALUE >> 8);
     UBRRL = (uint8_t) UBRRL_VALUE;
     // Turn on RX and TX
-    UCSRB = (1 << RXEN) | (1 << TXEN);
+    UCSRB = (1 << RXEN) | (1 << TXEN) | (1 << RXCIE);
     // atmega328p is already configured to 8n1
 }
 
@@ -45,6 +45,19 @@ uart_write (
     }
 }
 
+uint8_t
+uart_read (
+    void
+)
+{
+    uint8_t byte;
+    uint8_t num = 0;
+    while (!num) {
+        num = circ_buf_pop (&rx_buf, &byte);
+    }
+    return byte;
+}
+
 // Executed when data register is empty.
 ISR (USART_UDRE_vect)
 {
@@ -59,6 +72,7 @@ ISR (USART_UDRE_vect)
 }
 
 // Executed when data is received.
-/* ISR(USART_RX_vect) { */
-/*     unsigned int data = UDR; */
-/* } */
+ISR (USART_RX_vect)
+{
+    circ_buf_push (&rx_buf, UDR);
+}
