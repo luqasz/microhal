@@ -40,12 +40,10 @@ target_compile_options(
     -std=c11
     )
 
-set_target_properties(
-    ${EXECUTABLE_NAME}
-    PROPERTIES
-    LINK_FLAGS "
-    -Wl,--gc-sections
-    -mrelax
-    ")
+
+set_property(
+    TARGET ${EXECUTABLE_NAME} 
+    APPEND_STRING PROPERTY 
+    LINK_FLAGS " -Wl,--gc-sections -mrelax")
 
 include(avr-gcc.cmake)
