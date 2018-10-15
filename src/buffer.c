@@ -4,7 +4,7 @@
 // Return ammount of bytes stored in buffer
 uint8_t
 circ_buf_size (
-    circ_buf * buffer
+    volatile circ_buf * buffer
 )
 {
     return buffer->head - buffer->tail;
@@ -14,7 +14,7 @@ circ_buf_size (
 // Return number of bytes written.
 uint8_t
 circ_buf_push (
-    circ_buf * c,
+    volatile circ_buf * c,
     uint8_t data
 )
 {
@@ -37,7 +37,7 @@ circ_buf_push (
 // Return number of bytes read.
 uint8_t
 circ_buf_pop (
-    circ_buf * c,
+    volatile circ_buf * c,
     uint8_t * data
 )
 {
