@@ -16,9 +16,11 @@ uart_start (
     // Set baud rate
     UBRRH = (uint8_t) (UBRRH_VALUE >> 8);
     UBRRL = (uint8_t) UBRRL_VALUE;
-    // Turn on RX and TX
-    UCSRB = (1 << RXEN) | (1 << TXEN) | (1 << RXCIE);
-    // atmega328p is already configured to 8n1
+
+    UCSRB |= (1 << RXEN);       // Turn on RX.
+    UCSRB |= (1 << TXEN);       // Turn on TX.
+    UCSRB |= (1 << RXCIE);      // Turn on RX irq.
+    // All atmega MCUs are already configured to 8n1
 }
 
 void
