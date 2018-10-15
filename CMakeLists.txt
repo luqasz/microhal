@@ -38,12 +38,14 @@ target_compile_options(
     -funsigned-char
     -ffunction-sections
     -std=c11
+    -flto
+    -fwhole-program
     )
 
 
 set_property(
     TARGET ${EXECUTABLE_NAME} 
     APPEND_STRING PROPERTY 
-    LINK_FLAGS " -Wl,--gc-sections -mrelax")
+    LINK_FLAGS " -Wl,--gc-sections -mrelax -flto -fwhole-program")
 
 include(avr-gcc.cmake)
