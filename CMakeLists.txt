@@ -7,6 +7,12 @@ set(AVR_MCU atmega32)
 set(F_CPU 11059200)
 set(EXECUTABLE_NAME ${PROJECT_NAME}_${AVR_MCU})
 set(CMAKE_BUILD_TYPE MinSizeRel)
+string(
+    TIMESTAMP
+    UTC_DATETIME
+    "%Y.%m.%d %H:%M"
+    UTC
+    )
 
 add_executable(
     ${EXECUTABLE_NAME}
@@ -20,6 +26,14 @@ target_compile_definitions(
     PUBLIC
     BAUD=115200
     )
+
+set_property(
+    SOURCE
+    src/main.c
+    PROPERTY
+    COMPILE_DEFINITIONS
+    UTC_DATETIME="${UTC_DATETIME}"
+)
 
 
 target_compile_options(
