@@ -24,8 +24,19 @@ uart_start (
 }
 
 void
-uart_putchar (
-    unsigned char byte
+uart_write_string (
+    unsigned char *string
+)
+{
+    register char c;
+    while ((c = *string++)) {
+        uart_write_byte (c);
+    }
+}
+
+void
+uart_write_byte (
+    uint8_t byte
 )
 {
     register uint8_t num = 0;
@@ -36,19 +47,8 @@ uart_putchar (
     UCSRB |= (1 << UDRIE);
 }
 
-void
-uart_write (
-    char *string
-)
-{
-    register char c;
-    while ((c = *string++)) {
-        uart_putchar (c);
-    }
-}
-
 uint8_t
-uart_read (
+uart_read_byte (
     void
 )
 {

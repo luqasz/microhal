@@ -4,13 +4,19 @@
 void uart_start (
     void
 );
-void uart_putchar (
-    unsigned char byte
+void uart_write_byte (
+    uint8_t byte
 );
-void uart_write (
-    char *string
+void uart_write_string (
+    unsigned char *string
 );
-uint8_t uart_read (
+
+#define uart_write(value) _Generic((value),     \
+    uint8_t: uart_write_byte,                   \
+    unsigned char*: uart_write_string           \
+    )(value)
+
+uint8_t uart_read_byte (
     void
 );
 
