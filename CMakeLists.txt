@@ -51,7 +51,7 @@ target_compile_options(
     -funsigned-bitfields
     -funsigned-char
     -ffunction-sections
-    -std=c11
+    -std=c17
     -flto
     -fwhole-program
     )
