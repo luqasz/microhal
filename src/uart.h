@@ -8,12 +8,12 @@ void uart_write_byte (
     uint8_t byte
 );
 void uart_write_string (
-    unsigned char *string
+    char *string
 );
 
 #define uart_write(value) _Generic((value),     \
     uint8_t: uart_write_byte,                   \
-    unsigned char*: uart_write_string           \
+    char*: uart_write_string                    \
     )(value)
 
 uint8_t uart_read_byte (

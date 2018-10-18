@@ -25,7 +25,7 @@ uart_start (
 
 void
 uart_write_string (
-    unsigned char *string
+    char *string
 )
 {
     register char c;
