@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include <util/atomic.h>
 #include <util/setbaud.h>
 #include <avr/interrupt.h>
 #include "registers.h"
@@ -41,7 +42,9 @@ uart_write_byte (
 {
     register uint8_t num = 0;
     while (!num) {
-        num = circ_buf_push (&tx_buf, byte);
+        ATOMIC_BLOCK (ATOMIC_RESTORESTATE) {
+            num = circ_buf_push (&tx_buf, byte);
+        }
     }
     // Enable data register empty interrupt.
     UCSRB |= (1 << UDRIE);
@@ -55,7 +58,9 @@ uart_read_byte (
     uint8_t byte;
     uint8_t num = 0;
     while (!num) {
-        num = circ_buf_pop (&rx_buf, &byte);
+        ATOMIC_BLOCK (ATOMIC_RESTORESTATE) {
+            num = circ_buf_pop (&rx_buf, &byte);
+        }
     }
     return byte;
 }
