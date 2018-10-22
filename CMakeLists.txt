@@ -35,6 +35,15 @@ set_property(
     UTC_DATETIME="${UTC_DATETIME}"
 )
 
+set_property(
+    SOURCE
+    src/uart.c
+    PROPERTY
+    COMPILE_DEFINITIONS
+    UART_TX_BUF_SIZE=10
+    UART_RX_BUF_SIZE=10
+)
+
 
 target_compile_options(
     ${EXECUTABLE_NAME}

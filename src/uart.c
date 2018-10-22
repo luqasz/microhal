@@ -6,8 +6,8 @@
 #include "uart.h"
 #include "buffer.h"
 
-CIRC_BUF_DEF (tx_buf, 10);
-CIRC_BUF_DEF (rx_buf, 10);
+CIRC_BUF_DEF (tx_buf, UART_TX_BUF_SIZE);
+CIRC_BUF_DEF (rx_buf, UART_RX_BUF_SIZE);
 
 void
 uart_start (
