@@ -2,11 +2,11 @@
 #define REGISTERS_h_
 
 #if defined(__AVR_ATmega328P__)
-#    include "atmega328p.h"
+#    include "mcu/atmega328p.h"
 #elif defined(__AVR_ATmega32__)
-#    include "atmega32.h"
+#    include "mcu/atmega32.h"
 #elif defined(__AVR_ATmega32A__)
-#    include "atmega32.h"
+#    include "mcu/atmega32.h"
 #else
 #    error "Unsupported MCU."
 #endif
