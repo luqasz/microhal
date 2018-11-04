@@ -17,8 +17,7 @@ string(
 add_executable(
     ${EXECUTABLE_NAME}
     src/main.c
-    src/uart.c
-    src/buffer.c
+    src/display/hd44780.c
     )
 
 target_compile_definitions(
