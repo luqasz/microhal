@@ -25,6 +25,5 @@ spi_send(
 {
     SPDR = byte;
     // Wait for transmission complete
-    while (!(SPSR & (1 << SPIF)))
-        ;
+    loop_until_bit_is_clear(SPSR, SPIF);
 }
