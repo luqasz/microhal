@@ -17,4 +17,6 @@
 #define SCK PB5
 #define SS PB2
 
+#define ADC_TRIGGER_SOURCE_REGISTER ADCSRB
+
 #endif

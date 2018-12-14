@@ -7,6 +7,8 @@
 #define SCK PB7
 #define SS PB4
 
+#define ADC_TRIGGER_SOURCE_REGISTER SFIOR
+
 #define USART_RX_vect USART_RXC_vect
 
 #endif
