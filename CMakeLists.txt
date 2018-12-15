@@ -66,8 +66,8 @@ target_compile_options(
 
 
 set_property(
-    TARGET ${EXECUTABLE_NAME} 
-    APPEND_STRING PROPERTY 
+    TARGET ${EXECUTABLE_NAME}
+    APPEND_STRING PROPERTY
     LINK_FLAGS " -Wl,--gc-sections -mrelax -flto -fwhole-program")
 
 include(avr-gcc.cmake)
