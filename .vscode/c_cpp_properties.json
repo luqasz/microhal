@@ -1,13 +1,16 @@
 {
     "configurations": [
         {
-            "name": "Mac",
+            "name": "AVR",
             "includePath": [
                 "${workspaceFolder}/src/**",
-                "/usr/local/Cellar/avr-gcc/8.2.0/avr/include/**"
+                "/usr/local/Cellar/avr-gcc/8.2.0/avr/include/*",
+                "/usr/local/Cellar/avr-gcc/8.2.0/avr/include/**",
+                "/usr/local/Cellar/avr-libc/2.0.0/avr/include/*",
+                "/usr/local/Cellar/avr-libc/2.0.0/avr/include/**"
             ],
             "defines": [],
-            "compilerPath": "/usr/local/bin/avr-gcc",
+            "compilerPath": "/usr/local/bin/avr-g++",
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64",

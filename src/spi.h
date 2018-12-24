@@ -1,10 +1,12 @@
-#ifndef SPI_H_
-#define SPI_H_
+#ifndef spi_h
+#define spi_h
 
 #include <stdint.h>
 
-void spi_master(
-    void);
-void spi_send(
-    uint8_t byte);
+class SPI {
+public:
+    void master();
+    uint8_t communicate(uint8_t);
+};
+
 #endif
