@@ -17,7 +17,8 @@ string(
 add_executable(
     ${EXECUTABLE_NAME}
     src/main.c
-    src/display/hd44780.c
+    src/uart.c
+    src/buffer.c
     )
 
 target_compile_definitions(
@@ -39,8 +40,8 @@ set_property(
     src/uart.c
     PROPERTY
     COMPILE_DEFINITIONS
-    UART_TX_BUF_SIZE=10
-    UART_RX_BUF_SIZE=10
+    UART_TX_BUF_SIZE=5
+    UART_RX_BUF_SIZE=5
 )
 
 
