@@ -13,7 +13,7 @@ set(dis_file ${EXECUTABLE_NAME}.dis)
 target_compile_options(
     ${EXECUTABLE_NAME}
     PUBLIC
-    -mmcu=${AVR_MCU} 
+    -mmcu=${AVR_MCU}
 )
 
 target_compile_definitions(
@@ -23,8 +23,8 @@ target_compile_definitions(
     )
 
 set_property(
-    TARGET ${EXECUTABLE_NAME} 
-    APPEND_STRING PROPERTY 
+    TARGET ${EXECUTABLE_NAME}
+    APPEND_STRING PROPERTY
     LINK_FLAGS " -mmcu=${AVR_MCU}")
 
 add_custom_command(
@@ -61,8 +61,7 @@ add_custom_command(
 add_custom_target(
    size
        ${AVR_SIZE_TOOL}
-       --format=avr
-       --mcu=${AVR_MCU}
+       --format=sysv
        ${EXECUTABLE_NAME}
    DEPENDS ${EXECUTABLE_NAME}
 )

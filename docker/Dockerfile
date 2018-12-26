@@ -1,12 +1,7 @@
-FROM debian:stretch
+FROM alpine:3.8
 
-ENV DEBIAN_FRONTEND noninteractive
-
-COPY apt-preferences /etc/apt/apt.conf.d/apt-preferences
-
-RUN apt-get update
-RUN apt-get install cmake
-RUN apt-get install ninja-build
-RUN apt-get install gcc-avr
-RUN apt-get install avr-libc
-RUN apt-get install avrdude
+RUN apk add --no-cache cmake
+RUN apk add --no-cache ninja
+RUN apk add --no-cache gcc-avr
+RUN apk add --no-cache avr-libc
+RUN apk add --no-cache avrdude
