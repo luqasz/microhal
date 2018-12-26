@@ -7,6 +7,8 @@ set(AVR_MCU atmega32)
 set(F_CPU 11059200)
 set(EXECUTABLE_NAME ${PROJECT_NAME}_${AVR_MCU})
 set(CMAKE_BUILD_TYPE MinSizeRel)
+set(CMAKE_CXX_STANDARD 17)
+
 string(
     TIMESTAMP
     UTC_DATETIME
@@ -16,34 +18,22 @@ string(
 
 add_executable(
     ${EXECUTABLE_NAME}
-    src/main.c
-    src/uart.c
-    src/buffer.c
+    src/main.cpp
+    src/uart.cpp
     )
 
 target_compile_definitions(
     ${EXECUTABLE_NAME}
     PUBLIC
-    BAUD=115200
     )
 
 set_property(
     SOURCE
-    src/main.c
+    src/main.cpp
     PROPERTY
     COMPILE_DEFINITIONS
     UTC_DATETIME="${UTC_DATETIME}"
 )
-
-set_property(
-    SOURCE
-    src/uart.c
-    PROPERTY
-    COMPILE_DEFINITIONS
-    UART_TX_BUF_SIZE=5
-    UART_RX_BUF_SIZE=5
-)
-
 
 target_compile_options(
     ${EXECUTABLE_NAME}
@@ -60,7 +50,6 @@ target_compile_options(
     -funsigned-bitfields
     -funsigned-char
     -ffunction-sections
-    -std=c11
     -flto
     -fwhole-program
     )

@@ -1,5 +1,5 @@
-#ifndef PIN_IRQ_H_
-#define PIN_IRQ_H_
+#ifndef pin_irq_h
+#define pin_irq_h
 
 #include <avr/interrupt.h>
 #include <avr/io.h>

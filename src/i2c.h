@@ -6,27 +6,29 @@
 #define I2C_ACK 1
 #define I2C_NACK 0
 
-void i2c_set_speed(
-    uint16_t bitrateKHz);
+// Values represent direct value of TWBR.
+enum I2C_SPEED : uint8_t {
+    SPEED_100kHz = ((F_CPU / 100000) - 16) / 2,
+    SPEED_400kHz = ((F_CPU / 400000) - 16) / 2,
+};
 
-void i2c_start(
-    void);
-void i2c_stop(
-    void);
-void i2c_write_byte(
-    uint8_t byte);
-uint8_t i2c_read_byte(
-    uint8_t ack);
-
-void i2c_write_buf(
-    uint8_t slave_address,
-    uint8_t address,
-    uint8_t len,
-    uint8_t * buf);
-void i2c_read_buf(
-    uint8_t slave_address,
-    uint8_t address,
-    uint8_t len,
-    uint8_t * buf);
+class I2C {
+public:
+    void speed(enum I2C_SPEED);
+    void start(void);
+    void stop(void);
+    void write(uint8_t);
+    void write(
+        uint8_t slave_address,
+        uint8_t address,
+        uint8_t len,
+        uint8_t * buf);
+    uint8_t read(uint8_t);
+    void read(
+        uint8_t slave_address,
+        uint8_t address,
+        uint8_t len,
+        uint8_t * buf);
+};
 
 #endif

@@ -1,9 +1,9 @@
-#ifndef HD44780_H_
-#define HD44780_H_
+#ifndef hd44780_h
+#define hd44780_h
 
 #include <stdint.h>
 
-enum COMMAND {
+enum COMMAND : uint8_t {
     CLEAR_SCREEN         = 0x01,
     CURSOR_HOME          = 0x02,
     ENTRY_MODE           = 0x04,
@@ -25,9 +25,18 @@ enum COMMAND {
     SET_DDRAM_ADDRESS    = 0x80,
 };
 
-void hd44780_write_string(char * str);
-void hd44780_command(enum COMMAND cmd);
-void hd44780_init(void);
-void hd44780_set_cursor_position(uint8_t line, uint8_t collumn);
+class LCD_HD44780 {
+public:
+    void write(const char *);
+    void write(uint8_t);
+    void command(enum COMMAND);
+    void command(uint8_t);
+    void init(void);
+    void move_cursor(uint8_t line, uint8_t collumn);
+    inline void wait_untill_ready(void);
+
+private:
+    uint8_t read(void);
+};
 
 #endif

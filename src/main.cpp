@@ -3,17 +3,17 @@
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
-#include <avr/wdt.h>
 #include <stdio.h>
+#include <util/delay.h>
 
 int
 main(void)
 {
-    uart_start();
+    auto serial = Uart();
+    serial.speed(x2_115200);
+    serial.start();
     sei();
-    uart_write("1234567890");
-    wdt_enable(WDTO_1S);
+    serial.write("1234567890 abcdefghijklmnoprstuwxyz\r\n");
     while (1) {
-        wdt_reset();
     }
 }

@@ -1,5 +1,5 @@
-#ifndef ADC_H_
-#define ADC_H_
+#ifndef adc_h
+#define adc_h
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
@@ -32,11 +32,6 @@ enum ADC_PRESCALER_DIVISOR {
     DIV_128 = ((1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2)),
 };
 
-static const uint8_t ADC_PRESCALER_MASK      = (uint8_t) ~((1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2));
-static const uint8_t ADC_MUX_MASK            = (uint8_t) ~((1 << MUX0) | (1 << MUX1) | (1 << MUX2) | (1 << MUX3) | (1 << MUX4) | (1 << MUX4));
-static const uint8_t ADC_VREF_MASK           = (uint8_t) ~((1 << REFS0) | (1 << REFS1));
-static const uint8_t ADC_TRIGGER_SOURCE_MASK = (uint8_t) ~((1 << ADTS0) | (1 << ADTS1) | (1 << ADTS2));
-
 enum ADC_TRIGGER_SOURCE {
     FREE_RUNNING                    = ((0 << ADTS0) | (0 << ADTS1) | (0 << ADTS2)),
     ANALOG_COMPARATOR               = ((1 << ADTS0) | (0 << ADTS1) | (0 << ADTS2)),
@@ -48,11 +43,15 @@ enum ADC_TRIGGER_SOURCE {
     TIMER_COUNTER_1_CAPTURE_EVENT   = ((1 << ADTS0) | (2 << ADTS1) | (1 << ADTS2)),
 };
 
-void set_adc_trigger_source(enum ADC_TRIGGER_SOURCE);
-void set_adc_prescaler(enum ADC_PRESCALER_DIVISOR);
-void set_adc_channel(enum ADC_CHANNEL);
-void set_adc_vref(enum ADC_VREF);
-void adc_start(void);
-uint16_t get_adc_value(void);
+class Adc {
+public:
+    uint16_t value(void);
+    void start(void);
+    void stop(void);
+    void prescaler(enum ADC_PRESCALER_DIVISOR);
+    void channel(enum ADC_CHANNEL);
+    void vref(enum ADC_VREF);
+    void trigger(enum ADC_TRIGGER_SOURCE);
+};
 
 #endif
