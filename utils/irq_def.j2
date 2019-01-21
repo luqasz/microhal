@@ -1,0 +1,19 @@
+#ifndef {{ header_name }}_h
+#define {{ header_name }}_h
+
+#include <stdint.h>
+
+/*
+File generated from atmel / microchip atdf file.
+Family            {{ device.family }}
+Architecture      {{ device.arch }}
+Device name       {{ device.name }}
+*/
+
+namespace IRQ_NUM {
+    {% for irq in device.interrupts %}
+    const uint8_t {{ irq.name }} = {{ "{0:#0{padding}x}".format(irq.number, padding=4) }};      // {{ irq.description }}
+    {% endfor %}
+}
+
+#endif

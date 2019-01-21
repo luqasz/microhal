@@ -1,50 +1,63 @@
 #include "pin_irq.h"
 
-#include "registers.h"
+#include "irq.h"
+#include "sfr.h"
 
-#include <avr/interrupt.h>
-#include <avr/io.h>
 #include <stdint.h>
 
+auto INT_EDGE_REG       = Register<SFR::MCUCR>();
+auto INT_IRQ_ENABLE_REG = Register<SFR::GICR>();
+
+const uint8_t INT1_TRIGGER_MASK = INT_EDGE_REG.ISC11 | INT_EDGE_REG.ISC10;
+const uint8_t INT0_TRIGGER_MASK = INT_EDGE_REG.ISC01 | INT_EDGE_REG.ISC00;
+
 void
-nothing(void)
+set_int_edge(const uint8_t value, const uint8_t mask)
 {
+    uint8_t reg_value = INT_EDGE_REG;
+    reg_value &= mask;
+    reg_value |= value;
+    INT_EDGE_REG = reg_value;
 }
 
-static volatile irq_handler handlers[IRQ_HANDLERS] = {
-    nothing
-};
-
 void
-attach_pin_interrupt(enum INTERRUPT_PIN pin, enum TRIGGER_SOURCE trigger, irq_handler function)
+PinInterrupts::set(Pin pin, Trigger trigger)
 {
     uint8_t reg_value;
-    uint8_t trigger_mask;
-    uint8_t pin_bit;
     switch (pin) {
-        case INT_0:
-            trigger_mask = (uint8_t) ~((1 << ISC00) | (1 << ISC01));
-            reg_value    = trigger << ISC00;
-            pin_bit      = INT0;
+        case Pin::INT0:
+            reg_value = static_cast<uint8_t>(trigger << INT_EDGE_REG.ISC00);
+            set_int_edge(reg_value, INT0_TRIGGER_MASK);
             break;
-        case INT_1:
-            trigger_mask = (uint8_t) ~((1 << ISC10) | (1 << ISC11));
-            reg_value    = trigger << ISC10;
-            pin_bit      = INT1;
+        case Pin::INT1:
+            reg_value = static_cast<uint8_t>(trigger << INT_EDGE_REG.ISC10);
+            set_int_edge(reg_value, INT1_TRIGGER_MASK);
             break;
     }
-    EXTERNAL_IRQ_REG &= trigger_mask;
-    EXTERNAL_IRQ_REG |= reg_value;
-    handlers[pin] = function;
-    IRQ_ENABLE_REG |= 1 << pin_bit;
 }
 
-ISR(INT0_vect)
+void
+PinInterrupts::enable(Pin pin)
 {
-    handlers[INT_0]();
+    switch (pin) {
+        case Pin::INT0:
+            INT_IRQ_ENABLE_REG.setBit(INT_IRQ_ENABLE_REG.INT0);
+            break;
+        case Pin::INT1:
+            INT_IRQ_ENABLE_REG.setBit(INT_IRQ_ENABLE_REG.INT1);
+            break;
+    }
 }
 
-ISR(INT1_vect)
+void
+PinInterrupts::disable(Pin pin)
 {
-    handlers[INT_1]();
+    switch (pin) {
+        case Pin::INT0:
+            INT_IRQ_ENABLE_REG.clearBit(INT_IRQ_ENABLE_REG.INT0);
+            break;
+        case Pin::INT1:
+            INT_IRQ_ENABLE_REG.clearBit(INT_IRQ_ENABLE_REG.INT1);
+            break;
+    }
 }

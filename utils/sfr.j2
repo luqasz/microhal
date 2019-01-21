@@ -1,0 +1,32 @@
+#ifndef {{ device.name | lower }}_sfr_h
+#define {{ device.name | lower }}_sfr_h
+
+#include <stdint.h>
+
+/*
+Source            {{ atpack_file.name }}
+Family            {{ device.family }}
+Architecture      {{ device.arch }}
+Device name       {{ device.name }}
+*/
+
+namespace SFR {
+
+{% for reg in device.registers %}
+    // {{ reg.description }}
+    struct {{ reg.name }} {
+        static const {{ reg.uint_type }} address = {{ "{0:#0{padding}x}".format(reg.address, padding=4) }};
+        {% if reg.bit_fields %}
+        enum bits : uint8_t {
+        {% for field in reg.bit_fields %}
+            {{ field.name }} = {{ field.mask }},    // {{ field.description }}
+        {% endfor %}
+        };
+        {% endif %}
+    };
+
+{% endfor %}
+
+}
+
+#endif

@@ -1,18 +1,36 @@
 #include "adc.h"
 
-#include "registers.h"
+#include "irq.h"
+#include "sfr.h"
+#include "utils.h"
 
-#include <avr/interrupt.h>
 #include <stdint.h>
 
-static volatile uint16_t adc_value           = 0;
-static const uint8_t ADC_PRESCALER_MASK      = (uint8_t) ~((1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2));
-static const uint8_t ADC_MUX_MASK            = (uint8_t) ~((1 << MUX0) | (1 << MUX1) | (1 << MUX2) | (1 << MUX3) | (1 << MUX4) | (1 << MUX4));
-static const uint8_t ADC_VREF_MASK           = (uint8_t) ~((1 << REFS0) | (1 << REFS1));
-static const uint8_t ADC_TRIGGER_SOURCE_MASK = (uint8_t) ~((1 << ADTS0) | (1 << ADTS1) | (1 << ADTS2));
+static volatile uint16_t adc_value = 0;
+
+static const uint8_t PRESCALER_MASK = inverted<uint8_t>(ADC::ADCSRA_REG::ADPS0 | ADC::ADCSRA_REG::ADPS1 | ADC::ADCSRA_REG::ADPS2);
+static const uint8_t MUX_MASK       = inverted<uint8_t>(ADC::ADMUX_REG::MUX0 | ADC::ADMUX_REG::MUX1 | ADC::ADMUX_REG::MUX2 | ADC::ADMUX_REG::MUX3 | ADC::ADMUX_REG::MUX4);
+static const uint8_t VREF_MASK      = inverted<uint8_t>(ADC::ADMUX_REG::REFS0 | ADC::ADMUX_REG::REFS1);
+static const uint8_t TRIGGER_MASK   = inverted<uint8_t>(ADC::TRIGGER_REG::ADTS0 | ADC::TRIGGER_REG::ADTS1 | ADC::TRIGGER_REG::ADTS2);
+
+auto CTL_REG       = Register<ADC::CTL_REG>();
+auto TRIGGER_REG   = Register<ADC::TRIGGER_REG>();
+auto ADMUX_REG     = Register<ADC::ADMUX_REG>();
+auto VREF_REG      = Register<ADC::VREF_REG>();
+auto PRESCALER_REG = Register<ADC::PRESCALER_REG>();
+
+template <typename VALUE_T, typename REG_T>
+void
+set_reg(VALUE_T value, REG_T reg, uint8_t mask)
+{
+    uint8_t reg_value = reg;
+    reg_value &= mask;
+    reg_value |= static_cast<uint8_t>(value);
+    reg = reg_value;
+}
 
 uint16_t
-Adc::value(void)
+Adc::read(void)
 {
     return adc_value;
 }
@@ -20,55 +38,54 @@ Adc::value(void)
 void
 Adc::start(void)
 {
-    ADCSRA |= _BV(ADIE); // Enable interrupt
-    ADCSRA |= _BV(ADEN); // Enable ADC
-    ADCSRA |= _BV(ADSC); // Start conversion
+    enable();
+    CTL_REG.setBit(CTL_REG.ADSC); // Start conversion
 }
 
 void
-Adc::stop(void)
+Adc::enable(void)
 {
-    ADCSRA &= ~(1 << ADEN); // Disable ADC
+    CTL_REG.setBit(CTL_REG.ADEN); // Enable ADC
+    CTL_REG.setBit(CTL_REG.ADIE); // Enable interrupt
 }
 
 void
-Adc::prescaler(enum ADC_PRESCALER_DIVISOR prescaler)
+Adc::disable(void)
 {
-    ADCSRA &= ADC_PRESCALER_MASK;
-    ADCSRA |= prescaler;
+    CTL_REG.clearBit(CTL_REG.ADEN); // Disable ADC
 }
 
 void
-Adc::channel(enum ADC_CHANNEL channel)
+Adc::set(enum ADC::Prescaler value)
 {
-    ADMUX &= ADC_MUX_MASK;
-    ADMUX |= channel;
+    set_reg(value, PRESCALER_REG, PRESCALER_MASK);
 }
 
 void
-Adc::vref(enum ADC_VREF vref)
+Adc::set(enum ADC::Channel chan)
 {
-    ADMUX &= ADC_VREF_MASK;
-    ADMUX |= vref;
+    set_reg(chan, ADMUX_REG, MUX_MASK);
 }
 
 void
-Adc::trigger(enum ADC_TRIGGER_SOURCE source)
+Adc::set(enum ADC::Vref reference)
 {
-    ADC_TRIGGER_SOURCE_REGISTER &= ADC_TRIGGER_SOURCE_MASK;
-    ADC_TRIGGER_SOURCE_REGISTER |= source;
+    set_reg(reference, VREF_REG, VREF_MASK);
 }
 
-ISR(ADC_vect)
+void
+Adc::set(enum ADC::TriggerSource source)
 {
-    /* IMPORTANT !!!!
-    When reading ADCL, ADCH ADCL must be read first, then ADCH.
+    CTL_REG.setBit(CTL_REG.ADATE); // Enable auto trigger
+    set_reg(source, TRIGGER_REG, TRIGGER_MASK);
+}
+
+void
+Irq::ADC(void)
+{
+    /*
+    When reading directly as uint16_t, ADCL must be read first, then ADCH.
     Otherwise, ADC behavior is undefined.
-
-    adc_value = (uint16_t)ADCL;
-    adc_value |= (uint16_t)(ADCH << 8);
-
-    Simplest way is to read ADCW directly.
     */
-    adc_value = ADCW;
+    adc_value = Register<SFR::ADC, uint16_t>();
 }

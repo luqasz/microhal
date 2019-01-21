@@ -1,0 +1,37 @@
+#ifndef {{ device.name | lower }}_gpio_h
+#define {{ device.name | lower }}_gpio_h
+
+#include <stdint.h>
+#include "../gpio.h"
+
+/*
+Source            {{ atpack_file.name }}
+Family            {{ device.family }}
+Architecture      {{ device.arch }}
+Device name       {{ device.name }}
+*/
+
+namespace GPIO {
+
+{% for reg in groupGPIO(device.registers) %}
+
+    auto const {{ "Port{}".format(reg.letter) }} = GPIO::Port {
+        {{ "{0:#0{padding}x}".format(reg.port.address, padding=4) }},
+        {{ "{0:#0{padding}x}".format(reg.pin.address, padding=4) }},
+        {{ "{0:#0{padding}x}".format(reg.ddr.address, padding=4) }},
+    };
+
+    {% for pin_no in range(0,8) %}
+
+        auto const {{ "P{}{}".format(reg.letter, pin_no) }} = GPIO::Pin {
+            {{ "Port{}".format(reg.letter) }},
+            {{ "GPIO::Pin{}".format(pin_no) }},
+        };
+
+    {% endfor %}
+
+{% endfor %}
+
+}
+
+#endif

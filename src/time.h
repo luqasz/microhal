@@ -1,5 +1,5 @@
-#ifndef TIME_H_
-#define TIME_H_
+#ifndef time_h_
+#define time_h_
 
 #include <stdint.h>
 
@@ -11,6 +11,6 @@ typedef struct {
     uint8_t week_day;
     uint8_t month;
     uint16_t year;
-} date_time;
+} DateTime;
 
 #endif

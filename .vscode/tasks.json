@@ -4,9 +4,32 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "echo",
+            "label": "flash",
             "type": "shell",
-            "command": "echo Hello"
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "command": "ninja -C build upload_hex",
+            "problemMatcher": []
+        },
+        {
+            "label": "size",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "focus": false,
+                "clear": true
+            },
+            "command": "ninja -C build size",
+            "problemMatcher": []
         }
     ]
 }

@@ -46,3 +46,5 @@ build
 
 # GNU backup files
 *~
+
+.env

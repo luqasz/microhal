@@ -18,22 +18,15 @@ string(
 
 add_executable(
     ${EXECUTABLE_NAME}
+    src/gpio.cpp
+    src/sfr.cpp
     src/main.cpp
-    src/uart.cpp
     )
 
 target_compile_definitions(
     ${EXECUTABLE_NAME}
     PUBLIC
     )
-
-set_property(
-    SOURCE
-    src/main.cpp
-    PROPERTY
-    COMPILE_DEFINITIONS
-    UTC_DATETIME="${UTC_DATETIME}"
-)
 
 target_compile_options(
     ${EXECUTABLE_NAME}
@@ -44,14 +37,19 @@ target_compile_options(
     -Wall
     -Werror
     -Wextra
+    -Wconversion
     -Wsign-conversion
     -Wfloat-conversion
+    -Woverloaded-virtual
     -pedantic-errors
     -funsigned-bitfields
     -funsigned-char
     -ffunction-sections
     -flto
     -fwhole-program
+    -fno-exceptions
+    -fno-asynchronous-unwind-tables
+    -fno-rtti
     )
 
 

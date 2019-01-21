@@ -1,16 +1,22 @@
-#ifndef ds1337_H_
-#define ds1337_H_
+#ifndef ds1337_h
+#define ds1337_h
 
+#include "i2c.h"
 #include "time.h"
 
 #include <stdint.h>
 
-void
-ds1337_write_time(
-    date_time * time);
+class DS1337 {
+    I2C::Master i2c_bus;
 
-void
-ds1337_read_time(
-    date_time * time);
+public:
+    DS1337(I2C::Master &);
+
+    void
+    getDateTime(DateTime &);
+
+    void
+    setDateTime(DateTime &);
+};
 
 #endif

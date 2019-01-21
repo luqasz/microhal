@@ -1,87 +1,85 @@
 #include "i2c.h"
 
-#include <avr/io.h>
+#include "sfr.h"
 
-// Device address on I2C bus must be written without R/W bit.
-// Functions take care of adding appropriate bit at the end.
-// Example:
-// Slave address is 0x48 which is 01001000 (8 bit in binary).
-// For writing into device, address will be converted into 0x90 10010000 (last bit 0 means writing)
-// For reading from device, address will be converted into 0x91 10010001 (last bit 1 means reading)
+auto TWCR = Register<SFR::TWCR>();
+auto TWBR = Register<SFR::TWBR>();
+auto TWDR = Register<SFR::TWDR>();
 
-void
-I2C::speed(enum I2C_SPEED speed)
-{
-    // Formula taken from atmel data sheet.
-    TWBR = (uint8_t)speed;
-}
+const uint8_t ACK  = TWCR.TWEA;
+const uint8_t NACK = 0;
 
 void
-I2C::start(void)
+twcr_wait(const uint8_t bit)
 {
-    TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTA);
-    while (!(TWCR & (1 << TWINT))) {
+    while (!(TWCR & bit)) {
     };
 }
 
 void
-I2C::stop(void)
+start_signal(void)
 {
-    TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO);
-    while ((TWCR & (1 << TWSTO))) {
-    };
+    TWCR = (TWCR.TWINT | TWCR.TWEN | TWCR.TWSTA);
+    twcr_wait(TWCR.TWINT);
 }
 
 void
-I2C::write(uint8_t byte)
+stop_signal(void)
+{
+    TWCR = (TWCR.TWINT | TWCR.TWEN | TWCR.TWSTO);
+    twcr_wait(TWCR.TWSTO);
+}
+
+void
+write_blocking(uint8_t byte)
 {
     TWDR = byte;
-    TWCR = (1 << TWINT) | (1 << TWEN);
+    TWCR = (TWCR.TWINT | TWCR.TWEN);
     // Wait until byte is pushed out of register.
-    while (!(TWCR & (1 << TWINT))) {
-    };
+    twcr_wait(TWCR.TWINT);
 }
 
 uint8_t
-I2C::read(uint8_t ack)
+read_blocking(uint8_t ack)
 {
-    TWCR = (uint8_t)(1 << TWINT) | (uint8_t)(ack << TWEA) | (uint8_t)(1 << TWEN);
+    TWCR = (TWCR.TWINT | ack | TWCR.TWEN);
     // Wait until byte is present in register.
-    while (!(TWCR & (1 << TWINT))) {
-    };
+    twcr_wait(TWCR.TWINT);
     return TWDR;
 }
 
 void
-I2C::write(
-    uint8_t slave_address,
-    uint8_t address,
-    uint8_t len,
-    uint8_t * buf)
+set_speed(const I2C::Speed speed)
 {
-    start();
-    write((uint8_t)(slave_address << 1));
-    write(address);
-    while (len--) {
-        write(*buf++);
-    }
-    stop();
+    TWBR = static_cast<uint8_t>(speed);
 }
 
 void
-I2C::read(
-    uint8_t slave_address,
-    uint8_t address,
-    uint8_t len,
-    uint8_t * buf)
+I2C::Master::write(const I2C::Target & target, Buffer::Interface::ArrayWrapper & buffer)
 {
-    start();
-    write((uint8_t)(slave_address << 1));
-    write(address);
-    start();
-    write((uint8_t)((slave_address << 1) + 1));
-    while (len--) {
-        *buf++ = read(len ? I2C_ACK : I2C_NACK);
+    set_speed(target.speed);
+    start_signal();
+    write_blocking(static_cast<uint8_t>(target.address << 1));
+    write_blocking(target.start_address);
+    for (auto value : buffer) {
+        write_blocking(value);
     }
-    stop();
+    stop_signal();
+}
+
+void
+I2C::Master::read(const I2C::Target & target, Buffer::Interface::ArrayWrapper & buffer)
+{
+    set_speed(target.speed);
+    start_signal();
+    write_blocking(static_cast<uint8_t>(target.address << 1));
+    write_blocking(target.start_address);
+    start_signal();
+    write_blocking(static_cast<uint8_t>((target.address << 1) + 1));
+    uint8_t counter = static_cast<uint8_t>(target.end_address - target.start_address);
+    for (auto & value : buffer) {
+        counter--;
+        value = read_blocking(counter ? ACK : NACK);
+    }
+    stop_signal();
 }

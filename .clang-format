@@ -20,5 +20,14 @@ AllowAllParametersOfDeclarationOnNextLine: true
 BreakBeforeBraces: Stroustrup
 IncludeBlocks: Regroup
 AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
 AlignEscapedNewlines: Right
 IndentPPDirectives: AfterHash
+BreakConstructorInitializers: AfterColon
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+BreakInheritanceList: AfterColon
+SpaceBeforeAssignmentOperators: true
+BraceWrapping:
+    AfterNamespace: false
+CompactNamespaces: false
+NamespaceIndentation: All

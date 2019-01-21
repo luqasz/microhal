@@ -1,28 +1,132 @@
 #include "spi.h"
 
-#include "registers.h"
+#include "sfr.h"
 
-#include <avr/io.h>
-#include <util/delay.h>
+auto SPCR = Register<SFR::SPCR>();
+auto SPSR = Register<SFR::SPSR>();
+auto SPDR = Register<SFR::SPDR>();
 
-// If SS is configured as an output, the pin is a general output pin which does not affect the SPI system. Typically, the pin will be driving the SS pin of the SPI Slave.
-// If SS is configured as an input, it must be held high to ensure Master SPI operation. If the SS pin is driven low by peripheral circuitry when the SPI is configured as a Master with the SS pin defined as an input, the SPI system interprets this as another master selecting the SPI as a slave and starting to send data to it.
+SPI::Master::Master()
+{
+    /*
+    Set MOSI SCK SS as outputs only.
+    For more information why, see "SPI Pin Overrides" in datasheet.
+    */
+    SPI::SCK.output();
+    SPI::MOSI.output();
+    SPI::SS.output();
+    SPCR.setBit(SPCR.MSTR);
+    enable();
+}
+
+// In slave mode user must provide MISO with either output or output
 
 void
-SPI::master(void)
+SPI::Master::enable()
 {
-    // Set pins as output
-    DDR_SPI |= (1 << SCK) | (1 << MOSI) | (1 << MISO);
+    SPCR.setBit(SPCR.SPE);
+}
 
-    SPCR |= (1 << SPE);  // Enable SPI
-    SPCR |= (1 << MSTR); // Master mode
+void
+SPI::Master::disable()
+{
+    SPCR.clearBit(SPCR.SPE);
+}
+
+void
+SPI::Master::set(const SPI::Master::Speed speed)
+{
+    switch (speed) {
+        case SPI::Master::Speed::d2:
+            SPSR.setBit(SPSR.SPI2X);
+            SPCR.clearBit(SPCR.SPR0);
+            SPCR.clearBit(SPCR.SPR1);
+            break;
+        case SPI::Master::Speed::d4:
+            SPSR.clearBit(SPSR.SPI2X);
+            SPCR.clearBit(SPCR.SPR0);
+            SPCR.clearBit(SPCR.SPR1);
+            break;
+        case SPI::Master::Speed::d8:
+            SPSR.setBit(SPSR.SPI2X);
+            SPCR.setBit(SPCR.SPR0);
+            SPCR.clearBit(SPCR.SPR1);
+            break;
+        case SPI::Master::Speed::d16:
+            SPSR.clearBit(SPSR.SPI2X);
+            SPCR.setBit(SPCR.SPR0);
+            SPCR.clearBit(SPCR.SPR1);
+            break;
+        case SPI::Master::Speed::d32:
+            SPSR.setBit(SPSR.SPI2X);
+            SPCR.clearBit(SPCR.SPR0);
+            SPCR.setBit(SPCR.SPR1);
+            break;
+        case SPI::Master::Speed::d64:
+            SPSR.setBit(SPSR.SPI2X);
+            SPCR.setBit(SPCR.SPR0);
+            SPCR.setBit(SPCR.SPR1);
+            break;
+        case SPI::Master::Speed::d128:
+            SPSR.clearBit(SPSR.SPI2X);
+            SPCR.setBit(SPCR.SPR0);
+            SPCR.setBit(SPCR.SPR1);
+            break;
+    }
+}
+
+void
+SPI::Master::set(const SPI::DataOrder order)
+{
+    switch (order) {
+        case SPI::DataOrder::LSB_First:
+            SPCR.setBit(SPCR.DORD);
+            break;
+        case SPI::DataOrder::MSB_First:
+            SPCR.clearBit(SPCR.DORD);
+            break;
+    }
+}
+
+void
+SPI::Master::set(const SPI::Mode mode)
+{
+    switch (mode) {
+        case SPI::Mode::m0:
+            SPCR.clearBit(SPCR.CPHA);
+            SPCR.clearBit(SPCR.CPOL);
+            break;
+        case SPI::Mode::m1:
+            SPCR.clearBit(SPCR.CPOL);
+            SPCR.setBit(SPCR.CPHA);
+            break;
+        case SPI::Mode::m2:
+            SPCR.setBit(SPCR.CPOL);
+            SPCR.clearBit(SPCR.CPHA);
+            break;
+        case SPI::Mode::m3:
+            SPCR.setBit(SPCR.CPOL);
+            SPCR.setBit(SPCR.CPHA);
+            break;
+    }
 }
 
 uint8_t
-SPI::communicate(uint8_t byte)
+SPI::Master::communicate(const uint8_t byte)
 {
     SPDR = byte;
     // Wait for transmission complete
-    loop_until_bit_is_clear(SPSR, SPIF);
+    while (!(SPSR & SPSR.SPIF)) {
+    }
     return SPDR;
+}
+
+uint16_t
+SPI::Master::communicate(const uint16_t bytes)
+{
+    uint8_t b1 = static_cast<uint8_t>(bytes >> 8);
+    uint8_t b2 = static_cast<uint8_t>(bytes);
+    b1         = communicate(b1);
+    b2         = communicate(b2);
+    return static_cast<uint16_t>(b1 << 8) | b2;
 }

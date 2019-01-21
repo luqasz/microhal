@@ -3,53 +3,99 @@
 
 #include <stdint.h>
 
-template <uint8_t BUFFER_SIZE>
-class CircularBuffer {
-private:
-    uint8_t head              = 0;
-    uint8_t tail              = 0;
-    uint8_t data[BUFFER_SIZE] = { 0 };
-    uint8_t elements          = 0;
+namespace Buffer {
 
-public:
-    uint8_t
-    get() volatile
-    {
-        uint8_t next_tail = tail + 1;
-        if (next_tail >= BUFFER_SIZE)
-            next_tail = 0;
+    namespace Interface {
+        class ArrayWrapper {
+        public:
+            virtual uint8_t *
+            begin()
+                = 0;
 
-        uint8_t value = data[tail];
-        tail          = next_tail;
-        elements--;
-        return value;
+            virtual uint8_t *
+            end()
+                = 0;
+
+            virtual uint8_t &
+            operator[](uint8_t)
+                = 0;
+        };
     }
 
-    void
-    put(uint8_t byte) volatile
-    {
-        uint8_t next_head = head + 1;
-        if (next_head >= BUFFER_SIZE)
-            next_head = 0;
+    template <unsigned int SIZE>
+    class Array : public Buffer::Interface::ArrayWrapper {
+        static_assert(SIZE > 0, "buffer size must be > 0");
+        uint8_t array[SIZE] = { 0 };
 
-        data[head] = byte;
-        head       = next_head;
-        elements++;
-    }
+    public:
+        uint8_t *
+        begin()
+        {
+            return &array[0];
+        }
 
-    // Return how many elements are in the buffer.
-    uint8_t
-    size() volatile const
-    {
-        return elements;
-    }
+        uint8_t *
+        end()
+        {
+            return &array[SIZE];
+        }
 
-    // Return free space.
-    uint8_t
-    free() volatile const
-    {
-        return BUFFER_SIZE - elements;
-    }
-};
+        uint8_t &
+        operator[](uint8_t idx)
+        {
+            return array[idx];
+        }
+    };
+
+    template <uint8_t BUFFER_SIZE>
+    class Circular {
+    private:
+        uint8_t head              = 0;
+        uint8_t tail              = 0;
+        uint8_t data[BUFFER_SIZE] = { 0 };
+        uint8_t elements          = 0;
+
+    public:
+        uint8_t
+        get() volatile
+        {
+            uint8_t next_tail = static_cast<uint8_t>(tail + 1);
+            if (next_tail >= BUFFER_SIZE)
+                next_tail = 0;
+
+            uint8_t value = data[tail];
+            tail          = next_tail;
+            elements--;
+            return value;
+        }
+
+        void
+        put(uint8_t byte) volatile
+        {
+            uint8_t next_head = static_cast<uint8_t>(head + 1);
+            if (next_head >= BUFFER_SIZE)
+                next_head = 0;
+
+            data[head] = byte;
+            head       = next_head;
+            elements++;
+        }
+
+        // Return how many elements are in the buffer.
+        uint8_t
+        size() volatile const
+        {
+            return elements;
+        }
+
+        // Return free space.
+        uint8_t
+        free() volatile const
+        {
+            return static_cast<uint8_t>(BUFFER_SIZE - elements);
+        }
+    };
+
+}
 
 #endif

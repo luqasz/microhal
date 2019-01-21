@@ -1,57 +1,76 @@
 #ifndef adc_h
 #define adc_h
 
-#include <avr/interrupt.h>
-#include <avr/io.h>
+#include "sfr.h"
+
 #include <stdint.h>
 
-enum ADC_CHANNEL {
-    ADC0 = ((0 << MUX0) | (0 << MUX1) | (0 << MUX2) | (0 << MUX3) | (0 << MUX4)),
-    ADC1 = ((1 << MUX0) | (0 << MUX1) | (0 << MUX2) | (0 << MUX3) | (0 << MUX4)),
-    ADC2 = ((0 << MUX0) | (1 << MUX1) | (0 << MUX2) | (0 << MUX3) | (0 << MUX4)),
-    ADC3 = ((1 << MUX0) | (1 << MUX1) | (0 << MUX2) | (0 << MUX3) | (0 << MUX4)),
-    ADC4 = ((0 << MUX0) | (0 << MUX1) | (1 << MUX2) | (0 << MUX3) | (0 << MUX4)),
-    ADC5 = ((1 << MUX0) | (0 << MUX1) | (1 << MUX2) | (0 << MUX3) | (0 << MUX4)),
-    ADC6 = ((0 << MUX0) | (1 << MUX1) | (1 << MUX2) | (0 << MUX3) | (0 << MUX4)),
-    ADC7 = ((1 << MUX0) | (1 << MUX1) | (1 << MUX2) | (0 << MUX3) | (0 << MUX4)),
-};
+namespace ADC {
+#if defined(__AVR_ATmega328P__)
+#    include "adc/atmega328_adc.h"
+#elif defined(__AVR_ATmega328__)
+#    include "adc/atmega328_adc.h"
+#elif defined(__AVR_ATmega32__)
+#    include "adc/atmega32_adc.h"
+#elif defined(__AVR_ATmega32A__)
+#    include "adc/atmega32_adc.h"
+#else
+#    error "MCU does not have ADC or is not yet supported."
+#endif
+}
 
-enum ADC_VREF {
-    INTERNAL = ((1 << REFS0) | (1 << REFS1)),
-    AVCC     = ((1 << REFS0) | (0 << REFS1)),
-    AREF     = ((0 << REFS0) | (0 << REFS1)),
-};
+namespace ADC {
 
-enum ADC_PRESCALER_DIVISOR {
-    DIV_2   = ((1 << ADPS0) | (0 << ADPS1) | (0 << ADPS2)),
-    DIV_4   = ((0 << ADPS0) | (1 << ADPS1) | (0 << ADPS2)),
-    DIV_8   = ((1 << ADPS0) | (1 << ADPS1) | (0 << ADPS2)),
-    DIV_16  = ((0 << ADPS0) | (0 << ADPS1) | (1 << ADPS2)),
-    DIV_32  = ((1 << ADPS0) | (0 << ADPS1) | (1 << ADPS2)),
-    DIV_64  = ((0 << ADPS0) | (1 << ADPS1) | (1 << ADPS2)),
-    DIV_128 = ((1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2)),
-};
+    enum class Channel {
+        ADC0 = 0,
+        ADC1 = ADC::ADMUX_REG::MUX0,
+        ADC2 = ADC::ADMUX_REG::MUX1,
+        ADC3 = ADC::ADMUX_REG::MUX0 | ADC::ADMUX_REG::MUX1,
+        ADC4 = ADC::ADMUX_REG::MUX2,
+        ADC5 = ADC::ADMUX_REG::MUX0 | ADC::ADMUX_REG::MUX2,
+        ADC6 = ADC::ADMUX_REG::MUX1 | ADC::ADMUX_REG::MUX2,
+        ADC7 = ADC::ADMUX_REG::MUX0 | ADC::ADMUX_REG::MUX1 | ADC::ADMUX_REG::MUX2 | ADC::ADMUX_REG::MUX3 | ADC::ADMUX_REG::MUX4,
+    };
 
-enum ADC_TRIGGER_SOURCE {
-    FREE_RUNNING                    = ((0 << ADTS0) | (0 << ADTS1) | (0 << ADTS2)),
-    ANALOG_COMPARATOR               = ((1 << ADTS0) | (0 << ADTS1) | (0 << ADTS2)),
-    EXTERNAL_INTERRUPT_0            = ((0 << ADTS0) | (1 << ADTS1) | (0 << ADTS2)),
-    TIMER_COUNTER_0_COMPARE_MATCH_A = ((1 << ADTS0) | (1 << ADTS1) | (0 << ADTS2)),
-    TIMER_COUNTER_0_OVERFLOW        = ((0 << ADTS0) | (0 << ADTS1) | (1 << ADTS2)),
-    TIMER_COUNTER_1_COMPARE_MATCH_B = ((1 << ADTS0) | (0 << ADTS1) | (1 << ADTS2)),
-    TIMER_COUNTER_1_OVERFLOW        = ((1 << ADTS0) | (1 << ADTS1) | (0 << ADTS2)),
-    TIMER_COUNTER_1_CAPTURE_EVENT   = ((1 << ADTS0) | (2 << ADTS1) | (1 << ADTS2)),
-};
+    enum class Vref {
+        Internal = ADC::VREF_REG::REFS0 | ADC::VREF_REG::REFS1,
+        AVCC     = ADC::VREF_REG::REFS0,
+        AREF     = 0,
+    };
+
+    enum class Prescaler {
+        DIV_2   = ADC::PRESCALER_REG::ADPS0,
+        DIV_4   = ADC::PRESCALER_REG::ADPS1,
+        DIV_8   = ADC::PRESCALER_REG::ADPS0 | ADC::PRESCALER_REG::ADPS1,
+        DIV_16  = ADC::PRESCALER_REG::ADPS2,
+        DIV_32  = ADC::PRESCALER_REG::ADPS0 | ADC::PRESCALER_REG::ADPS2,
+        DIV_64  = ADC::PRESCALER_REG::ADPS1 | ADC::PRESCALER_REG::ADPS2,
+        DIV_128 = ADC::PRESCALER_REG::ADPS0 | ADC::PRESCALER_REG::ADPS1 | ADC::PRESCALER_REG::ADPS2,
+    };
+
+    enum class TriggerSource {
+        FreeRunning                  = 0,
+        AnalogComparator             = ADC::TRIGGER_REG::ADTS0,
+        ExternalInterrupt0           = ADC::TRIGGER_REG::ADTS1,
+        TimerCounter0_CompareMatch_A = ADC::TRIGGER_REG::ADTS0 | ADC::TRIGGER_REG::ADTS1,
+        TimerCounter0_Overflow       = ADC::TRIGGER_REG::ADTS2,
+        TimerCounter1_CompareMatch_B = ADC::TRIGGER_REG::ADTS0 | ADC::TRIGGER_REG::ADTS2,
+        TimerCounter1_Overflow       = ADC::TRIGGER_REG::ADTS0 | ADC::TRIGGER_REG::ADTS2,
+        TimerCounter1_CaptureEvent   = ADC::TRIGGER_REG::ADTS0 | ADC::TRIGGER_REG::ADTS1 | ADC::TRIGGER_REG::ADTS2,
+    };
+
+}
 
 class Adc {
 public:
-    uint16_t value(void);
-    void start(void);
-    void stop(void);
-    void prescaler(enum ADC_PRESCALER_DIVISOR);
-    void channel(enum ADC_CHANNEL);
-    void vref(enum ADC_VREF);
-    void trigger(enum ADC_TRIGGER_SOURCE);
+    uint16_t read();
+    void     start(void);
+    void     enable(void);
+    void     disable(void);
+    void     set(enum ADC::Prescaler);
+    void     set(enum ADC::Channel);
+    void     set(enum ADC::Vref);
+    void     set(enum ADC::TriggerSource);
 };
 
 #endif

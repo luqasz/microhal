@@ -31,5 +31,6 @@
   "cmake.configureSettings": {
     "CMAKE_C_COMPILER": "avr-gcc",
     "CMAKE_CXX_COMPILER": "avr-g++"
-  }
+  },
+  "python.pythonPath": ".env/bin/python"
 }

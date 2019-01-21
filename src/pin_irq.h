@@ -1,24 +1,25 @@
 #ifndef pin_irq_h
 #define pin_irq_h
 
-#include <avr/interrupt.h>
-#include <avr/io.h>
 #include <stdint.h>
 
-typedef void (*irq_handler)(void);
+namespace PinInterrupts {
 
-enum TRIGGER_SOURCE {
-    RISING  = 0x03,
-    FALLING = 0x02,
-    LOW     = 0x00,
-    CHANGE  = 0x01,
-};
+    enum Trigger {
+        Low     = 0x00,
+        Change  = 0x01,
+        Falling = 0x02,
+        Rising  = 0x03,
+    };
 
-enum INTERRUPT_PIN {
-    INT_0,
-    INT_1,
-};
+    enum Pin {
+        INT0 = 0,
+        INT1,
+    };
 
-void attach_pin_interrupt(enum INTERRUPT_PIN, enum TRIGGER_SOURCE, irq_handler);
+    void set(Pin, Trigger);
+    void enable(Pin);
+    void disable(Pin);
+}
 
 #endif
