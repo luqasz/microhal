@@ -56,10 +56,10 @@ namespace GPIO {
 
     public:
         OutputPin(const GPIO::Pin);
-        void           operator=(const GPIO::PinState);
-        bool           operator==(const GPIO::PinState);
-        void           set(const GPIO::PinState);
-        GPIO::PinState read();
+        void           operator=(const GPIO::PinState) const;
+        bool           operator==(const GPIO::PinState) const;
+        void           set(const GPIO::PinState) const;
+        GPIO::PinState read() const;
     };
 
     class InputPin {
@@ -67,9 +67,9 @@ namespace GPIO {
 
     public:
         InputPin(const GPIO::Pin);
-        bool           operator==(const GPIO::PinState);
-        void           set(GPIO::PullMode);
-        GPIO::PinState read();
+        bool           operator==(const GPIO::PinState) const;
+        void           set(const GPIO::PullMode) const;
+        GPIO::PinState read() const;
     };
 
     class Output8Bit {
@@ -77,10 +77,10 @@ namespace GPIO {
 
     public:
         Output8Bit(const GPIO::Port);
-        void    operator=(const uint8_t);
-        bool    operator==(const uint8_t);
-        void    set(const uint8_t);
-        uint8_t read();
+        void    operator=(const uint8_t) const;
+        bool    operator==(const uint8_t) const;
+        void    set(const uint8_t) const;
+        uint8_t read() const;
     };
 
     class Input8Bit {
@@ -88,9 +88,9 @@ namespace GPIO {
 
     public:
         Input8Bit(const GPIO::Port);
-        bool    operator==(const uint8_t);
-        void    set(GPIO::PullMode);
-        uint8_t read();
+        bool    operator==(const uint8_t) const;
+        void    set(const GPIO::PullMode) const;
+        uint8_t read() const;
     };
 }
 

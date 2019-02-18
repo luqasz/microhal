@@ -1,42 +1,47 @@
 #ifndef hd44780_h
 #define hd44780_h
 
+#include "../gpio.h"
+
 #include <stdint.h>
 
-enum COMMAND : uint8_t {
-    CLEAR_SCREEN         = 0x01,
-    CURSOR_HOME          = 0x02,
-    ENTRY_MODE           = 0x04,
-    ENTRY_CURSOR_RIGHT   = 0x02,
-    ENTRY_CURSOR_LEFT    = 0x00,
-    DISPLAY_CONTROLL     = 0x08,
-    DISPLAY_ON           = 0x04,
-    DISPLAY_OFF          = 0x00,
-    DISPLAY_CURSOR       = 0x02,
-    DISPLAY_CURSOR_BLINK = 0x01,
-    FUNCTION_SET         = 0x20,
-    FUNCTION_8_BIT       = 0x10,
-    FUNCTION_4_BIT       = 0x00,
-    FUNCTION_2_LINES     = 0x08,
-    FUNCTION_1_LINE      = 0x00,
-    FUNCTION_5x10        = 0x04,
-    FUNCTION_5x8         = 0x00,
-    SET_CGRAM_ADDRESS    = 0x40,
-    SET_DDRAM_ADDRESS    = 0x80,
-};
+namespace HD44780 {
 
-class LCD_HD44780 {
-public:
-    void write(const char *);
-    void write(uint8_t);
-    void command(enum COMMAND);
-    void command(uint8_t);
-    void init(void);
-    void move_cursor(uint8_t line, uint8_t collumn);
-    inline void wait_untill_ready(void);
+    enum Cmd {
+        ClearScreen = 0x01,
+        CursorHome  = 0x02,
+    };
 
-private:
-    uint8_t read(void);
-};
+    /*
+    Line and row start from 0.
+    */
+    struct Position {
+        uint8_t line;
+        uint8_t row;
+    };
+
+    struct Bus8bit {
+        const GPIO::Port      line;
+        const GPIO::OutputPin rs;
+        const GPIO::OutputPin rw;
+        const GPIO::OutputPin e;
+    };
+
+    class LCD {
+        const Bus8bit bus;
+
+        void    waitUntillReady();
+        void    enable_high();
+        void    enable_low();
+        uint8_t read();
+        void    sendByte(uint8_t, GPIO::PinState);
+
+    public:
+        LCD(const Bus8bit);
+        void write(const char * str);
+        void set(Cmd);
+        void set(const Position &);
+    };
+}
 
 #endif

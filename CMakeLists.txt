@@ -18,9 +18,10 @@ string(
 
 add_executable(
     ${EXECUTABLE_NAME}
+    src/main.cpp
+    src/display/hd44780.cpp
     src/gpio.cpp
     src/sfr.cpp
-    src/main.cpp
     )
 
 target_compile_definitions(

@@ -9,7 +9,7 @@ GPIO::InputPin::InputPin(const GPIO::Pin pin) :
 }
 
 void
-GPIO::InputPin::set(GPIO::PullMode mode)
+GPIO::InputPin::set(const GPIO::PullMode mode) const
 {
     switch (mode) {
         case GPIO::PullMode::HiZ:
@@ -22,13 +22,13 @@ GPIO::InputPin::set(GPIO::PullMode mode)
 }
 
 bool
-GPIO::InputPin::operator==(const GPIO::PinState state)
+GPIO::InputPin::operator==(const GPIO::PinState state) const
 {
     return read() == state;
 }
 
 GPIO::PinState
-GPIO::InputPin::read()
+GPIO::InputPin::read() const
 {
     if (SFR::iomem(pin.port.pin_address) & pin.number) {
         return GPIO::PinState::High;
@@ -43,19 +43,19 @@ GPIO::OutputPin::OutputPin(GPIO::Pin pin) :
 }
 
 void
-GPIO::OutputPin::operator=(const GPIO::PinState state)
+GPIO::OutputPin::operator=(const GPIO::PinState state) const
 {
     set(state);
 }
 
 bool
-GPIO::OutputPin::operator==(const GPIO::PinState state)
+GPIO::OutputPin::operator==(const GPIO::PinState state) const
 {
     return read() == state;
 }
 
 void
-GPIO::OutputPin::set(const GPIO::PinState state)
+GPIO::OutputPin::set(const GPIO::PinState state) const
 {
     switch (state) {
         case GPIO::PinState::High:
@@ -68,7 +68,7 @@ GPIO::OutputPin::set(const GPIO::PinState state)
 }
 
 GPIO::PinState
-GPIO::OutputPin::read()
+GPIO::OutputPin::read() const
 {
     if (SFR::iomem(pin.port.port_address) & pin.number) {
         return GPIO::PinState::High;
@@ -83,25 +83,25 @@ GPIO::Output8Bit::Output8Bit(GPIO::Port port) :
 }
 
 void
-GPIO::Output8Bit::operator=(const uint8_t value)
+GPIO::Output8Bit::operator=(const uint8_t value) const
 {
     set(value);
 }
 
 bool
-GPIO::Output8Bit::operator==(const uint8_t value)
+GPIO::Output8Bit::operator==(const uint8_t value) const
 {
     return read() == value;
 }
 
 void
-GPIO::Output8Bit::set(const uint8_t value)
+GPIO::Output8Bit::set(const uint8_t value) const
 {
     SFR::iomem(port.port_address) = value;
 }
 
 uint8_t
-GPIO::Output8Bit::read(void)
+GPIO::Output8Bit::read(void) const
 {
     return SFR::iomem(port.port_address);
 }
@@ -113,19 +113,19 @@ GPIO::Input8Bit::Input8Bit(const GPIO::Port port) :
 }
 
 bool
-GPIO::Input8Bit::operator==(const uint8_t value)
+GPIO::Input8Bit::operator==(const uint8_t value) const
 {
     return read() == value;
 }
 
 uint8_t
-GPIO::Input8Bit::read()
+GPIO::Input8Bit::read() const
 {
     return SFR::iomem(port.pin_address);
 }
 
 void
-GPIO::Input8Bit::set(const GPIO::PullMode mode)
+GPIO::Input8Bit::set(const GPIO::PullMode mode) const
 {
     switch (mode) {
         case GPIO::PullMode::HiZ:
