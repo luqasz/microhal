@@ -48,12 +48,6 @@ GPIO::OutputPin::operator=(const GPIO::PinState state) const
     set(state);
 }
 
-bool
-GPIO::OutputPin::operator==(const GPIO::PinState state) const
-{
-    return read() == state;
-}
-
 void
 GPIO::OutputPin::set(const GPIO::PinState state) const
 {
@@ -65,15 +59,6 @@ GPIO::OutputPin::set(const GPIO::PinState state) const
             SFR::clearBit(pin.port.port_address, pin.number);
             break;
     }
-}
-
-GPIO::PinState
-GPIO::OutputPin::read() const
-{
-    if (SFR::iomem(pin.port.port_address) & pin.number) {
-        return GPIO::PinState::High;
-    }
-    return GPIO::PinState::Low;
 }
 
 GPIO::Output8Bit::Output8Bit(GPIO::Port port) :
@@ -88,22 +73,10 @@ GPIO::Output8Bit::operator=(const uint8_t value) const
     set(value);
 }
 
-bool
-GPIO::Output8Bit::operator==(const uint8_t value) const
-{
-    return read() == value;
-}
-
 void
 GPIO::Output8Bit::set(const uint8_t value) const
 {
     SFR::iomem(port.port_address) = value;
-}
-
-uint8_t
-GPIO::Output8Bit::read(void) const
-{
-    return SFR::iomem(port.port_address);
 }
 
 GPIO::Input8Bit::Input8Bit(const GPIO::Port port) :

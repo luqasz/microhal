@@ -56,10 +56,8 @@ namespace GPIO {
 
     public:
         OutputPin(const GPIO::Pin);
-        void           operator=(const GPIO::PinState) const;
-        bool           operator==(const GPIO::PinState) const;
-        void           set(const GPIO::PinState) const;
-        GPIO::PinState read() const;
+        void operator=(const GPIO::PinState) const;
+        void set(const GPIO::PinState) const;
     };
 
     class InputPin {
@@ -77,10 +75,8 @@ namespace GPIO {
 
     public:
         Output8Bit(const GPIO::Port);
-        void    operator=(const uint8_t) const;
-        bool    operator==(const uint8_t) const;
-        void    set(const uint8_t) const;
-        uint8_t read() const;
+        void operator=(const uint8_t) const;
+        void set(const uint8_t) const;
     };
 
     class Input8Bit {
