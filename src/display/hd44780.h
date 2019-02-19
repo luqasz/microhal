@@ -20,27 +20,22 @@ namespace HD44780 {
         uint8_t row;
     };
 
-    struct Bus8bit {
-        const GPIO::Port      line;
+    class LCD {
+        const GPIO::Port      dataLine;
         const GPIO::OutputPin rs;
         const GPIO::OutputPin rw;
         const GPIO::OutputPin e;
-    };
 
-    class LCD {
-        const Bus8bit bus;
-
-        void    waitUntillReady();
-        void    enable_high();
-        void    enable_low();
-        uint8_t read();
-        void    sendByte(uint8_t, GPIO::PinState);
+        void    waitUntillReady() const;
+        void    enable(const GPIO::PinState) const;
+        uint8_t read() const;
+        void    sendByte(uint8_t, GPIO::PinState) const;
 
     public:
-        LCD(const Bus8bit);
-        void write(const char * str);
-        void set(Cmd);
-        void set(const Position &);
+        LCD(const GPIO::Port, const GPIO::Pin, const GPIO::Pin, const GPIO::Pin);
+        void write(const char * str) const;
+        void set(const Cmd) const;
+        void set(const Position &) const;
     };
 }
 
