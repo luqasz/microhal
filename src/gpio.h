@@ -40,15 +40,9 @@ namespace GPIO {
         Input8Bit  input() const;
     };
 
-    class OutputPin;
-    class InputPin;
-
     struct Pin {
         const GPIO::Port      port;
         const GPIO::PinNumber number;
-
-        OutputPin output() const;
-        InputPin  input() const;
     };
 
     class OutputPin {

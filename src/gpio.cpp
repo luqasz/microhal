@@ -110,18 +110,6 @@ GPIO::Input8Bit::set(const GPIO::PullMode mode) const
     }
 }
 
-GPIO::OutputPin
-GPIO::Pin::output() const
-{
-    return GPIO::OutputPin(*this);
-}
-
-GPIO::InputPin
-GPIO::Pin::input() const
-{
-    return GPIO::InputPin(*this);
-}
-
 GPIO::Output8Bit
 GPIO::Port::output() const
 {
