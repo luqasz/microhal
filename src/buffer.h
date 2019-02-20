@@ -62,7 +62,7 @@ namespace Buffer {
 
     public:
         uint8_t
-        get() volatile
+        read() volatile
         {
             uint8_t next_tail = static_cast<uint8_t>(tail + 1);
             if (next_tail >= BUFFER_SIZE)
@@ -75,7 +75,7 @@ namespace Buffer {
         }
 
         void
-        put(uint8_t byte) volatile
+        write(uint8_t byte) volatile
         {
             uint8_t next_head = static_cast<uint8_t>(head + 1);
             if (next_head >= BUFFER_SIZE)
@@ -109,7 +109,6 @@ namespace Buffer {
         uint8_t head              = 0;
         uint8_t tail              = 0;
         uint8_t data[BUFFER_SIZE] = { 0 };
-        uint8_t elements          = 0;
 
     public:
         uint8_t

@@ -6,7 +6,9 @@
 
 #include <stdint.h>
 
-volatile auto tx_buffer = Buffer::CircularPowerOf2<8>();
+constexpr uint8_t TX_BUFFER_SIZE = 8;
+
+volatile auto tx_buffer = Buffer::Circular<TX_BUFFER_SIZE>();
 
 auto UCSR0A = Register<USART::UCSR0A_REG>();
 auto UCSR0B = Register<USART::UCSR0B_REG>();
@@ -71,7 +73,7 @@ USART::Master::disable(USART::Channel channel) const
 void
 USART::Master::write(uint8_t byte) const
 {
-    while (tx_buffer.size() == 0) {
+    while (tx_buffer.size() == TX_BUFFER_SIZE) {
     }
     {
         Irq::atomicRestore();
