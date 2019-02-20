@@ -51,6 +51,9 @@ namespace Buffer {
 
     template <uint8_t BUFFER_SIZE>
     class Circular {
+        static_assert(BUFFER_SIZE < 256, "Size bust be < 256.");
+        static_assert(BUFFER_SIZE > 0, "Size bust be > 0.");
+
     private:
         uint8_t head              = 0;
         uint8_t tail              = 0;
