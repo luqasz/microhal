@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 set(CMAKE_CROSSCOMPILING 1)
 
 find_program(AVR_OBJCOPY avr-objcopy)
-find_program(AVR_SIZE_TOOL avr-size)
+find_program(AVR_SIZE_TOOL avr-objdump)
 find_program(AVR_OBJDUMP avr-objdump)
 find_program(AVR_UPLOADTOOL avrdude)
 
@@ -66,7 +66,8 @@ add_custom_command(
 add_custom_target(
    size
        ${AVR_SIZE_TOOL}
-       --format=sysv
+       -w
+       -P mem-usage
        ${EXECUTABLE_NAME}
    DEPENDS ${EXECUTABLE_NAME}
 )
