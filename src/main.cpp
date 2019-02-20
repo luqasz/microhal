@@ -1,33 +1,43 @@
+#include "adc.h"
 #include "display/hd44780.h"
+#include "irq.h"
+#include "printer.h"
+#include "usart.h"
 
-#include <stdio.h>
+#include <stdlib.h>
 #include <util/delay.h>
 
 int
 main(void)
 {
-    auto lcd = HD44780::LCD({
+    Irq::enable();
+
+    auto usart = USART::Master();
+    usart.set(USART::BaudRate_2x::x2_115200);
+    usart.enable(USART::Channel::TX);
+    auto serial = Printer<USART::Master, None>(usart);
+
+    auto const lcd = HD44780::LCD(
         GPIO::PortC,
-        GPIO::PA0.output(),
-        GPIO::PA1.output(),
-        GPIO::PA2.output(),
-    });
-    // all command must be sent
-    // hd44780_command(DISPLAY_CONTROLL | DISPLAY_CURSOR | DISPLAY_ON);
-    uint8_t line = 0;
-    uint8_t row  = 0;
+        GPIO::PA0,
+        GPIO::PA1,
+        GPIO::PA2);
+    lcd.set(HD44780::Cmd::CursorHome);
+    auto display = Printer(lcd);
+
+    ADC::set(ADC::Prescaler::DIV_32);
+    ADC::set(ADC::Channel::ADC7);
+    ADC::set(ADC::Vref::AVCC);
+    ADC::set(ADC::TriggerSource::FreeRunning);
+    ADC::start();
+
+    display.print("ADC: ");
+    serial.printLn("starting");
     while (true) {
-        if (row > 3) {
-            row = 0;
-        }
-        if (line > 1) {
-            line = 0;
-        }
-        lcd.set({ line, row });
-        lcd.write("linia ABC 123");
-        _delay_ms(500);
-        lcd.set(HD44780::ClearScreen);
-        row++;
-        line++;
+        _delay_ms(1000);
+        lcd.set({ 0, 5 });
+        uint16_t val = ADC::read();
+        display.print(val);
+        serial.printLn(val);
     }
 }

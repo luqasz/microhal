@@ -22,6 +22,8 @@ add_executable(
     src/display/hd44780.cpp
     src/gpio.cpp
     src/sfr.cpp
+    src/adc.cpp
+    src/usart.cpp
     )
 
 target_compile_definitions(
