@@ -2,7 +2,7 @@ version: 2
 jobs:
    build:
      docker:
-       - image: lukaszkostka/avr:alpine_3.8
+       - image: lukaszkostka/avr:alpine_3.9
      steps:
        - checkout
        - run:
