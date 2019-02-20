@@ -59,18 +59,14 @@ namespace ADC {
         TimerCounter1_CaptureEvent   = ADC::TRIGGER_REG::ADTS0 | ADC::TRIGGER_REG::ADTS1 | ADC::TRIGGER_REG::ADTS2,
     };
 
-}
-
-class Adc {
-public:
     uint16_t read();
-    void     start(void);
-    void     enable(void);
-    void     disable(void);
-    void     set(enum ADC::Prescaler);
-    void     set(enum ADC::Channel);
-    void     set(enum ADC::Vref);
-    void     set(enum ADC::TriggerSource);
-};
+    void     start();
+    void     enable();
+    void     disable();
+    void     set(Prescaler);
+    void     set(Channel);
+    void     set(Vref);
+    void     set(TriggerSource);
+}
 
 #endif
