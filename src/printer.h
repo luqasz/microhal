@@ -16,7 +16,7 @@ template <typename Output, typename LE = None>
 struct Printer : LE {
     Output output;
     char   buf[8];
-    Printer(Output o) :
+    constexpr Printer(Output o) :
         output(o) {}
 
     constexpr void
@@ -32,14 +32,14 @@ struct Printer : LE {
         print(LE::lineEnd);
     }
 
-    void
+    constexpr void
     print(const uint32_t num)
     {
         itoa(static_cast<int>(num), buf, 10);
         print(buf);
     }
 
-    void
+    constexpr void
     printLn(const uint32_t num)
     {
         itoa(static_cast<int>(num), buf, 10);
