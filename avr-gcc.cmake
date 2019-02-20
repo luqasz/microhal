@@ -8,7 +8,6 @@ find_program(AVR_UPLOADTOOL avrdude)
 
 set(hex_file ${EXECUTABLE_NAME}.hex)
 set(eeprom_file ${EXECUTABLE_NAME}.eeprom)
-set(dis_file ${EXECUTABLE_NAME}.dis)
 
 target_compile_options(
     ${EXECUTABLE_NAME}
@@ -33,15 +32,6 @@ set_property(
     LINK_FLAGS " -mmcu=${AVR_MCU}")
 
 add_custom_command(
-   OUTPUT ${dis_file}
-   COMMAND
-       ${AVR_OBJDUMP}
-       -h
-       -S ${EXECUTABLE_NAME} > ${dis_file}
-   DEPENDS ${EXECUTABLE_NAME}
-)
-
-add_custom_command(
     OUTPUT ${hex_file}
     COMMAND
         ${AVR_OBJCOPY}
@@ -62,6 +52,19 @@ add_custom_command(
        -O ihex ${EXECUTABLE_NAME} ${eeprom_file}
    DEPENDS ${EXECUTABLE_NAME}
 )
+
+add_custom_target(
+   dis
+       ${AVR_OBJDUMP}
+       -w
+       -j .text
+       -j .data
+       -C
+       -S
+       ${EXECUTABLE_NAME}
+   DEPENDS ${EXECUTABLE_NAME}
+)
+
 
 add_custom_target(
    size
