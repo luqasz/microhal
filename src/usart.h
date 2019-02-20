@@ -79,12 +79,12 @@ namespace USART {
     class Master {
 
     public:
-        void enable(USART::Channel);
-        void disable(USART::Channel);
-        void set(USART::BaudRate_1x);
-        void set(USART::BaudRate_2x);
-        void write(const char * string);
-        void write(uint8_t byte);
+        void enable(USART::Channel) const;
+        void disable(USART::Channel) const;
+        void set(USART::BaudRate_1x) const;
+        void set(USART::BaudRate_2x) const;
+        void write(const char * string) const;
+        void write(uint8_t byte) const;
     };
 }
 

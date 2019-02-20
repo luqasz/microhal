@@ -29,21 +29,21 @@ set_ubrr(T speed)
 }
 
 void
-USART::Master::set(USART::BaudRate_1x value)
+USART::Master::set(USART::BaudRate_1x value) const
 {
     set_ubrr(value);
     UCSR0A.clearBit(UCSR0A.U2X);
 }
 
 void
-USART::Master::set(USART::BaudRate_2x value)
+USART::Master::set(USART::BaudRate_2x value) const
 {
     set_ubrr(value);
     UCSR0A.setBit(UCSR0A.U2X);
 }
 
 void
-USART::Master::enable(USART::Channel channel)
+USART::Master::enable(USART::Channel channel) const
 {
     switch (channel) {
         case USART::Channel::RX:
@@ -56,7 +56,7 @@ USART::Master::enable(USART::Channel channel)
 }
 
 void
-USART::Master::disable(USART::Channel channel)
+USART::Master::disable(USART::Channel channel) const
 {
     switch (channel) {
         case USART::Channel::RX:
@@ -69,7 +69,7 @@ USART::Master::disable(USART::Channel channel)
 }
 
 void
-USART::Master::write(const char * string)
+USART::Master::write(const char * string) const
 {
     uint8_t c;
     while ((c = *string++)) {
@@ -78,7 +78,7 @@ USART::Master::write(const char * string)
 }
 
 void
-USART::Master::write(uint8_t byte)
+USART::Master::write(uint8_t byte) const
 {
     while (!tx_buffer.free()) {
     }
