@@ -33,7 +33,7 @@ namespace HD44780 {
 
     public:
         LCD(const GPIO::Port, const GPIO::Pin, const GPIO::Pin, const GPIO::Pin);
-        void write(const char * str) const;
+        void write(const uint8_t) const;
         void set(const Cmd) const;
         void set(const Position &) const;
     };

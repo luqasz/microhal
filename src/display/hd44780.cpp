@@ -79,12 +79,9 @@ HD44780::LCD::sendByte(uint8_t byte, const GPIO::PinState reg) const
 }
 
 void
-HD44780::LCD::write(const char * str) const
+HD44780::LCD::write(const uint8_t byte) const
 {
-    char character;
-    while ((character = *(str++))) {
-        sendByte(character, DATA);
-    };
+    sendByte(byte, DATA);
 }
 
 void

@@ -69,15 +69,6 @@ USART::Master::disable(USART::Channel channel) const
 }
 
 void
-USART::Master::write(const char * string) const
-{
-    uint8_t c;
-    while ((c = *string++)) {
-        write(c);
-    }
-}
-
-void
 USART::Master::write(uint8_t byte) const
 {
     while (!tx_buffer.free()) {

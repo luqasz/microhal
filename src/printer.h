@@ -22,7 +22,10 @@ struct Printer : LE {
     constexpr void
     print(const char * string)
     {
-        output.write(string);
+        uint8_t c;
+        while ((c = *string++)) {
+            output.write(c);
+        }
     }
 
     constexpr void
