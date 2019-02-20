@@ -15,7 +15,7 @@ main(void)
     auto usart = USART::Master();
     usart.set(USART::BaudRate_2x::x2_115200);
     usart.enable(USART::Channel::TX);
-    auto serial = Printer<USART::Master, None>(usart);
+    auto serial = Printer<USART::Master, RN>(usart);
 
     auto const lcd = HD44780::LCD(
         GPIO::PortC,
