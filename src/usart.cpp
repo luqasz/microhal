@@ -6,7 +6,7 @@
 
 #include <stdint.h>
 
-volatile auto tx_buffer = Buffer::Circular<5>();
+volatile auto tx_buffer = Buffer::CircularPowerOf2<8>();
 
 auto UCSR0A = Register<USART::UCSR0A_REG>();
 auto UCSR0B = Register<USART::UCSR0B_REG>();
@@ -71,11 +71,11 @@ USART::Master::disable(USART::Channel channel) const
 void
 USART::Master::write(uint8_t byte) const
 {
-    while (!tx_buffer.free()) {
+    while (tx_buffer.size() == 0) {
     }
     {
         Irq::atomicRestore();
-        tx_buffer.put(byte);
+        tx_buffer.write(byte);
     }
     UCSR0B.setBit(UCSR0B.UDRIE); // Enable data register empty interrupt.
 }
@@ -87,7 +87,7 @@ Irq::UDRE(void)
     No need to check if we have anything in buffer.
     This irq will fire when at least one byte is present at the buffer.
     */
-    UDR0 = tx_buffer.get();
+    UDR0 = tx_buffer.read();
     if (tx_buffer.size() == 0) {
         UCSR0B.clearBit(UCSR0B.UDRIE); // Disable this interrupt.
     }
