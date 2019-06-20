@@ -19,11 +19,9 @@ string(
 add_executable(
     ${EXECUTABLE_NAME}
     src/main.cpp
-    src/display/hd44780.cpp
-    src/gpio.cpp
     src/sfr.cpp
-    src/adc.cpp
     src/usart.cpp
+    src/timer.cpp
     )
 
 target_compile_definitions(
@@ -62,3 +60,10 @@ set_property(
     LINK_FLAGS " -Wl,--gc-sections -mrelax -flto -fwhole-program")
 
 include(avr-gcc.cmake)
+
+
+target_compile_definitions(
+    ${EXECUTABLE_NAME}
+    PUBLIC
+    MCU_TIMER_HEADER="timer/${AVR_MCU}_timer.h"
+    )
