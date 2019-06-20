@@ -1,43 +1,36 @@
 #include "adc.h"
-#include "display/hd44780.h"
 #include "irq.h"
 #include "printer.h"
+#include "timer.h"
 #include "usart.h"
 
 #include <stdlib.h>
 #include <util/delay.h>
+
+uint8_t val    = 0;
+auto    usart  = USART::Master();
+auto    serial = Printer<USART::Master, RN>(usart);
 
 int
 main(void)
 {
     Irq::enable();
 
-    auto usart = USART::Master();
     usart.set(USART::BaudRate_2x::x2_115200);
     usart.enable(USART::Channel::TX);
-    auto serial = Printer<USART::Master, RN>(usart);
 
-    auto const lcd = HD44780::LCD(
-        GPIO::PortC,
-        GPIO::PA0,
-        GPIO::PA1,
-        GPIO::PA2);
-    lcd.set(HD44780::Cmd::CursorHome);
-    auto display = Printer(lcd);
+    Timer0::set(Timer0::Clock::_1024);
+    Timer0::set(Timer0::Mode::Normal);
+    Timer0::enable(Timer0::Irq::OnOverflow);
 
-    ADC::set(ADC::Prescaler::DIV_32);
-    ADC::set(ADC::Channel::ADC7);
-    ADC::set(ADC::Vref::AVCC);
-    ADC::set(ADC::TriggerSource::FreeRunning);
-    ADC::start();
-
-    display.print("ADC: ");
     serial.printLn("starting");
     while (true) {
-        _delay_ms(1000);
-        lcd.set({ 0, 5 });
-        uint16_t val = ADC::read();
-        display.print(val);
-        serial.printLn(val);
     }
+}
+
+void
+Irq::Timer0_Overflow()
+{
+    val++;
+    serial.printLn(val);
 }

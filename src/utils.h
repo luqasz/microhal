@@ -36,11 +36,11 @@ eqTypes()
     return is_same<T, U>::value;
 }
 
-template <typename UINT>
-constexpr UINT
-inverted(UINT value)
+template <typename T>
+constexpr T
+inverted(T value)
 {
-    return static_cast<UINT>(~value);
+    return static_cast<T>(~value);
 }
 
 #endif
