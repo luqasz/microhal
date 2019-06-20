@@ -4,8 +4,8 @@
             "name": "AVR",
             "includePath": [
                 "${workspaceFolder}/src/**",
-                "/usr/local/Cellar/avr-gcc/8.2.0/avr/include/*",
-                "/usr/local/Cellar/avr-gcc/8.2.0/avr/include/**"
+                "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/*",
+                "/usr/local/Cellar/avr-gcc/8.3.0/avr/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/local/bin/avr-g++",
