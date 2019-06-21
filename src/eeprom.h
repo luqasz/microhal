@@ -1,6 +1,7 @@
 #ifndef eeprom_h
 #define eeprom_h
 
+#include MCU_EEPROM_HEADER
 #include <stdint.h>
 
 namespace EEPROM {

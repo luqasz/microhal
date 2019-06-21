@@ -22,6 +22,7 @@ add_executable(
     src/sfr.cpp
     src/usart.cpp
     src/timer.cpp
+    src/eeprom.cpp
     )
 
 target_compile_definitions(
@@ -66,4 +67,5 @@ target_compile_definitions(
     ${EXECUTABLE_NAME}
     PUBLIC
     MCU_TIMER_HEADER="timer/${AVR_MCU}_timer.h"
+    MCU_EEPROM_HEADER="eeprom/${AVR_MCU}_eeprom.h"
     )

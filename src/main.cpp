@@ -1,4 +1,5 @@
 #include "adc.h"
+#include "eeprom.h"
 #include "irq.h"
 #include "printer.h"
 #include "timer.h"
@@ -24,6 +25,7 @@ main(void)
     Timer0::enable(Timer0::Irq::OnOverflow);
 
     serial.printLn("starting");
+    serial.printLn(EEPROM::read(0x00));
     while (true) {
     }
 }
