@@ -4,7 +4,7 @@
 #include "irq.h"
 #include "sfr.h"
 
-volatile auto buffer = Buffer::Circular<8>();
+volatile auto buffer = Buffer::CircularPowerOf2<8>();
 
 auto ControllRegister = Register<SFR::EECR>();
 auto AddressRegister  = Register<SFR::EEAR, uint16_t>();
