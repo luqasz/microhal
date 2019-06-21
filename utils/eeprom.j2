@@ -1,0 +1,22 @@
+#ifndef {{ device.name | lower }}_eeprom_h
+#define {{ device.name | lower }}_eeprom_h
+
+#include <stdint.h>
+
+/*
+Source            {{ atpack_file.name }}
+Family            {{ device.family }}
+Architecture      {{ device.arch }}
+Device name       {{ device.name }}
+*/
+
+namespace EEPROM {
+
+    constexpr uint16_t start = {{ "{0:#0{padding}x}".format(device.eeprom.start, padding=4) }};
+    constexpr uint16_t end = {{ "{0:#0{padding}x}".format(device.eeprom.end, padding=4) }};
+    constexpr uint16_t size = {{ "{0:#0{padding}x}".format(device.eeprom.size, padding=4) }};
+    constexpr uint8_t page_size = {{ "{0:#0{padding}x}".format(device.eeprom.page_size, padding=4) }};
+
+}
+
+#endif
