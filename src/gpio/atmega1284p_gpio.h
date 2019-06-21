@@ -60,52 +60,6 @@ namespace GPIO {
         GPIO::Pin7,
     };
 
-    auto const PortB = GPIO::Port {
-        0x25,
-        0x23,
-        0x24,
-    };
-
-    auto const PB0 = GPIO::Pin {
-        PortB,
-        GPIO::Pin0,
-    };
-
-    auto const PB1 = GPIO::Pin {
-        PortB,
-        GPIO::Pin1,
-    };
-
-    auto const PB2 = GPIO::Pin {
-        PortB,
-        GPIO::Pin2,
-    };
-
-    auto const PB3 = GPIO::Pin {
-        PortB,
-        GPIO::Pin3,
-    };
-
-    auto const PB4 = GPIO::Pin {
-        PortB,
-        GPIO::Pin4,
-    };
-
-    auto const PB5 = GPIO::Pin {
-        PortB,
-        GPIO::Pin5,
-    };
-
-    auto const PB6 = GPIO::Pin {
-        PortB,
-        GPIO::Pin6,
-    };
-
-    auto const PB7 = GPIO::Pin {
-        PortB,
-        GPIO::Pin7,
-    };
-
     auto const PortA = GPIO::Port {
         0x22,
         0x20,
@@ -195,6 +149,52 @@ namespace GPIO {
 
     auto const PC7 = GPIO::Pin {
         PortC,
+        GPIO::Pin7,
+    };
+
+    auto const PortB = GPIO::Port {
+        0x25,
+        0x23,
+        0x24,
+    };
+
+    auto const PB0 = GPIO::Pin {
+        PortB,
+        GPIO::Pin0,
+    };
+
+    auto const PB1 = GPIO::Pin {
+        PortB,
+        GPIO::Pin1,
+    };
+
+    auto const PB2 = GPIO::Pin {
+        PortB,
+        GPIO::Pin2,
+    };
+
+    auto const PB3 = GPIO::Pin {
+        PortB,
+        GPIO::Pin3,
+    };
+
+    auto const PB4 = GPIO::Pin {
+        PortB,
+        GPIO::Pin4,
+    };
+
+    auto const PB5 = GPIO::Pin {
+        PortB,
+        GPIO::Pin5,
+    };
+
+    auto const PB6 = GPIO::Pin {
+        PortB,
+        GPIO::Pin6,
+    };
+
+    auto const PB7 = GPIO::Pin {
+        PortB,
         GPIO::Pin7,
     };
 

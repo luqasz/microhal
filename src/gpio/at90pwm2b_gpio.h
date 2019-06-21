@@ -14,49 +14,49 @@ Device name       AT90PWM2B
 
 namespace GPIO {
 
-    auto const PortE = GPIO::Port {
-        0x2e,
-        0x2c,
-        0x2d,
+    auto const PortD = GPIO::Port {
+        0x2b,
+        0x29,
+        0x2a,
     };
 
-    auto const PE0 = GPIO::Pin {
-        PortE,
+    auto const PD0 = GPIO::Pin {
+        PortD,
         GPIO::Pin0,
     };
 
-    auto const PE1 = GPIO::Pin {
-        PortE,
+    auto const PD1 = GPIO::Pin {
+        PortD,
         GPIO::Pin1,
     };
 
-    auto const PE2 = GPIO::Pin {
-        PortE,
+    auto const PD2 = GPIO::Pin {
+        PortD,
         GPIO::Pin2,
     };
 
-    auto const PE3 = GPIO::Pin {
-        PortE,
+    auto const PD3 = GPIO::Pin {
+        PortD,
         GPIO::Pin3,
     };
 
-    auto const PE4 = GPIO::Pin {
-        PortE,
+    auto const PD4 = GPIO::Pin {
+        PortD,
         GPIO::Pin4,
     };
 
-    auto const PE5 = GPIO::Pin {
-        PortE,
+    auto const PD5 = GPIO::Pin {
+        PortD,
         GPIO::Pin5,
     };
 
-    auto const PE6 = GPIO::Pin {
-        PortE,
+    auto const PD6 = GPIO::Pin {
+        PortD,
         GPIO::Pin6,
     };
 
-    auto const PE7 = GPIO::Pin {
-        PortE,
+    auto const PD7 = GPIO::Pin {
+        PortD,
         GPIO::Pin7,
     };
 
@@ -106,49 +106,49 @@ namespace GPIO {
         GPIO::Pin7,
     };
 
-    auto const PortD = GPIO::Port {
-        0x2b,
-        0x29,
-        0x2a,
+    auto const PortE = GPIO::Port {
+        0x2e,
+        0x2c,
+        0x2d,
     };
 
-    auto const PD0 = GPIO::Pin {
-        PortD,
+    auto const PE0 = GPIO::Pin {
+        PortE,
         GPIO::Pin0,
     };
 
-    auto const PD1 = GPIO::Pin {
-        PortD,
+    auto const PE1 = GPIO::Pin {
+        PortE,
         GPIO::Pin1,
     };
 
-    auto const PD2 = GPIO::Pin {
-        PortD,
+    auto const PE2 = GPIO::Pin {
+        PortE,
         GPIO::Pin2,
     };
 
-    auto const PD3 = GPIO::Pin {
-        PortD,
+    auto const PE3 = GPIO::Pin {
+        PortE,
         GPIO::Pin3,
     };
 
-    auto const PD4 = GPIO::Pin {
-        PortD,
+    auto const PE4 = GPIO::Pin {
+        PortE,
         GPIO::Pin4,
     };
 
-    auto const PD5 = GPIO::Pin {
-        PortD,
+    auto const PE5 = GPIO::Pin {
+        PortE,
         GPIO::Pin5,
     };
 
-    auto const PD6 = GPIO::Pin {
-        PortD,
+    auto const PE6 = GPIO::Pin {
+        PortE,
         GPIO::Pin6,
     };
 
-    auto const PD7 = GPIO::Pin {
-        PortD,
+    auto const PE7 = GPIO::Pin {
+        PortE,
         GPIO::Pin7,
     };
 
