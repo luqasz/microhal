@@ -48,7 +48,7 @@ EEPROM::write(const uint8_t byte, const uint16_t address)
     }
     {
         Irq::atomicRestore();
-        buffer.put(byte);
+        buffer.write(byte);
     }
     AddressRegister = address;
     enable_irq();
@@ -67,7 +67,7 @@ EEPROM::read(const uint16_t address)
 void
 Irq::EEPROM()
 {
-    DataRegister = buffer.get();
+    DataRegister = buffer.read();
     /* Bits must be set in order. See datasheet for more information. */
     ControllRegister.setBit(ControllRegister.EEMWE); // Master write enable.
     ControllRegister.setBit(ControllRegister.EEWE);  // Strobe eeprom write.
