@@ -78,14 +78,24 @@ class Interrupt(Hashable, Base, Sortable):
         self._lt_ = number
 
 
+class EEPROM(Base):
+
+    def __init__(self, start, size, page_size):
+        self.start = start
+        self.size = size
+        self.page_size = page_size
+        self.end = self.size - 1
+
+
 class Device(Hashable, Base):
 
-    def __init__(self, name, registers, arch, family, interrupts):
+    def __init__(self, name, registers, arch, family, interrupts, eeprom):
         self.name = name
         self.registers = registers
         self.arch = arch
         self.family = family
         self.interrupts = interrupts
+        self.eeprom = eeprom
         self._hash_ = (self.name, self.arch, self.family)
 
 
@@ -166,6 +176,19 @@ def createInterrupt(element):
     )
 
 
+def createEEPROM(element):
+    if element:
+        attrCast = AttrCast(element)
+        pageCast = AttrCast(element.find('memory-segment'))
+        return EEPROM(
+            start=attrCast.hexAttr('start'),
+            size=attrCast.hexAttr('size'),
+            page_size=pageCast.hexAttr('pagesize'),
+        )
+    else:
+        return None
+
+
 def createDevice(dev_element, interrupts, registers):
     attrCast = AttrCast(dev_element)
     return Device(
@@ -174,6 +197,7 @@ def createDevice(dev_element, interrupts, registers):
         family=attrCast.attr('family'),
         registers=registers,
         interrupts=interrupts,
+        eeprom=createEEPROM(dev_element.find("address-spaces/address-space/[@name='eeprom']")),
     )
 
 

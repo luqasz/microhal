@@ -123,10 +123,16 @@ def main():
         required=True,
         help='Destination directory for GPIO definitions.',
     )
+    parser.add_argument(
+        '--eeprom-dir',
+        required=True,
+        help='Destination directory for EEPROM definitions.',
+    )
     args = parser.parse_args()
     dest = (
         PathTemplate(path=Path(args.gpio_dir), type='gpio', template='gpio.j2'),
         PathTemplate(path=Path(args.sfr_dir), type='sfr', template='sfr.j2'),
+        PathTemplate(path=Path(args.eeprom_dir), type='eeprom', template='eeprom.j2'),
     )
     run(
         atpack=Path(args.atpack_file),
