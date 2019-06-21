@@ -1255,10 +1255,10 @@ namespace SFR {
         static const uint8_t address = 0xc2;
         enum bits : uint8_t {
             UCPOL0  = 1,   // Clock Polarity
-            UCSZ00  = 2,   // Character Size
             UCPHA0  = 2,   // Clock Phase
-            UCSZ01  = 4,   // Character Size
+            UCSZ00  = 2,   // Character Size
             UDORD0  = 4,   // Data Order
+            UCSZ01  = 4,   // Character Size
             USBS0   = 8,   // Stop Bit Select
             UPM00   = 16,  // Parity Mode
             UPM01   = 32,  // Parity Mode

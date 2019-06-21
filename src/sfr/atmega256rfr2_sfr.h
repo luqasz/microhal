@@ -566,20 +566,20 @@ namespace SFR {
     struct OSCCAL {
         static const uint8_t address = 0x66;
         enum bits : uint8_t {
-            OSCCAL0 = 1,   // Oscillator Calibration
             CAL0    = 1,   // Oscillator Calibration Tuning Value
+            OSCCAL0 = 1,   // Oscillator Calibration
             CAL1    = 2,   // Oscillator Calibration Tuning Value
             OSCCAL1 = 2,   // Oscillator Calibration
-            OSCCAL2 = 4,   // Oscillator Calibration
             CAL2    = 4,   // Oscillator Calibration Tuning Value
-            OSCCAL3 = 8,   // Oscillator Calibration
+            OSCCAL2 = 4,   // Oscillator Calibration
             CAL3    = 8,   // Oscillator Calibration Tuning Value
+            OSCCAL3 = 8,   // Oscillator Calibration
             CAL4    = 16,  // Oscillator Calibration Tuning Value
             OSCCAL4 = 16,  // Oscillator Calibration
-            OSCCAL5 = 32,  // Oscillator Calibration
             CAL5    = 32,  // Oscillator Calibration Tuning Value
-            OSCCAL6 = 64,  // Oscillator Calibration
+            OSCCAL5 = 32,  // Oscillator Calibration
             CAL6    = 64,  // Oscillator Calibration Tuning Value
+            OSCCAL6 = 64,  // Oscillator Calibration
             CAL7    = 128, // Oscillator Calibration Tuning Value
             OSCCAL7 = 128, // Oscillator Calibration
         };
@@ -1263,10 +1263,10 @@ namespace SFR {
         static const uint8_t address = 0xc2;
         enum bits : uint8_t {
             UCPOL0  = 1,   // Clock Polarity
-            UCSZ00  = 2,   // Character Size
             UCPHA0  = 2,   // Clock Phase
-            UCSZ01  = 4,   // Character Size
+            UCSZ00  = 2,   // Character Size
             UDORD0  = 4,   // Data Order
+            UCSZ01  = 4,   // Character Size
             USBS0   = 8,   // Stop Bit Select
             UPM00   = 16,  // Parity Mode
             UPM01   = 32,  // Parity Mode
