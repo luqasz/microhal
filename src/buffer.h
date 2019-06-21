@@ -62,7 +62,7 @@ namespace Buffer {
 
     public:
         uint8_t
-        read() volatile
+        read()
         {
             uint8_t next_tail = static_cast<uint8_t>(tail + 1);
             if (next_tail >= BUFFER_SIZE)
@@ -75,7 +75,7 @@ namespace Buffer {
         }
 
         void
-        write(uint8_t byte) volatile
+        write(uint8_t byte)
         {
             uint8_t next_head = static_cast<uint8_t>(head + 1);
             if (next_head >= BUFFER_SIZE)
@@ -88,14 +88,14 @@ namespace Buffer {
 
         // Return how many elements are in the buffer.
         uint8_t
-        size() volatile const
+        size() const
         {
             return elements;
         }
 
         // Return free space.
         uint8_t
-        free() volatile const
+        free() const
         {
             return static_cast<uint8_t>(BUFFER_SIZE - elements);
         }
@@ -112,25 +112,25 @@ namespace Buffer {
 
     public:
         uint8_t
-        size() volatile
+        size()
         {
             return static_cast<uint8_t>(head - tail);
         }
 
         uint8_t
-        mask(uint8_t val) volatile
+        mask(uint8_t val)
         {
             return val % BUFFER_SIZE;
         }
 
         void
-        write(uint8_t byte) volatile
+        write(uint8_t byte)
         {
             data[mask(head++)] = byte;
         }
 
         uint8_t
-        read() volatile
+        read()
         {
             return data[mask(tail++)];
         }

@@ -8,7 +8,7 @@ const uint16_t END_ADDRESS  = 0x3FF;
 const uint16_t STAR_ADDRESS = 0x00;
 const uint8_t  PAGE_SIZE    = 4;
 
-volatile auto buffer = Buffer::Circular<8>();
+auto buffer = Buffer::Circular<8>();
 
 auto ControllRegister = Register<SFR::EECR>();
 auto AddressRegister  = Register<SFR::EEAR, uint16_t>();
