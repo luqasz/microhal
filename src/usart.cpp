@@ -8,7 +8,7 @@
 
 constexpr uint8_t TX_BUFFER_SIZE = 8;
 
-auto tx_buffer = Buffer::Circular<TX_BUFFER_SIZE>();
+volatile auto tx_buffer = Buffer::Circular<TX_BUFFER_SIZE>();
 
 auto UCSR0A = Register<USART::UCSR0A_REG>();
 auto UCSR0B = Register<USART::UCSR0B_REG>();
