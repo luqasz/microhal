@@ -21,7 +21,6 @@ add_executable(
     src/main.cpp
     src/sfr.cpp
     src/usart.cpp
-    src/timer.cpp
     src/eeprom.cpp
     )
 
@@ -66,6 +65,7 @@ include(avr-gcc.cmake)
 target_compile_definitions(
     ${EXECUTABLE_NAME}
     PUBLIC
-    MCU_TIMER_HEADER="timer/${AVR_MCU}_timer.h"
     MCU_EEPROM_HEADER="eeprom/${AVR_MCU}_eeprom.h"
+    MCU_SFR_HEADER="sfr/${AVR_MCU}_sfr.h"
+    MCU_IRQ_HEADER="irq/${AVR_MCU}_irq.h"
     )

@@ -2,7 +2,6 @@
 #include "eeprom.h"
 #include "irq.h"
 #include "printer.h"
-#include "timer.h"
 #include "usart.h"
 
 #include <stdlib.h>
@@ -19,20 +18,8 @@ main(void)
 
     usart.set(USART::BaudRate_2x::x2_115200);
     usart.enable(USART::Channel::TX);
-
-    Timer0::set(Timer0::Clock::_1024);
-    Timer0::set(Timer0::Mode::Normal);
-    Timer0::enable(Timer0::Irq::OnOverflow);
-
     serial.printLn("starting");
     serial.printLn(EEPROM::read(0x00));
     while (true) {
     }
-}
-
-void
-Irq::Timer0_Overflow()
-{
-    val++;
-    serial.printLn(val);
 }
