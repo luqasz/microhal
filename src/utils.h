@@ -8,6 +8,25 @@ bool constexpr isPowerOfTwo(T number)
 }
 
 template <typename T>
+T constexpr firstLSBBitPos(T n)
+{
+    if (!isPowerOfTwo(n))
+        return 0;
+
+    T i = 1, pos = 1;
+    // Iterate through bits of n till we find a set bit
+    // i&n will be non-zero only when 'i' and 'n' have a set bit
+    // at same position
+    while (!(i & n)) {
+        // Unset current bit and set the next bit in 'i'
+        i = static_cast<T>(i << 1);
+        // increment position
+        ++pos;
+    }
+    return pos;
+}
+
+template <typename T>
 constexpr T
 countSetBits(T number)
 {
