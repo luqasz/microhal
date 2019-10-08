@@ -3,6 +3,11 @@
 """
 Files can be downloaded from http://packs.download.atmel.com/
 This version will not work for atxmega devices as they have different architecture, interrupts etc.
+
+
+Known bugs:
+* Timer pin naming mismatch. e.g. in datasheet OC1A, in PIC file OCA1
+* Nearly all WGM bit fields are not named. e.g. WGM11 should exist, instead WGM1 with a mask field set to non power of two
 """
 
 
