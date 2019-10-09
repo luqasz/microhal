@@ -347,8 +347,8 @@ namespace SFR {
             CS10  = 1,   // Prescaler source of Timer/Counter 1
             CS11  = 2,   // Prescaler source of Timer/Counter 1
             CS12  = 4,   // Prescaler source of Timer/Counter 1
-            WGM10 = 8,   // Waveform Generation Mode
-            WGM11 = 16,  // Waveform Generation Mode
+            WGM12 = 8,   // Waveform Generation Mode
+            WGM13 = 16,  // Waveform Generation Mode
             ICES1 = 64,  // Input Capture 1 Edge Select
             ICNC1 = 128, // Input Capture 1 Noise Canceler
         };
