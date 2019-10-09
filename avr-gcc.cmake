@@ -8,6 +8,11 @@ find_program(AVR_UPLOADTOOL avrdude)
 
 set(hex_file ${EXECUTABLE_NAME}.hex)
 set(eeprom_file ${EXECUTABLE_NAME}.eeprom)
+# Below values must match. e.g.
+# ihex for objdump i for avrdude
+# binary for objdump r for avrdude
+set(OBJDUMP_FORMAT binary)
+set(AVRDUDE_FORMAT r)
 
 target_compile_options(
     ${EXECUTABLE_NAME}
@@ -37,7 +42,7 @@ add_custom_command(
         ${AVR_OBJCOPY}
         -j .text
         -j .data
-        -O ihex ${EXECUTABLE_NAME} ${hex_file}
+        -O ${OBJDUMP_FORMAT} ${EXECUTABLE_NAME} ${hex_file}
     DEPENDS ${EXECUTABLE_NAME}
 )
 
@@ -49,7 +54,7 @@ add_custom_command(
        --set-section-flags=.eeprom=alloc,load
        --change-section-lma .eeprom=0
        --no-change-warnings
-       -O ihex ${EXECUTABLE_NAME} ${eeprom_file}
+       -O ${OBJDUMP_FORMAT} ${EXECUTABLE_NAME} ${eeprom_file}
    DEPENDS ${EXECUTABLE_NAME}
 )
 
@@ -80,7 +85,7 @@ add_custom_target(
        ${AVR_UPLOADTOOL}
        -p ${AVR_MCU}
        -c ${AVR_PROGRAMMER}
-       -U flash:w:${hex_file}
+       -U flash:w:${hex_file}:${AVRDUDE_FORMAT}
        -P ${AVR_PROGRAMMER_PORT}
    DEPENDS ${hex_file}
 )
@@ -91,7 +96,7 @@ add_custom_target(
        ${AVR_UPLOADTOOL}
        -p ${AVR_MCU}
        -c ${AVR_PROGRAMMER}
-       -U eeprom:w:${eeprom_file}
+       -U eeprom:w:${eeprom_file}:${AVRDUDE_FORMAT}
        -P ${AVR_PROGRAMMER_PORT}
    DEPENDS ${eeprom_file}
 )
