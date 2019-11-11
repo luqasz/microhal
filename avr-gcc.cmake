@@ -25,12 +25,6 @@ target_compile_options(
 string(REPLACE "-Wl,-search_paths_first" "" CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS}")
 string(REPLACE "-Wl,-search_paths_first" "" CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS}")
 
-target_compile_definitions(
-    ${EXECUTABLE_NAME}
-    PUBLIC
-    F_CPU=${F_CPU}UL
-    )
-
 set_property(
     TARGET ${EXECUTABLE_NAME}
     APPEND_STRING PROPERTY
