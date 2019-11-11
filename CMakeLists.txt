@@ -8,6 +8,7 @@ set(F_CPU 11059200)
 set(EXECUTABLE_NAME ${PROJECT_NAME}_${AVR_MCU})
 set(CMAKE_BUILD_TYPE MinSizeRel)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 string(
     TIMESTAMP
@@ -27,12 +28,13 @@ add_executable(
 target_compile_definitions(
     ${EXECUTABLE_NAME}
     PUBLIC
+    F_CPU=${F_CPU}UL
     )
+
 
 target_compile_options(
     ${EXECUTABLE_NAME}
     PUBLIC
-    -Os
     -fpack-struct
     -fshort-enums
     -Wall
@@ -61,11 +63,7 @@ set_property(
 
 include(avr-gcc.cmake)
 
-
-target_compile_definitions(
-    ${EXECUTABLE_NAME}
-    PUBLIC
-    MCU_EEPROM_HEADER="eeprom/${AVR_MCU}_eeprom.h"
-    MCU_SFR_HEADER="sfr/${AVR_MCU}_sfr.h"
-    MCU_IRQ_HEADER="irq/${AVR_MCU}_irq.h"
+include_directories(
+    AFTER
+    src/${AVR_MCU}
     )
