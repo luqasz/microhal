@@ -1,8 +1,6 @@
 #ifndef gpio_h
 #define gpio_h
 
-#include "sfr.h"
-
 #include <stdint.h>
 
 namespace GPIO {
