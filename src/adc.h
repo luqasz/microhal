@@ -3,21 +3,8 @@
 
 #include "sfr.h"
 
+#include <mcu_adc.h>
 #include <stdint.h>
-
-namespace ADC {
-#if defined(__AVR_ATmega328P__)
-#    include "adc/atmega328_adc.h"
-#elif defined(__AVR_ATmega328__)
-#    include "adc/atmega328_adc.h"
-#elif defined(__AVR_ATmega32__)
-#    include "adc/atmega32_adc.h"
-#elif defined(__AVR_ATmega32A__)
-#    include "adc/atmega32_adc.h"
-#else
-#    error "MCU does not have ADC or is not yet supported."
-#endif
-}
 
 namespace ADC {
 

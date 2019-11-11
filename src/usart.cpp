@@ -4,18 +4,8 @@
 #include "irq.h"
 #include "sfr.h"
 
+#include <mcu_usart.h>
 #include <stdint.h>
-
-constexpr uint8_t TX_BUFFER_SIZE = 8;
-
-volatile auto tx_buffer = Buffer::Circular<TX_BUFFER_SIZE>();
-
-auto UCSR0A = Register<USART::UCSR0A_REG>();
-auto UCSR0B = Register<USART::UCSR0B_REG>();
-auto UCSR0C = Register<USART::UCSR0C_REG>();
-auto UBRR0L = Register<USART::UBRR0L_REG>();
-auto UBRR0H = Register<USART::UBRR0H_REG>();
-auto UDR0   = Register<USART::UDR0_REG>();
 
 template <typename T>
 static inline void
@@ -31,21 +21,21 @@ set_ubrr(T speed)
 }
 
 void
-USART::Master::set(USART::BaudRate_1x value) const
+USART::Async::set(USART::BaudRate_1x value) const
 {
     set_ubrr(value);
     UCSR0A.clearBit(UCSR0A.U2X);
 }
 
 void
-USART::Master::set(USART::BaudRate_2x value) const
+USART::Async::set(USART::BaudRate_2x value) const
 {
     set_ubrr(value);
     UCSR0A.setBit(UCSR0A.U2X);
 }
 
 void
-USART::Master::enable(USART::Channel channel) const
+USART::Async::enable(USART::Channel channel) const
 {
     switch (channel) {
         case USART::Channel::RX:
@@ -58,7 +48,7 @@ USART::Master::enable(USART::Channel channel) const
 }
 
 void
-USART::Master::disable(USART::Channel channel) const
+USART::Async::disable(USART::Channel channel) const
 {
     switch (channel) {
         case USART::Channel::RX:
@@ -70,27 +60,16 @@ USART::Master::disable(USART::Channel channel) const
     }
 }
 
-void
-USART::Master::write(uint8_t byte) const
+bool
+USART::Async::is_tx_buffer_empty() const
 {
-    while (tx_buffer.size() == TX_BUFFER_SIZE) {
-    }
-    {
-        Irq::atomicRestore();
-        tx_buffer.write(byte);
-    }
-    UCSR0B.setBit(UCSR0B.UDRIE); // Enable data register empty interrupt.
+    return static_cast<bool>(UCSR0A & UCSR0A.UDRE);
 }
 
 void
-Irq::UDRE(void)
+USART::Async::write(const uint8_t byte) const
 {
-    /*
-    No need to check if we have anything in buffer.
-    This irq will fire when at least one byte is present at the buffer.
-    */
-    UDR0 = tx_buffer.read();
-    if (tx_buffer.size() == 0) {
-        UCSR0B.clearBit(UCSR0B.UDRIE); // Disable this interrupt.
+    while (!is_tx_buffer_empty()) {
     }
+    UDR0 = byte;
 }

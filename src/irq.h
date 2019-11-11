@@ -57,16 +57,6 @@ public:
     CatchAll() VECTOR("__vector_default");
 };
 
-#if defined(__AVR_ATmega328P__)
-#    include "irq/atmega328_irq.h"
-#elif defined(__AVR_ATmega328__)
-#    include "irq/atmega328_irq.h"
-#elif defined(__AVR_ATmega32__)
-#    include "irq/atmega32_irq.h"
-#elif defined(__AVR_ATmega32A__)
-#    include "irq/atmega32_irq.h"
-#else
-#    error "Unsupported MCU."
-#endif
+#include <mcu_irq>
 
 #endif

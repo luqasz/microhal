@@ -64,14 +64,6 @@ namespace SFR {
 
 }
 
-#if defined(__AVR_ATmega328P__)
-#    include "sfr/atmega328p_sfr.h"
-#elif defined(__AVR_ATmega32__)
-#    include "sfr/atmega32_sfr.h"
-#elif defined(__AVR_ATmega32A__)
-#    include "sfr/atmega32a_sfr.h"
-#else
-#    error "Unsupported MCU."
-#endif
+#include <mcu_sfr.h>
 
 #endif

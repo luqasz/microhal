@@ -1,20 +1,10 @@
-#ifndef usart_h
-#define usart_h
+#pragma once
 
 #include "sfr.h"
 
 #include <stdint.h>
 
 namespace USART {
-#if defined(__AVR_ATmega328P__)
-#    include "usart/atmega328_usart.h"
-#elif defined(__AVR_ATmega32__)
-#    include "usart/atmega32_usart.h"
-#elif defined(__AVR_ATmega32A__)
-#    include "usart/atmega32_usart.h"
-#else
-#    error "MCU does not have USART or is not yet supported."
-#endif
 
     constexpr uint16_t
     calc_baud(const unsigned long int baud, const uint8_t divisor)
@@ -76,7 +66,7 @@ namespace USART {
         TX,
     };
 
-    class Master {
+    class Async {
 
     public:
         void enable(USART::Channel) const;
@@ -84,7 +74,9 @@ namespace USART {
         void set(USART::BaudRate_1x) const;
         void set(USART::BaudRate_2x) const;
         void write(uint8_t byte) const;
+        bool is_tx_buffer_empty() const;
+    };
+
+    class TX {
     };
 }
-
-#endif
