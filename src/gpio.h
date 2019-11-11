@@ -84,14 +84,6 @@ namespace GPIO {
     };
 }
 
-#if defined(__AVR_ATmega328P__)
-#    include "gpio/atmega328p_gpio.h"
-#elif defined(__AVR_ATmega32__)
-#    include "gpio/atmega32_gpio.h"
-#elif defined(__AVR_ATmega32A__)
-#    include "gpio/atmega32a_gpio.h"
-#else
-#    error "Unsupported MCU."
-#endif
+#include <mcu_gpio.h>
 
 #endif

@@ -3,6 +3,7 @@
 #include "irq.h"
 #include "printer.h"
 #include "usart.h"
+#include "gpio.h"
 
 #include <stdlib.h>
 
@@ -12,6 +13,8 @@ auto serial = Printer<USART::Async, RN>(usart);
 int
 main(void)
 {
+    auto pin = GPIO::OutputPin(GPIO::PA1);
+    pin.set(GPIO::PinState::High);
     Irq::enable();
     usart.set(USART::BaudRate_2x::x2_115200);
     usart.enable(USART::Channel::TX);

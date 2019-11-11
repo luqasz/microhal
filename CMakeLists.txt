@@ -23,6 +23,7 @@ add_executable(
     src/sfr.cpp
     src/usart.cpp
     src/eeprom.cpp
+    src/gpio.cpp
     )
 
 target_compile_definitions(
