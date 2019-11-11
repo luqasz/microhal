@@ -8,6 +8,7 @@ jobs:
        - run:
           name: Run cmake
           environment:
+            CMAKE_BUILD_TYPE: MinSizeRel
             CC: avr-gcc
             CXX: avr-g++
           command: >
