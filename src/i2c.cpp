@@ -55,9 +55,7 @@ set_speed(const I2C::Speed speed)
 }
 
 void
-I2C::Master::write(const I2C::Target & target, Buffer::Interface::ArrayWrapper & buffer)
-{
-    set_speed(target.speed);
+I2C::Master::write(const I2C::Target & target, Buffer::Bytes    set_speed(target.speed);
     start_signal();
     write_blocking(static_cast<uint8_t>(target.address << 1));
     write_blocking(target.start_address);
@@ -68,7 +66,7 @@ I2C::Master::write(const I2C::Target & target, Buffer::Interface::ArrayWrapper &
 }
 
 void
-I2C::Master::read(const I2C::Target & target, Buffer::Interface::ArrayWrapper & buffer)
+I2C::Master::read(const I2C::Target & target, Buffer::Bytes & buffer)
 {
     set_speed(target.speed);
     start_signal();

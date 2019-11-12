@@ -36,8 +36,8 @@ namespace I2C {
 
     class Master {
     public:
-        void read(const I2C::Target &, Buffer::Interface::ArrayWrapper &);
-        void write(const I2C::Target &, Buffer::Interface::ArrayWrapper &);
+        void read(const I2C::Target &, Buffer::Bytes &);
+        void write(const I2C::Target &, Buffer::Bytes &);
     };
 
 }

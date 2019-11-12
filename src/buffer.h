@@ -7,46 +7,40 @@
 
 namespace Buffer {
 
-    namespace Interface {
-        class ArrayWrapper {
-        public:
-            virtual uint8_t *
-            begin()
-                = 0;
+    class Bytes {
+    private:
+        uint8_t * begin_ptr;
+        uint8_t * end_ptr;
 
-            virtual uint8_t *
-            end()
-                = 0;
-
-            virtual uint8_t &
-            operator[](uint8_t)
-                = 0;
-        };
-    }
-
-    template <unsigned int SIZE>
-    class Array : public Buffer::Interface::ArrayWrapper {
-        static_assert(SIZE > 0, "buffer size must be > 0");
-        uint8_t array[SIZE] = { 0 };
+    protected:
+        Bytes(uint8_t * b, uint8_t * e) :
+            begin_ptr(b),
+            end_ptr(e)
+        {
+        }
 
     public:
         uint8_t *
         begin()
         {
-            return &array[0];
-        }
-
+            return begin_ptr;
+        };
         uint8_t *
         end()
         {
-            return &array[SIZE];
-        }
+            return end_ptr;
+        };
+        uint8_t & operator[](uint8_t idx) { return begin_ptr[idx]; };
+    };
 
-        uint8_t &
-        operator[](uint8_t idx)
-        {
-            return array[idx];
-        }
+    template <unsigned int SIZE>
+    class SizedBytesArray : public Bytes {
+        static_assert(SIZE > 0, "buffer size must be > 0");
+        uint8_t array[SIZE] = { 0 };
+
+    public:
+        SizedBytesArray() :
+            Bytes(array, array + SIZE) {}
     };
 
     template <uint8_t BUFFER_SIZE>
