@@ -27,11 +27,11 @@ enum RTC_REGISTER {
     REG_STATUS
 };
 
-const uint8_t DS1337_ADDRESS        = 0x68;
-const uint8_t DATE_TIME_BUFFER_SIZE = REG_YEAR + 1;
-const uint16_t YEAR_OFFSET          = 2000;
-const uint8_t MONTH_MASK            = 0x1F;
-const uint8_t CENTURY_MASK          = 0x80;
+const uint8_t  DS1337_ADDRESS        = 0x68;
+const uint8_t  DATE_TIME_BUFFER_SIZE = REG_YEAR + 1;
+const uint16_t YEAR_OFFSET           = 2000;
+const uint8_t  MONTH_MASK            = 0x1F;
+const uint8_t  CENTURY_MASK          = 0x80;
 
 const auto clock_target = I2C::Target {
     DS1337_ADDRESS,

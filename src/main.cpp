@@ -1,9 +1,9 @@
 #include "adc.h"
 #include "eeprom.h"
+#include "gpio.h"
 #include "irq.h"
 #include "printer.h"
 #include "usart.h"
-#include "gpio.h"
 
 #include <stdlib.h>
 

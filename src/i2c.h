@@ -28,9 +28,9 @@ namespace I2C {
         For writing into device, address will be converted into 0x90 10010000 (last bit 0 means writing)
         For reading from device, address will be converted into 0x91 10010001 (last bit 1 means reading)
         */
-        const uint8_t address;
-        const uint8_t start_address;
-        const uint8_t end_address;
+        const uint8_t    address;
+        const uint8_t    start_address;
+        const uint8_t    end_address;
         const I2C::Speed speed;
     };
 

@@ -59,8 +59,8 @@ I2C::Master::write(const I2C::Target & target, Buffer::Bytes    set_speed(target
     start_signal();
     write_blocking(static_cast<uint8_t>(target.address << 1));
     write_blocking(target.start_address);
-    for (auto value : buffer) {
-        write_blocking(value);
+    for (uint8_t byte : buffer) {
+    write_blocking(byte);
     }
     stop_signal();
 }

@@ -16,8 +16,8 @@ float
 measure_adc(void)
 {
     uint16_t samples[NUMSAMPLES];
-    uint8_t i;
-    float average;
+    uint8_t  i;
+    float    average;
 
     uint16_t adc_value;
     // take N samples in a row, with a slight delay
