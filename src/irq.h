@@ -57,6 +57,6 @@ public:
     CatchAll() VECTOR("__vector_default");
 };
 
-#include <mcu_irq>
+#include <mcu_irq.h>
 
 #endif
