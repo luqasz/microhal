@@ -1,4 +1,5 @@
-#pragma once
+#ifndef mcu_irq_h
+#define mcu_irq_h
 
 #include "../irq.h"
 
@@ -27,13 +28,13 @@ public:
     static void
     Timer0_Overflow() VECTOR("__vector_11");
     static void
-    SPI() VECTOR("__vector_12");
+    SPI0() VECTOR("__vector_12");
     static void
-    USART_RX() VECTOR("__vector_13");
+    USART0_RX() VECTOR("__vector_13");
     static void
-    UDRE() VECTOR("__vector_14");
+    UDR0_Empty() VECTOR("__vector_14");
     static void
-    USART_TX() VECTOR("__vector_15");
+    USART0_TX() VECTOR("__vector_15");
     static void
     ADC() VECTOR("__vector_16");
     static void
@@ -41,7 +42,9 @@ public:
     static void
     AnalogComparator() VECTOR("__vector_18");
     static void
-    TWI() VECTOR("__vector_19");
+    TWI0() VECTOR("__vector_19");
     static void
     SPM() VECTOR("__vector_20");
 };
+
+#endif
