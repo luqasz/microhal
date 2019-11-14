@@ -3,24 +3,45 @@
 
 import jinja2
 import argparse
+import yaml
 from pathlib import Path
-from atdf_parser import parseZip
 from collections import namedtuple
-from filters import (
-    onlyGpio,
-    notGpio,
-    filterDevices,
-)
 
-"""
-list of avr arch and __ gcc defines for devices
-https://www.nongnu.org/avr-libc/user-manual/using_tools.html
-"""
+def filterDevices(device):
+    # Devices that do not have all three DDR, PORT, PIN registers for each port
+    names = device.name not in (
+        'ATmega8HVA',
+        'ATmega16HVA',
+        'ATmega16HVB',
+        'ATmega16HVBrevB',
+        'ATmega32HVB',
+        'ATmega32HVBrevB',
+        'ATmega406',
+    )
+    # These devices have differend register arrangement
+    archs = device.arch not in ('AVR8X',)
+    return all((names, archs))
+
+
+def filterModule(module):
+    # No need for fuse and lock bits
+    return module.attrib['name'].strip() not in ('FUSE', 'LOCKBIT')
+
+
+def onlyGpio(reg):
+    results = list()
+    catch = ('PORT', 'DDR', 'PIN')
+    for name in catch:
+        result = reg['name'].startswith(name)
+        results.append(result)
+    return any(results)
+
+
+def notGpio(reg):
+    return not onlyGpio(reg)
+
 
 here = str(Path(__file__).resolve().parent)
-
-
-PathTemplate = namedtuple('PathTemplate', ('path', 'template', 'type'))
 
 
 class Renderer:
@@ -52,7 +73,7 @@ class GPIO:
 
     def extract(self, name):
         for reg in self.registers:
-            if reg.name.startswith(name):
+            if reg['name'].startswith(name):
                 return reg
 
     @property
@@ -68,12 +89,13 @@ class GPIO:
         return self.extract('DDR')
 
 
-def groupGPIO(sequence):
-    found = filter(onlyGpio, sequence)
+def groupGPIO(registers):
+    """Group registers by letter e.g. PORTA, PORTB etc."""
+    found = filter(onlyGpio, registers)
     found = tuple(found)
-    letters = set(reg.name[-1:] for reg in found)
+    letters = set(reg['name'][-1:] for reg in found)
     for letter in letters:
-        regs = tuple(reg for reg in found if reg.name.endswith(letter))
+        regs = tuple(reg for reg in found if reg['name'].endswith(letter))
         assert len(regs) == 3, "Number of registers != 3 {}".format(regs)
         yield GPIO(registers=regs, letter=letter)
 
@@ -82,10 +104,11 @@ Renderer.jenv.filters['notGPIO'] = lambda x: filter(notGpio, x)
 Renderer.jenv.globals['groupGPIO'] = groupGPIO
 
 
-def render(device, atpack, template):
-    return Renderer.jenv.get_template(template).render(
-        device=device,
-        atpack_file=atpack,
+def render(mcu, regs, template):
+    return Renderer.jenv.get_template(template + '.j2').render(
+        device=mcu,
+        registers=regs,
+        size_to_uint={1: 'uint8_t', 2: 'uint16_t'},
     ).lstrip()
 
 
@@ -95,48 +118,39 @@ def write(dest_dir, content, file_name):
     dest_file.write_text(content)
 
 
-def run(atpack, destinations):
-    devices = parseZip(atpack)
-    for device in filter(filterDevices, devices):
-        device.registers = tuple(device.registers)
-        for dest in destinations:
-            file_name = "{}_{}.h".format(device.name.lower(), dest.type)
-            content = render(device, atpack, dest.template)
-            write(dest.path, content, file_name)
+def run(registers_dir, mcu, mcu_dir):
+    mcu_yml = registers_dir / '{}.yml'.format(mcu)
+    with mcu_yml.open(mode='r') as fobj:
+        regs = yaml.load(fobj, Loader=yaml.FullLoader)
+    for template in ('gpio', 'sfr'):
+        file_name = "mcu_{}.h".format(template)
+        content = render(mcu, regs, template)
+        write(mcu_dir, content, file_name)
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '-a',
-        dest='atpack_file',
+        '-d',
+        dest='registers_dir',
         required=True,
-        help='*.atpack file.',
+        help='Directory with yml registers.',
     )
     parser.add_argument(
-        '--sfr-dir',
+        '--mcu-name',
         required=True,
-        help='Destination directory for SFR definitions.',
+        help='MCU name.',
     )
     parser.add_argument(
-        '--gpio-dir',
+        '--mcu-dir',
         required=True,
-        help='Destination directory for GPIO definitions.',
-    )
-    parser.add_argument(
-        '--eeprom-dir',
-        required=True,
-        help='Destination directory for EEPROM definitions.',
+        help='Destination for generated headers.',
     )
     args = parser.parse_args()
-    dest = (
-        PathTemplate(path=Path(args.gpio_dir), type='gpio', template='gpio.j2'),
-        PathTemplate(path=Path(args.sfr_dir), type='sfr', template='sfr.j2'),
-        PathTemplate(path=Path(args.eeprom_dir), type='eeprom', template='eeprom.j2'),
-    )
     run(
-        atpack=Path(args.atpack_file),
-        destinations=dest,
+        registers_dir=Path(args.registers_dir),
+        mcu=args.mcu_name,
+        mcu_dir=Path(args.mcu_dir),
     )
 
 

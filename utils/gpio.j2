@@ -1,33 +1,25 @@
-#ifndef {{ device.name | lower }}_gpio_h
-#define {{ device.name | lower }}_gpio_h
+#ifndef mcu_gpio_h
+#define mcu_gpio_h
 
-#include <stdint.h>
 #include "../gpio.h"
-
-/*
-Source            {{ atpack_file.name }}
-Family            {{ device.family }}
-Architecture      {{ device.arch }}
-Device name       {{ device.name }}
-*/
+#include "mcu_sfr.h"
+#include <stdint.h>
 
 namespace GPIO {
 
-{% for reg in groupGPIO(device.registers) %}
+{% for reg in groupGPIO(registers) %}
 
     auto const {{ "Port{}".format(reg.letter) }} = GPIO::Port {
-        {{ "{0:#0{padding}x}".format(reg.port.address, padding=4) }},
-        {{ "{0:#0{padding}x}".format(reg.pin.address, padding=4) }},
-        {{ "{0:#0{padding}x}".format(reg.ddr.address, padding=4) }},
+        {{ "SFR::PORT{}::address".format(reg.letter) }},
+        {{ "SFR::PIN{}::address".format(reg.letter) }},
+        {{ "SFR::DDR{}::address".format(reg.letter) }},
     };
 
     {% for pin_no in range(0,8) %}
-
-        auto const {{ "P{}{}".format(reg.letter, pin_no) }} = GPIO::Pin {
-            {{ "Port{}".format(reg.letter) }},
-            {{ "GPIO::Pin{}".format(pin_no) }},
-        };
-
+    auto const {{ "P{}{}".format(reg.letter, pin_no) }} = GPIO::Pin {
+        {{ "Port{}".format(reg.letter) }},
+        {{ "GPIO::Pin{}".format(pin_no) }},
+    };
     {% endfor %}
 
 {% endfor %}
