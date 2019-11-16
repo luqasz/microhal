@@ -21,7 +21,6 @@ add_executable(
     ${EXECUTABLE_NAME}
     src/main.cpp
     src/sfr.cpp
-    src/usart.cpp
     src/eeprom.cpp
     src/gpio.cpp
     )

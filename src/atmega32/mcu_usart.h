@@ -6,16 +6,14 @@
 
 namespace USART {
 
-    constexpr Registers USART0 = {
-        SFR::UDR::address,
-        SFR::UCSRA::address,
-        SFR::UCSRB::address,
-        SFR::UCSRC::address,
+    struct USART0 {
+        static const uint8_t udr = SFR::UDR::address;
+        static const uint8_t ucsra = SFR::UCSRA::address;
+        static const uint8_t ucsrb = SFR::UCSRB::address;
+        static const uint8_t ucsrc = SFR::UCSRC::address;
     };
 
 }
 
-auto constexpr UBRR0L = Register<SFR::UBRRL>();
-auto constexpr UBRR0H = Register<SFR::UBRRH>();
 
 #endif
