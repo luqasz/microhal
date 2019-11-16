@@ -5,7 +5,6 @@
 #include <stdint.h>
 
 namespace USART {
-
     constexpr uint16_t
     calc_baud(const unsigned long int baud, const uint8_t divisor)
     {
@@ -50,15 +49,15 @@ namespace USART {
     };
 
     enum class StopBits : uint8_t {
-        Bit_1,
-        Bit_2,
+        One,
+        Two,
     };
 
     enum class CharacterSize : uint8_t {
-        Bit_5,
-        Bit_6,
-        Bit_7,
-        Bit_8,
+        Bit5,
+        Bit6,
+        Bit7,
+        Bit8,
     };
 
     enum class Channel : uint8_t {
@@ -66,9 +65,19 @@ namespace USART {
         TX,
     };
 
+    struct Registers {
+        const uint8_t udr;
+        const uint8_t ucsra;
+        const uint8_t ucsrb;
+        const uint8_t ucsrc;
+    };
+
+
     class Async {
+        const Registers regs;
 
     public:
+        Async(const Registers);
         void enable(USART::Channel) const;
         void disable(USART::Channel) const;
         void set(USART::BaudRate_1x) const;
@@ -77,6 +86,6 @@ namespace USART {
         bool is_tx_buffer_empty() const;
     };
 
-    class TX {
-    };
 }
+
+#include <mcu_usart.h>

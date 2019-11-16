@@ -1,24 +1,21 @@
-// vim: set ft=cpp:
-#pragma once
+#ifndef MCU_USART_H
+#define MCU_USART_H
 
-#include "../sfr.h"
+#include "mcu_sfr.h"
+#include "../usart.h"
 
-// namespace USART {
-//     struct USART0 {
-//     };
-//     REGISTERS USART0 = {
-//         static constexpr auto UCSRA = Register<SFR::UCSRA>(),
-//         static constexpr auto UCSRB = Register<SFR::UCSRB>(),
-//         static constexpr auto UCSRC = Register<SFR::UCSRC>(),
-//         static constexpr auto UBRRH = Register<SFR::UBRRH>(),
-//         static constexpr auto UBRRL = Register<SFR::UBRRL>(),
-//         static constexpr auto UUDR  = Register<SFR::UDR>(),
-//     };
-// }
+namespace USART {
 
-auto constexpr UCSR0A = Register<SFR::UCSRA>();
-auto constexpr UCSR0B = Register<SFR::UCSRB>();
-auto constexpr UCSR0C = Register<SFR::UCSRC>();
+    constexpr Registers USART0 = {
+        SFR::UDR::address,
+        SFR::UCSRA::address,
+        SFR::UCSRB::address,
+        SFR::UCSRC::address,
+    };
+
+}
+
 auto constexpr UBRR0L = Register<SFR::UBRRL>();
 auto constexpr UBRR0H = Register<SFR::UBRRH>();
-auto constexpr UDR0   = Register<SFR::UDR>();
+
+#endif

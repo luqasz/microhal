@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 
-auto usart  = USART::Async();
+auto usart  = USART::Async(USART::USART0);
 auto serial = Printer<USART::Async, RN>(usart);
 
 int
