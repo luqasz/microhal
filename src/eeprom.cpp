@@ -14,7 +14,7 @@ is_busy()
     /*
     Return if EEPROM is still pending operation.
     */
-    return (ControllRegister.EEWE & ControllRegister);
+    return ControllRegister.isSet(ControllRegister.EEWE);
 }
 
 void
@@ -35,5 +35,5 @@ EEPROM::read(const uint16_t address)
     }
     AddressRegister = address;
     ControllRegister.setBit(ControllRegister.EERE);
-    return DataRegister;
+    return DataRegister.read();
 }

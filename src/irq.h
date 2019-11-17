@@ -13,7 +13,7 @@ private:
 public:
     RestoreIrq()
     {
-        sreg_value = reg;
+        sreg_value = reg.read();
         // clang-format off
         __asm__ __volatile__ ("cli" ::: "memory");
         // clang-format on

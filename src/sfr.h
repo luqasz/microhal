@@ -33,11 +33,6 @@ public:
         sfr() = value;
     }
 
-    operator uint_type() const
-    {
-        return sfr();
-    }
-
     void
     setBit(const uint_type bit) const
     {
@@ -48,6 +43,12 @@ public:
     clearBit(const uint_type bit) const
     {
         sfr() &= static_cast<uint8_t>(~bit);
+    }
+
+    bool
+    isSet(const uint8_t bit) const
+    {
+        return sfr() & bit;
     }
 };
 
