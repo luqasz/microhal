@@ -2,6 +2,7 @@
 #define gpio_h
 
 #include <stdint.h>
+#include "sfr.h"
 
 namespace GPIO {
 
@@ -38,48 +39,169 @@ namespace GPIO {
         Input8Bit  input() const;
     };
 
+    class OutputPin;
+    class InputPin;
+
     struct Pin {
+    public:
         const GPIO::Port      port;
         const GPIO::PinNumber number;
+        OutputPin output() const;
+        InputPin input() const;
     };
 
     class OutputPin {
-        const GPIO::Pin pin;
+        const Pin pin;
 
     public:
-        OutputPin(const GPIO::Pin);
-        void operator=(const GPIO::PinState) const;
-        void set(const GPIO::PinState) const;
+        OutputPin(Pin pin) :
+            pin(pin)
+        {
+            SFR::setBit(pin.port.ddr_address, pin.number);
+        }
+
+        void
+        operator=(const GPIO::PinState state) const
+        {
+            set(state);
+        }
+
+        void
+        set(const GPIO::PinState state) const
+        {
+            switch (state) {
+                case GPIO::PinState::High:
+                    SFR::setBit(pin.port.port_address, pin.number);
+                    break;
+                case GPIO::PinState::Low:
+                    SFR::clearBit(pin.port.port_address, pin.number);
+                    break;
+            }
+        }
+
     };
 
     class InputPin {
         const GPIO::Pin pin;
 
     public:
-        InputPin(const GPIO::Pin);
-        bool           operator==(const GPIO::PinState) const;
-        void           set(const GPIO::PullMode) const;
-        GPIO::PinState read() const;
+        InputPin(const Pin pin) :
+            pin(pin)
+        {
+            SFR::clearBit(pin.port.ddr_address, pin.number);
+        }
+
+        bool
+        operator==(const GPIO::PinState state) const
+        {
+            return read() == state;
+        }
+
+        void
+        set(const GPIO::PullMode mode) const
+        {
+            switch (mode) {
+                case GPIO::PullMode::HiZ:
+                    SFR::clearBit(pin.port.port_address, pin.number);
+                    break;
+                case GPIO::PullMode::PullUp:
+                    SFR::setBit(pin.port.port_address, pin.number);
+                    break;
+            }
+        }
+
+        PinState
+        read() const
+        {
+            if (SFR::iomem(pin.port.pin_address) & pin.number) {
+                return GPIO::PinState::High;
+            }
+            return GPIO::PinState::Low;
+        }
     };
 
     class Output8Bit {
         const GPIO::Port port;
 
     public:
-        Output8Bit(const GPIO::Port);
-        void operator=(const uint8_t) const;
-        void set(const uint8_t) const;
+        Output8Bit(GPIO::Port port) :
+            port(port)
+        {
+            SFR::iomem(port.ddr_address) = 255;
+        }
+
+        void
+        operator=(const uint8_t value) const
+        {
+            write(value);
+        }
+
+        void
+        write(const uint8_t value) const
+        {
+            SFR::iomem(port.port_address) = value;
+        }
     };
 
     class Input8Bit {
         const GPIO::Port port;
 
     public:
-        Input8Bit(const GPIO::Port);
-        bool    operator==(const uint8_t) const;
-        void    set(const GPIO::PullMode) const;
-        uint8_t read() const;
+        Input8Bit(const GPIO::Port port) :
+            port(port)
+        {
+            SFR::iomem(port.ddr_address) = 0;
+        }
+
+        bool
+        operator==(const uint8_t value) const
+        {
+            return read() == value;
+        }
+
+        uint8_t
+        read() const
+        {
+            return SFR::iomem(port.pin_address);
+        }
+
+        void
+        set(const GPIO::PullMode mode) const
+        {
+            switch (mode) {
+                case GPIO::PullMode::HiZ:
+                    SFR::iomem(port.port_address) = 0;
+                    break;
+                case GPIO::PullMode::PullUp:
+                    SFR::iomem(port.port_address) = 255;
+                    break;
+            }
+        }
     };
+
+    Output8Bit
+    Port::output() const
+    {
+        return Output8Bit(*this);
+    }
+
+    Input8Bit
+    Port::input() const
+    {
+        return Input8Bit(*this);
+    }
+
+    OutputPin
+    Pin::output() const
+    {
+        return OutputPin(*this);
+    }
+
+    InputPin
+    Pin::input() const
+    {
+        return InputPin(*this);
+    }
 }
 
 #include <mcu_gpio.h>
