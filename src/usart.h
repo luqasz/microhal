@@ -1,39 +1,56 @@
-#pragma once
+#ifndef USART_H
+#define USART_H
 
 #include "sfr.h"
 
 #include <stdint.h>
 
 namespace USART {
-auto constexpr UBRR0L = Register<SFR::UBRRL>();
-auto constexpr UBRR0H = Register<SFR::UBRRH>();
-    // UCSRA
-    constexpr uint8_t MPCM = 1;   // Multi-processor Communication Mode
-    constexpr uint8_t U2X  = 2;   // Double the USART transmission speed
-    constexpr uint8_t UPE  = 4;   // Parity Error
-    constexpr uint8_t DOR  = 8;   // Data overRun
-    constexpr uint8_t FE   = 16;  // Framing Error
-    constexpr uint8_t UDRE = 32;  // USART Data Register Empty
-    constexpr uint8_t TXC  = 64;  // USART Transmitt Complete
-    constexpr uint8_t RXC  = 128; // USART Receive Complete
-    // UCSRB
-    constexpr uint8_t TXB8  = 1;   // Transmit Data Bit 8
-    constexpr uint8_t RXB8  = 2;   // Receive Data Bit 8
-    constexpr uint8_t UCSZ2 = 4;   // Character Size
-    constexpr uint8_t TXEN  = 8;   // Transmitter Enable
-    constexpr uint8_t RXEN  = 16;  // Receiver Enable
-    constexpr uint8_t UDRIE = 32;  // USART Data register Empty Interrupt Enable
-    constexpr uint8_t TXCIE = 64;  // TX Complete Interrupt Enable
-    constexpr uint8_t RXCIE = 128; // RX Complete Interrupt Enable
-    // UCSRC
-    constexpr uint8_t UCPOL = 1;   // Clock Polarity
-    constexpr uint8_t UCSZ0 = 2;   // Character Size
-    constexpr uint8_t UCSZ1 = 4;   // Character Size
-    constexpr uint8_t USBS  = 8;   // Stop Bit Select
-    constexpr uint8_t UPM0  = 16;  // Parity Mode Bits
-    constexpr uint8_t UPM1  = 32;  // Parity Mode Bits
-    constexpr uint8_t UMSEL = 64;  // USART Mode Select
-    constexpr uint8_t URSEL = 128; // Register Select
+
+    template <typename REG>
+    struct UCSRA {
+        constexpr static uint8_t address = REG::address;
+        enum bits {
+        MPCM = 1,   // Multi-processor Communication Mode
+        U2X  = 2,   // Double the USART transmission speed
+        UPE  = 4,   // Parity Error
+        DOR  = 8,   // Data overRun
+        FE   = 16,  // Framing Error
+        UDRE = 32,  // USART Data Register Empty
+        TXC  = 64,  // USART Transmitt Complete
+        RXC  = 128, // USART Receive Complete
+        };
+    };
+
+    template <typename REG>
+    struct UCSRB {
+        constexpr static uint8_t address = REG::address;
+        enum bits {
+        TXB8  = 1,   // Transmit Data Bit 8
+        RXB8  = 2,   // Receive Data Bit 8
+        UCSZ2 = 4,   // Character Size
+        TXEN  = 8,   // Transmitter Enable
+        RXEN  = 16,  // Receiver Enable
+        UDRIE = 32,  // USART Data register Empty Interrupt Enable
+        TXCIE = 64,  // TX Complete Interrupt Enable
+        RXCIE = 128, // RX Complete Interrupt Enable
+        };
+    };
+
+    template <typename REG>
+    struct UCSRC {
+        constexpr static uint8_t address = REG::address;
+        enum bits {
+        UCPOL = 1,   // Clock Polarity
+        UCSZ0 = 2,   // Character Size
+        UCSZ1 = 4,   // Character Size
+        USBS  = 8,   // Stop Bit Select
+        UPM0  = 16,  // Parity Mode Bits
+        UPM1  = 32,  // Parity Mode Bits
+        UMSEL = 64,  // USART Mode Select
+        URSEL = 128, // Register Select
+        };
+    };
 
 
     constexpr uint16_t
@@ -96,24 +113,23 @@ auto constexpr UBRR0H = Register<SFR::UBRRH>();
         TX,
     };
 
-    struct Registers {
-        const uint8_t udr;
-        const uint8_t ucsra;
-        const uint8_t ucsrb;
-        const uint8_t ucsrc;
-    };
-
-    template <typename T>
+    template <typename HIGH, typename LOW, typename C_REG>
     constexpr static inline void
-    set_ubrr(const T speed, const uint8_t ucsrc)
+    set_ubrr_split(const uint16_t speed)
     {
-        uint16_t value = static_cast<uint16_t>(speed);
         /* This bit selects between accessing the UCSRC or the UBRRH Register.
         It is read as one when reading UCSRC.
         The URSEL must be zero when writing the UBRRH. */
-        SFR::clearBit(ucsrc, URSEL);
-        UBRR0H = static_cast<uint8_t>((value >> 8));
-        UBRR0L = static_cast<uint8_t>(value);
+        Register<C_REG>().clearBit(C_REG::URSEL);
+        Register<HIGH>() = static_cast<uint8_t>((speed >> 8));
+        Register<LOW>() = static_cast<uint8_t>(speed);
+    }
+
+    template <typename REG>
+    constexpr static inline void
+    set_ubrr_single(const uint16_t speed)
+    {
+        Register<REG>() = speed;
     }
 
 
@@ -121,18 +137,20 @@ auto constexpr UBRR0H = Register<SFR::UBRRH>();
     class Async {
 
     public:
-        void
+        constexpr void
         set(BaudRate_1x value) const
         {
-            set_ubrr(value, REGS::ucsrc);
-            SFR::clearBit(REGS::ucsra, U2X);
+            uint16_t speed = static_cast<uint16_t>(value);
+            REGS::ubrr(speed);
+            REGS::ucsra.clearBit(REGS::ucsra.U2X);
         }
 
-        void
+        constexpr void
         set(BaudRate_2x value) const
         {
-            set_ubrr(value, REGS::ucsrc);
-            SFR::setBit(REGS::ucsra, U2X);
+            uint16_t speed = static_cast<uint16_t>(value);
+            REGS::ubrr(speed);
+            REGS::ucsra.setBit(REGS::ucsra.U2X);
         }
 
         constexpr void
@@ -140,10 +158,10 @@ auto constexpr UBRR0H = Register<SFR::UBRRH>();
         {
             switch (channel) {
                 case Channel::RX:
-                    SFR::setBit(REGS::ucsrb, RXEN);
+                    REGS::ucsrb.setBit(REGS::ucsrb.RXEN);
                     break;
                 case Channel::TX:
-                    SFR::setBit(REGS::ucsrb, TXEN);
+                    REGS::ucsrb.setBit(REGS::ucsrb.TXEN);
                     break;
             }
         }
@@ -153,10 +171,10 @@ auto constexpr UBRR0H = Register<SFR::UBRRH>();
         {
             switch (channel) {
                 case Channel::RX:
-                    SFR::clearBit(REGS::ucsrb, RXEN);
+                    REGS::ucsrb.clearBit(REGS::ucsrb.RXEN);
                     break;
                 case Channel::TX:
-                    SFR::clearBit(REGS::ucsrb, TXEN);
+                    REGS::ucsrb.clearBit(REGS::ucsrb.TXEN);
                     break;
             }
         }
@@ -164,7 +182,7 @@ auto constexpr UBRR0H = Register<SFR::UBRRH>();
         bool
         is_tx_buffer_empty() const
         {
-            return static_cast<bool>(SFR::iomem(REGS::ucsra) & UDRE);
+            return static_cast<bool>(REGS::ucsra.read() & REGS::ucsra.UDRE);
         }
 
         void
@@ -172,10 +190,11 @@ auto constexpr UBRR0H = Register<SFR::UBRRH>();
         {
             while (!is_tx_buffer_empty()) {
             }
-            SFR::iomem(REGS::udr) = byte;
+            REGS::udr = byte;
         }
     };
 
 }
 
 #include <mcu_usart.h>
+#endif
