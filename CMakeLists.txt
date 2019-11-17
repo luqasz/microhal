@@ -22,7 +22,6 @@ add_executable(
     src/main.cpp
     src/sfr.cpp
     src/eeprom.cpp
-    src/gpio.cpp
     )
 
 target_compile_definitions(
