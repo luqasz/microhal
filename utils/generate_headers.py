@@ -7,6 +7,7 @@ import yaml
 from pathlib import Path
 from collections import namedtuple
 
+
 def filterDevices(device):
     # Devices that do not have all three DDR, PORT, PIN registers for each port
     names = device.name not in (
@@ -19,7 +20,7 @@ def filterDevices(device):
         'ATmega406',
     )
     # These devices have differend register arrangement
-    archs = device.arch not in ('AVR8X',)
+    archs = device.arch not in ('AVR8X', )
     return all((names, archs))
 
 
@@ -108,7 +109,10 @@ def render(mcu, regs, template):
     return Renderer.jenv.get_template(template + '.j2').render(
         device=mcu,
         registers=regs,
-        size_to_uint={1: 'uint8_t', 2: 'uint16_t'},
+        size_to_uint={
+            1: 'uint8_t',
+            2: 'uint16_t'
+        },
     ).lstrip()
 
 

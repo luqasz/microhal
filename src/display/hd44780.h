@@ -60,7 +60,7 @@ namespace HD44780 {
 
     template <typename DATA_LINE>
     class LCD {
-        const DATA_LINE      dataLine;
+        const DATA_LINE       dataLine;
         const GPIO::OutputPin rs;
         const GPIO::OutputPin rw;
         const GPIO::OutputPin e;
@@ -100,7 +100,6 @@ namespace HD44780 {
             enable(Low);
             waitUntillReady();
         }
-
 
     public:
         /*

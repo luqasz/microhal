@@ -1,8 +1,9 @@
 #ifndef gpio_h
 #define gpio_h
 
-#include <stdint.h>
 #include "sfr.h"
+
+#include <stdint.h>
 
 namespace GPIO {
 
@@ -46,8 +47,8 @@ namespace GPIO {
     public:
         const GPIO::Port      port;
         const GPIO::PinNumber number;
-        OutputPin output() const;
-        InputPin input() const;
+        OutputPin             output() const;
+        InputPin              input() const;
     };
 
     class OutputPin {
@@ -78,7 +79,6 @@ namespace GPIO {
                     break;
             }
         }
-
     };
 
     class InputPin {

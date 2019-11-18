@@ -1,10 +1,10 @@
 #include "adc.h"
+#include "display/hd44780.h"
 #include "eeprom.h"
 #include "gpio.h"
 #include "irq.h"
 #include "printer.h"
 #include "usart.h"
-#include "display/hd44780.h"
 
 #include <stdlib.h>
 
@@ -14,7 +14,7 @@ auto serial = Printer<USART::Async<USART::USART0>, RN>(usart);
 int
 main(void)
 {
-    auto lcd = HD44780::LCD(GPIO::PortA, GPIO::PB1, GPIO::PB2, GPIO::PB3);
+    auto lcd     = HD44780::LCD(GPIO::PortA, GPIO::PB1, GPIO::PB2, GPIO::PB3);
     auto display = Printer<HD44780::LCD<GPIO::Port>, None>(lcd);
     display.print("napis");
     Irq::enable();

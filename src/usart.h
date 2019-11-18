@@ -11,14 +11,14 @@ namespace USART {
     struct UCSRA {
         constexpr static uint8_t address = REG::address;
         enum bits {
-        MPCM = 1,   // Multi-processor Communication Mode
-        U2X  = 2,   // Double the USART transmission speed
-        UPE  = 4,   // Parity Error
-        DOR  = 8,   // Data overRun
-        FE   = 16,  // Framing Error
-        UDRE = 32,  // USART Data Register Empty
-        TXC  = 64,  // USART Transmitt Complete
-        RXC  = 128, // USART Receive Complete
+            MPCM = 1,   // Multi-processor Communication Mode
+            U2X  = 2,   // Double the USART transmission speed
+            UPE  = 4,   // Parity Error
+            DOR  = 8,   // Data overRun
+            FE   = 16,  // Framing Error
+            UDRE = 32,  // USART Data Register Empty
+            TXC  = 64,  // USART Transmitt Complete
+            RXC  = 128, // USART Receive Complete
         };
     };
 
@@ -26,14 +26,14 @@ namespace USART {
     struct UCSRB {
         constexpr static uint8_t address = REG::address;
         enum bits {
-        TXB8  = 1,   // Transmit Data Bit 8
-        RXB8  = 2,   // Receive Data Bit 8
-        UCSZ2 = 4,   // Character Size
-        TXEN  = 8,   // Transmitter Enable
-        RXEN  = 16,  // Receiver Enable
-        UDRIE = 32,  // USART Data register Empty Interrupt Enable
-        TXCIE = 64,  // TX Complete Interrupt Enable
-        RXCIE = 128, // RX Complete Interrupt Enable
+            TXB8  = 1,   // Transmit Data Bit 8
+            RXB8  = 2,   // Receive Data Bit 8
+            UCSZ2 = 4,   // Character Size
+            TXEN  = 8,   // Transmitter Enable
+            RXEN  = 16,  // Receiver Enable
+            UDRIE = 32,  // USART Data register Empty Interrupt Enable
+            TXCIE = 64,  // TX Complete Interrupt Enable
+            RXCIE = 128, // RX Complete Interrupt Enable
         };
     };
 
@@ -41,17 +41,16 @@ namespace USART {
     struct UCSRC {
         constexpr static uint8_t address = REG::address;
         enum bits {
-        UCPOL = 1,   // Clock Polarity
-        UCSZ0 = 2,   // Character Size
-        UCSZ1 = 4,   // Character Size
-        USBS  = 8,   // Stop Bit Select
-        UPM0  = 16,  // Parity Mode Bits
-        UPM1  = 32,  // Parity Mode Bits
-        UMSEL = 64,  // USART Mode Select
-        URSEL = 128, // Register Select
+            UCPOL = 1,   // Clock Polarity
+            UCSZ0 = 2,   // Character Size
+            UCSZ1 = 4,   // Character Size
+            USBS  = 8,   // Stop Bit Select
+            UPM0  = 16,  // Parity Mode Bits
+            UPM1  = 32,  // Parity Mode Bits
+            UMSEL = 64,  // USART Mode Select
+            URSEL = 128, // Register Select
         };
     };
-
 
     constexpr uint16_t
     calc_baud(const unsigned long int baud, const uint8_t divisor)
@@ -122,7 +121,7 @@ namespace USART {
         The URSEL must be zero when writing the UBRRH. */
         Register<C_REG>().clearBit(C_REG::URSEL);
         Register<HIGH>() = static_cast<uint8_t>((speed >> 8));
-        Register<LOW>() = static_cast<uint8_t>(speed);
+        Register<LOW>()  = static_cast<uint8_t>(speed);
     }
 
     template <typename REG>
@@ -131,7 +130,6 @@ namespace USART {
     {
         Register<REG>() = speed;
     }
-
 
     template <typename REGS>
     class Async {
