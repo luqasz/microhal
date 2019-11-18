@@ -52,41 +52,48 @@ namespace USART {
         };
     };
 
+    /*
+     * Calculate UBRR value based on cpu frequency and desired baud rate.
+     * Select valid divisor parameter for U2X.
+     * 1 when U2X = 0
+     * 2 when U2X = 1
+     */
     constexpr uint16_t
-    calc_baud(const unsigned long int baud, const uint8_t divisor)
+    calc_baud(const unsigned long int freq, const unsigned long int baud, const uint8_t divisor)
     {
-        return static_cast<uint16_t>(
-            ((F_CPU) + (8UL / divisor) * (baud)) / ((16UL / divisor) * (baud)) - 1UL);
+        uint16_t value = static_cast<uint16_t>(freq + (8UL / divisor) * baud);
+        value /= static_cast<uint16_t>((16UL / divisor) * baud);
+        return value - 1;
     }
 
     enum class BaudRate_1x : uint16_t {
-        x1_2400   = calc_baud(2400UL, 1),
-        x1_4800   = calc_baud(4800UL, 1),
-        x1_9600   = calc_baud(9600UL, 1),
-        x1_14400  = calc_baud(14400UL, 1),
-        x1_19200  = calc_baud(19200UL, 1),
-        x1_28800  = calc_baud(28800UL, 1),
-        x1_38400  = calc_baud(38400UL, 1),
-        x1_57600  = calc_baud(57600UL, 1),
-        x1_76800  = calc_baud(76800UL, 1),
-        x1_115200 = calc_baud(115200UL, 1),
-        x1_230400 = calc_baud(230400UL, 1),
-        x1_250000 = calc_baud(250000UL, 1),
+        x1_2400   = calc_baud(F_CPU, 2400UL, 1),
+        x1_4800   = calc_baud(F_CPU, 4800UL, 1),
+        x1_9600   = calc_baud(F_CPU, 9600UL, 1),
+        x1_14400  = calc_baud(F_CPU, 14400UL, 1),
+        x1_19200  = calc_baud(F_CPU, 19200UL, 1),
+        x1_28800  = calc_baud(F_CPU, 28800UL, 1),
+        x1_38400  = calc_baud(F_CPU, 38400UL, 1),
+        x1_57600  = calc_baud(F_CPU, 57600UL, 1),
+        x1_76800  = calc_baud(F_CPU, 76800UL, 1),
+        x1_115200 = calc_baud(F_CPU, 115200UL, 1),
+        x1_230400 = calc_baud(F_CPU, 230400UL, 1),
+        x1_250000 = calc_baud(F_CPU, 250000UL, 1),
     };
 
     enum class BaudRate_2x : uint16_t {
-        x2_2400   = calc_baud(2400UL, 2),
-        x2_4800   = calc_baud(4800UL, 2),
-        x2_9600   = calc_baud(9600UL, 2),
-        x2_14400  = calc_baud(14400UL, 2),
-        x2_19200  = calc_baud(19200UL, 2),
-        x2_28800  = calc_baud(28800UL, 2),
-        x2_38400  = calc_baud(38400UL, 2),
-        x2_57600  = calc_baud(57600UL, 2),
-        x2_76800  = calc_baud(76800UL, 2),
-        x2_115200 = calc_baud(115200UL, 2),
-        x2_230400 = calc_baud(230400UL, 2),
-        x2_250000 = calc_baud(250000UL, 2),
+        x2_2400   = calc_baud(F_CPU, 2400UL, 2),
+        x2_4800   = calc_baud(F_CPU, 4800UL, 2),
+        x2_9600   = calc_baud(F_CPU, 9600UL, 2),
+        x2_14400  = calc_baud(F_CPU, 14400UL, 2),
+        x2_19200  = calc_baud(F_CPU, 19200UL, 2),
+        x2_28800  = calc_baud(F_CPU, 28800UL, 2),
+        x2_38400  = calc_baud(F_CPU, 38400UL, 2),
+        x2_57600  = calc_baud(F_CPU, 57600UL, 2),
+        x2_76800  = calc_baud(F_CPU, 76800UL, 2),
+        x2_115200 = calc_baud(F_CPU, 115200UL, 2),
+        x2_230400 = calc_baud(F_CPU, 230400UL, 2),
+        x2_250000 = calc_baud(F_CPU, 250000UL, 2),
     };
 
     enum class Parity : uint8_t {
