@@ -5,53 +5,6 @@
 
 #include <stdint.h>
 
-template <typename REG_TYPE, typename uint_type = uint8_t>
-class Register : public REG_TYPE {
-private:
-    uint_type volatile &
-    sfr(void) const
-    {
-        return *reinterpret_cast<uint_type volatile *>(REG_TYPE::address);
-    }
-
-public:
-    void
-    write(const uint_type value) const
-    {
-        sfr() = value;
-    }
-
-    uint_type
-    read() const
-    {
-        return sfr();
-    }
-
-    void
-    operator=(const uint_type value) const
-    {
-        sfr() = value;
-    }
-
-    void
-    setBit(const uint_type bit) const
-    {
-        sfr() |= bit;
-    }
-
-    void
-    clearBit(const uint_type bit) const
-    {
-        sfr() &= static_cast<uint_type>(~bit);
-    }
-
-    bool
-    isSet(const uint8_t bit) const
-    {
-        return sfr() & bit;
-    }
-};
-
 namespace SFR {
 
     uint8_t volatile &  iomem(uint8_t address);
@@ -64,6 +17,46 @@ namespace SFR {
     void clearBit(uint16_t address, uint8_t bit);
 
 }
+
+template <typename REG_TYPE, typename uint_type = uint8_t>
+class Register : public REG_TYPE {
+public:
+    void
+    write(const uint_type value) const
+    {
+        SFR::iomem(REG_TYPE::address) = value;
+    }
+
+    uint_type
+    read() const
+    {
+        return SFR::iomem(REG_TYPE::address);
+    }
+
+    void
+    operator=(const uint_type value) const
+    {
+        SFR::iomem(REG_TYPE::address) = value;
+    }
+
+    void
+    setBit(const uint_type bit) const
+    {
+        SFR::iomem(REG_TYPE::address) |= bit;
+    }
+
+    void
+    clearBit(const uint_type bit) const
+    {
+        SFR::iomem(REG_TYPE::address) &= static_cast<uint_type>(~bit);
+    }
+
+    bool
+    isSet(const uint8_t bit) const
+    {
+        return SFR::iomem(REG_TYPE::address) & bit;
+    }
+};
 
 #include <mcu_sfr.h>
 
