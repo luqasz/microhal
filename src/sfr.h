@@ -42,7 +42,7 @@ public:
     void
     clearBit(const uint_type bit) const
     {
-        sfr() &= static_cast<uint8_t>(~bit);
+        sfr() &= static_cast<uint_type>(~bit);
     }
 
     bool
