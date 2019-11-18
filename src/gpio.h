@@ -54,7 +54,7 @@ namespace GPIO {
         const Pin pin;
 
     public:
-        OutputPin(Pin pin) :
+        OutputPin(const Pin & pin) :
             pin(pin)
         {
             SFR::setBit(pin.port.ddr_address, pin.number);
@@ -85,7 +85,7 @@ namespace GPIO {
         const GPIO::Pin pin;
 
     public:
-        InputPin(const Pin pin) :
+        InputPin(const Pin & pin) :
             pin(pin)
         {
             SFR::clearBit(pin.port.ddr_address, pin.number);
@@ -124,7 +124,7 @@ namespace GPIO {
         const GPIO::Port port;
 
     public:
-        Output8Bit(GPIO::Port port) :
+        Output8Bit(const GPIO::Port & port) :
             port(port)
         {
             SFR::iomem(port.ddr_address) = 255;
@@ -147,7 +147,7 @@ namespace GPIO {
         const GPIO::Port port;
 
     public:
-        Input8Bit(const GPIO::Port port) :
+        Input8Bit(const GPIO::Port & port) :
             port(port)
         {
             SFR::iomem(port.ddr_address) = 0;
