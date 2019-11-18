@@ -91,7 +91,7 @@ namespace HD44780 {
         }
 
         void
-        sendByte(uint8_t byte, const GPIO::PinState reg) const
+        sendByte(const uint8_t byte, const GPIO::PinState reg) const
         {
             rs = reg;
             rw = Low;
@@ -110,11 +110,11 @@ namespace HD44780 {
         With winstar WEH oled displays, third stage caused weird characters
         to be displayed, when initialized more than once without power cycle.
         */
-        LCD(const DATA_LINE dataLine, const GPIO::Pin rs, const GPIO::Pin rw, const GPIO::Pin e) :
+        LCD(const DATA_LINE & dataLine, const GPIO::Pin & rs, const GPIO::Pin & rw, const GPIO::Pin & e) :
             dataLine(dataLine),
-            rs(GPIO::OutputPin(rs)),
-            rw(GPIO::OutputPin(rw)),
-            e(GPIO::OutputPin(e))
+            rs(rs.output()),
+            rw(rw.output()),
+            e(e.output())
         {
             _delay_ms(15);
             sendByte(Mode_8Bit | Lines_2 | Dots_5x8, COMMAND);
