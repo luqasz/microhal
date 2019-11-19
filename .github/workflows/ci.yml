@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: [linux]
+    runs-on: ubuntu-latest
     container: 
       image: lukaszkostka/avr:alpine_3.9
       env:
