@@ -12,8 +12,10 @@ jobs:
         CC: avr-gcc
         CXX: avr-g++
     steps:
-      - run: ls -la
-      - run: pwd
+      - name: ls
+        run: ls -la
+      - name: pwd
+        run: pwd
       - name: Run cmake
         run: >
           cmake
