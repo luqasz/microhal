@@ -4,22 +4,23 @@ on: [push]
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: docker://lukaszkostka/avr:alpine_3.9
-    - name: Run cmake
+    runs-on: [linux]
+    container: 
+      image: lukaszkostka/avr:alpine_3.9
       env:
         CMAKE_BUILD_TYPE: MinSizeRel
         CC: avr-gcc
         CXX: avr-g++
-      run: >
-        cmake
-        -H.
-        -GNinja
-        -Bbuild
-    - name: Build
-      run: ninja -C build
-    - name: Size
-      run: ninja -C build size
+    steps:
+      - run: ls -la
+      - run: pwd
+      - name: Run cmake
+        run: >
+          cmake
+          -H.
+          -GNinja
+          -Bbuild
+      - name: Build
+        run: ninja -C build
+      - name: Size
+        run: ninja -C build size
