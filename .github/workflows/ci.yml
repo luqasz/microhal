@@ -1,0 +1,25 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: lukaszkostka/avr:alpine_3.9
+    - name: Run cmake
+      env:
+        CMAKE_BUILD_TYPE: MinSizeRel
+        CC: avr-gcc
+        CXX: avr-g++
+      run: >
+        cmake
+        -H.
+        -GNinja
+        -Bbuild
+    - name: Build
+      run: ninja -C build
+    - name: Size
+      run: ninja -C build size
