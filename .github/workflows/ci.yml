@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: lukaszkostka/avr:alpine_3.9
+    - uses: docker://lukaszkostka/avr:alpine_3.9
     - name: Run cmake
       env:
         CMAKE_BUILD_TYPE: MinSizeRel
