@@ -12,6 +12,8 @@ jobs:
         CC: avr-gcc
         CXX: avr-g++
     steps:
+      - name: Checkout
+        uses: actions/checkout@v1
       - name: Run cmake
         run: >
           cmake
