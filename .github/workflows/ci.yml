@@ -12,11 +12,6 @@ jobs:
         CC: avr-gcc
         CXX: avr-g++
     steps:
-      - uses: actions/checkout@v1
-      - name: ls
-        run: ls -la
-      - name: pwd
-        run: pwd
       - name: Run cmake
         run: >
           cmake
