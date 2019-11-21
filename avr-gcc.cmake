@@ -1,60 +1,41 @@
-cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
-set(CMAKE_CROSSCOMPILING 1)
+find_program(avr_objcopy avr-objcopy)
+find_program(avr_size_tool avr-objdump)
+find_program(avr_objdump avr-objdump)
+find_program(avr_uploadtool avrdude)
 
-find_program(AVR_OBJCOPY avr-objcopy)
-find_program(AVR_SIZE_TOOL avr-objdump)
-find_program(AVR_OBJDUMP avr-objdump)
-find_program(AVR_UPLOADTOOL avrdude)
-
-set(hex_file ${EXECUTABLE_NAME}.hex)
+set(bin_file ${EXECUTABLE_NAME}.bin)
 set(eeprom_file ${EXECUTABLE_NAME}.eeprom)
 # Below values must match. e.g.
 # ihex for objdump i for avrdude
 # binary for objdump r for avrdude
-set(OBJDUMP_FORMAT binary)
-set(AVRDUDE_FORMAT r)
-
-target_compile_options(
-    ${EXECUTABLE_NAME}
-    PUBLIC
-    -mmcu=${AVR_MCU}
-)
-
-# Without this, avr-gcc throws:
-# avr-ld: warning: cannot find entry symbol arch_paths_first; defaulting to 0000000000000000
-string(REPLACE "-Wl,-search_paths_first" "" CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS}")
-string(REPLACE "-Wl,-search_paths_first" "" CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS}")
-
-set_property(
-    TARGET ${EXECUTABLE_NAME}
-    APPEND_STRING PROPERTY
-    LINK_FLAGS " -mmcu=${AVR_MCU}")
+set(objdump_format binary)
+set(avrdude_format r)
 
 add_custom_command(
-    OUTPUT ${hex_file}
+    OUTPUT ${bin_file}
     COMMAND
-        ${AVR_OBJCOPY}
+        ${avr_objcopy}
         -j .text
         -j .data
-        -O ${OBJDUMP_FORMAT} ${EXECUTABLE_NAME} ${hex_file}
+        -O ${objdump_format} ${EXECUTABLE_NAME} ${bin_file}
     DEPENDS ${EXECUTABLE_NAME}
 )
 
 add_custom_command(
    OUTPUT ${eeprom_file}
    COMMAND
-       ${AVR_OBJCOPY}
+       ${avr_objcopy}
        -j .eeprom
        --set-section-flags=.eeprom=alloc,load
        --change-section-lma .eeprom=0
        --no-change-warnings
-       -O ${OBJDUMP_FORMAT} ${EXECUTABLE_NAME} ${eeprom_file}
+       -O ${objdump_format} ${EXECUTABLE_NAME} ${eeprom_file}
    DEPENDS ${EXECUTABLE_NAME}
 )
 
 add_custom_target(
    dis
-       ${AVR_OBJDUMP}
+       ${avr_objdump}
        -w
        -j .text
        -j .data
@@ -67,7 +48,7 @@ add_custom_target(
 
 add_custom_target(
    size
-       ${AVR_SIZE_TOOL}
+       ${avr_size_tool}
        -w
        -P mem-usage
        ${EXECUTABLE_NAME}
@@ -75,29 +56,29 @@ add_custom_target(
 )
 
 add_custom_target(
-   upload_hex
-       ${AVR_UPLOADTOOL}
+   flash
+       ${avr_uploadtool}
        -p ${AVR_MCU}
        -c ${AVR_PROGRAMMER}
-       -U flash:w:${hex_file}:${AVRDUDE_FORMAT}
+       -U flash:w:${bin_file}:${avrdude_format}
        -P ${AVR_PROGRAMMER_PORT}
-   DEPENDS ${hex_file}
+   DEPENDS ${bin_file}
 )
 
 # see also bug http://savannah.nongnu.org/bugs/?40142
 add_custom_target(
-   upload_eeprom
-       ${AVR_UPLOADTOOL}
+   eeprom
+       ${avr_uploadtool}
        -p ${AVR_MCU}
        -c ${AVR_PROGRAMMER}
-       -U eeprom:w:${eeprom_file}:${AVRDUDE_FORMAT}
+       -U eeprom:w:${eeprom_file}:${avrdude_format}
        -P ${AVR_PROGRAMMER_PORT}
    DEPENDS ${eeprom_file}
 )
 
 add_custom_target(
    status
-       ${AVR_UPLOADTOOL}
+       ${avr_uploadtool}
        -p ${AVR_MCU}
        -c ${AVR_PROGRAMMER}
        -P ${AVR_PROGRAMMER_PORT}
@@ -107,7 +88,7 @@ add_custom_target(
 
 add_custom_target(
    get_fuses
-       ${AVR_UPLOADTOOL}
+       ${avr_uploadtool}
        -p ${AVR_MCU}
        -c ${AVR_PROGRAMMER}
        -P ${AVR_PROGRAMMER_PORT}
@@ -118,7 +99,7 @@ add_custom_target(
 
 add_custom_target(
    set_fuses
-       ${AVR_UPLOADTOOL}
+       ${avr_uploadtool}
        -p ${AVR_MCU}
        -c ${AVR_PROGRAMMER}
        -P ${AVR_PROGRAMMER_PORT}

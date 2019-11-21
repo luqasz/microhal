@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 project(avr_libs)
 
+set(CMAKE_CROSSCOMPILING 1)
 set(AVR_PROGRAMMER usbasp)
 set(AVR_PROGRAMMER_PORT usb)
-set(AVR_MCU atmega32)
 set(F_CPU 11059200)
-set(EXECUTABLE_NAME ${PROJECT_NAME}_${AVR_MCU})
+set(EXECUTABLE_NAME ${PROJECT_NAME}_$ENV{MCU})
 set(CMAKE_BUILD_TYPE MinSizeRel)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
@@ -22,7 +22,6 @@ target_compile_definitions(
     PUBLIC
     F_CPU=${F_CPU}UL
     )
-
 
 target_compile_options(
     ${EXECUTABLE_NAME}
@@ -45,17 +44,28 @@ target_compile_options(
     -fno-exceptions
     -fno-asynchronous-unwind-tables
     -fno-rtti
+    -mmcu=$ENV{MCU}
     )
-
 
 set_property(
     TARGET ${EXECUTABLE_NAME}
     APPEND_STRING PROPERTY
     LINK_FLAGS " -Wl,--gc-sections -mrelax -flto -fwhole-program")
 
-include(avr-gcc.cmake)
+set_property(
+    TARGET ${EXECUTABLE_NAME}
+    APPEND_STRING PROPERTY
+    LINK_FLAGS " -mmcu=$ENV{MCU}")
 
-include_directories(
-    AFTER
-    src/${AVR_MCU}
+# Without this, avr-gcc throws:
+# avr-ld: warning: cannot find entry symbol arch_paths_first; defaulting to 0000000000000000
+string(REPLACE "-Wl,-search_paths_first" "" CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS}")
+string(REPLACE "-Wl,-search_paths_first" "" CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS}")
+
+target_include_directories(
+    ${EXECUTABLE_NAME}
+    PUBLIC
+    src/$ENV{MCU}
     )
+
+include(avr-gcc.cmake)
