@@ -87,9 +87,5 @@ namespace ADC {
 void
 Irq::ADC(void)
 {
-    /*
-    When reading directly as uint16_t, ADCL must be read first, then ADCH.
-    Otherwise, ADC behavior is undefined.
-    */
-    adc_value = Register<SFR::ADC, uint16_t>();
+    adc_value = SFR::DataRegisterRO<SFR::ADC, uint16_t>().read();
 }
