@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
-project(avr_libs)
+project(
+    avr_libs
+    LANGUAGES CXX
+    )
 
 set(CMAKE_CROSSCOMPILING 1)
 set(AVR_PROGRAMMER usbasp)
