@@ -47,15 +47,15 @@ target_compile_options(
     -mmcu=$ENV{MCU}
     )
 
-set_property(
-    TARGET ${EXECUTABLE_NAME}
-    APPEND_STRING PROPERTY
-    LINK_FLAGS " -Wl,--gc-sections -mrelax -flto -fwhole-program")
-
-set_property(
-    TARGET ${EXECUTABLE_NAME}
-    APPEND_STRING PROPERTY
-    LINK_FLAGS " -mmcu=$ENV{MCU}")
+target_link_options(
+    ${EXECUTABLE_NAME}
+    PUBLIC
+    -Wl,--gc-sections
+    -mrelax
+    -flto
+    -fwhole-program
+    -mmcu=$ENV{MCU}
+    )
 
 # Without this, avr-gcc throws:
 # avr-ld: warning: cannot find entry symbol arch_paths_first; defaulting to 0000000000000000
