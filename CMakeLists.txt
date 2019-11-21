@@ -8,26 +8,25 @@ set(CMAKE_CROSSCOMPILING 1)
 set(AVR_PROGRAMMER usbasp)
 set(AVR_PROGRAMMER_PORT usb)
 set(F_CPU 11059200)
-set(EXECUTABLE_NAME ${PROJECT_NAME}_$ENV{MCU})
 set(CMAKE_BUILD_TYPE MinSizeRel)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 add_executable(
-    ${EXECUTABLE_NAME}
+    ${PROJECT_NAME}
     src/main.cpp
     src/sfr.cpp
     src/eeprom.cpp
     )
 
 target_compile_definitions(
-    ${EXECUTABLE_NAME}
+    ${PROJECT_NAME}
     PUBLIC
     F_CPU=${F_CPU}UL
     )
 
 target_compile_options(
-    ${EXECUTABLE_NAME}
+    ${PROJECT_NAME}
     PUBLIC
     -fpack-struct
     -fshort-enums
@@ -51,7 +50,7 @@ target_compile_options(
     )
 
 target_link_options(
-    ${EXECUTABLE_NAME}
+    ${PROJECT_NAME}
     PUBLIC
     -Wl,--gc-sections
     -mrelax
@@ -66,7 +65,7 @@ string(REPLACE "-Wl,-search_paths_first" "" CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_F
 string(REPLACE "-Wl,-search_paths_first" "" CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS}")
 
 target_include_directories(
-    ${EXECUTABLE_NAME}
+    ${PROJECT_NAME}
     PUBLIC
     src/$ENV{MCU}
     )
