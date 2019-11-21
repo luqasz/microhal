@@ -53,48 +53,85 @@ namespace USART {
     };
 
     /*
+     * Check if calculated UBRR is acceptable based on:
+     *      cpu frequency
+     *      UBRR
+     *      baud
+     *      acceptabe error rate
+     *      divisor
+     * Returns true if error rate is too high, false otherwise.
+     * Select valid divisor parameter for U2X.
+     * 1 when U2X = 0
+     * 2 when U2X = 1
+     */
+    constexpr bool
+    err_check(
+        const unsigned long freq,
+        const unsigned long ubrr,
+        const unsigned long baud,
+        const uint8_t       tol = 2,
+        const uint8_t       div = 1)
+    {
+        unsigned long calc  = (16UL / div) * ((ubrr) + 1);
+        unsigned long plus  = calc * (100UL * (baud) + (baud) * (tol));
+        unsigned long minus = calc * (100UL * (baud) - (baud) * (tol));
+        if ((100 * freq) > plus) {
+            return true;
+        }
+        if ((100 * freq) < minus) {
+            return true;
+        }
+        return false;
+    }
+
+    /*
      * Calculate UBRR value based on cpu frequency and desired baud rate.
      * Select valid divisor parameter for U2X.
      * 1 when U2X = 0
      * 2 when U2X = 1
      */
-    constexpr uint16_t
-    calc_baud(const unsigned long int freq, const unsigned long int baud, const uint8_t divisor)
+    constexpr unsigned long int
+    calc_ubrr(const unsigned long freq, const unsigned long baud, const uint8_t divisor)
     {
-        uint16_t value = static_cast<uint16_t>(freq + (8UL / divisor) * baud);
-        value /= static_cast<uint16_t>((16UL / divisor) * baud);
+        unsigned long value = static_cast<unsigned long>(freq + (8UL / divisor) * baud);
+        value /= static_cast<unsigned long>((16UL / divisor) * baud);
         return value - 1;
     }
 
-    enum class BaudRate_1x : uint16_t {
-        x1_2400   = calc_baud(F_CPU, 2400UL, 1),
-        x1_4800   = calc_baud(F_CPU, 4800UL, 1),
-        x1_9600   = calc_baud(F_CPU, 9600UL, 1),
-        x1_14400  = calc_baud(F_CPU, 14400UL, 1),
-        x1_19200  = calc_baud(F_CPU, 19200UL, 1),
-        x1_28800  = calc_baud(F_CPU, 28800UL, 1),
-        x1_38400  = calc_baud(F_CPU, 38400UL, 1),
-        x1_57600  = calc_baud(F_CPU, 57600UL, 1),
-        x1_76800  = calc_baud(F_CPU, 76800UL, 1),
-        x1_115200 = calc_baud(F_CPU, 115200UL, 1),
-        x1_230400 = calc_baud(F_CPU, 230400UL, 1),
-        x1_250000 = calc_baud(F_CPU, 250000UL, 1),
+    struct BaudRate {
+        const uint16_t ubrr;
+        const bool     u2x;
+        const bool     is_ok;
     };
 
-    enum class BaudRate_2x : uint16_t {
-        x2_2400   = calc_baud(F_CPU, 2400UL, 2),
-        x2_4800   = calc_baud(F_CPU, 4800UL, 2),
-        x2_9600   = calc_baud(F_CPU, 9600UL, 2),
-        x2_14400  = calc_baud(F_CPU, 14400UL, 2),
-        x2_19200  = calc_baud(F_CPU, 19200UL, 2),
-        x2_28800  = calc_baud(F_CPU, 28800UL, 2),
-        x2_38400  = calc_baud(F_CPU, 38400UL, 2),
-        x2_57600  = calc_baud(F_CPU, 57600UL, 2),
-        x2_76800  = calc_baud(F_CPU, 76800UL, 2),
-        x2_115200 = calc_baud(F_CPU, 115200UL, 2),
-        x2_230400 = calc_baud(F_CPU, 230400UL, 2),
-        x2_250000 = calc_baud(F_CPU, 250000UL, 2),
-    };
+    constexpr BaudRate
+    calc_baud(const unsigned long int baud, const uint8_t tol = 2)
+    {
+        // Fisrt calculate with U2X = 0
+        const unsigned long ubrr   = calc_ubrr(F_CPU, baud, 1);
+        const bool          is_err = err_check(F_CPU, ubrr, baud, tol, 1);
+        if (is_err == false) {
+            return BaudRate { static_cast<uint16_t>(ubrr), false, true };
+        }
+        else {
+            // Recalculate with U2X = 1
+            const unsigned long ubrr   = calc_ubrr(F_CPU, baud, 2);
+            const bool          is_err = err_check(F_CPU, ubrr, baud, tol, 2);
+            if (is_err == false) {
+                return BaudRate { static_cast<uint16_t>(ubrr), true, true };
+            }
+        }
+        return BaudRate { 0, true, false };
+    }
+
+    template <unsigned long int baud, uint8_t tol = 2>
+    constexpr BaudRate
+    get_baud()
+    {
+        constexpr BaudRate rate = calc_baud(baud, tol);
+        static_assert(rate.is_ok, "Calculated error rate too high");
+        return rate;
+    }
 
     enum class Parity : uint8_t {
         None,
@@ -143,19 +180,13 @@ namespace USART {
 
     public:
         constexpr void
-        set(BaudRate_1x value) const
+        set(const BaudRate baud) const
         {
-            uint16_t speed = static_cast<uint16_t>(value);
-            REGS::ubrr(speed);
+            REGS::ubrr(baud.ubrr);
+            if (baud.u2x) {
+                REGS::ucsra.setBit(REGS::ucsra.U2X);
+            }
             REGS::ucsra.clearBit(REGS::ucsra.U2X);
-        }
-
-        constexpr void
-        set(BaudRate_2x value) const
-        {
-            uint16_t speed = static_cast<uint16_t>(value);
-            REGS::ubrr(speed);
-            REGS::ucsra.setBit(REGS::ucsra.U2X);
         }
 
         constexpr void
