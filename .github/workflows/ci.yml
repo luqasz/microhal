@@ -18,6 +18,7 @@ jobs:
       - name: Run cmake
         run: >
           cmake
+          -DF_CPU=11059200
           -H.
           -GNinja
           -Bbuild
