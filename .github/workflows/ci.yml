@@ -11,6 +11,7 @@ jobs:
         CMAKE_BUILD_TYPE: MinSizeRel
         CC: avr-gcc
         CXX: avr-g++
+        MCU: atmega32
     steps:
       - name: Checkout
         uses: actions/checkout@v1
