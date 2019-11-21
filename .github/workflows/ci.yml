@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: 
+    container:
       image: lukaszkostka/avr:alpine_3.9
       env:
         CMAKE_BUILD_TYPE: MinSizeRel
