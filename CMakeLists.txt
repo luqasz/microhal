@@ -44,7 +44,7 @@ target_compile_options(
     -fno-exceptions
     -fno-asynchronous-unwind-tables
     -fno-rtti
-    -mmcu=$ENV{MCU}
+    -mmcu=${MCU}
     )
 
 target_link_options(
@@ -54,7 +54,7 @@ target_link_options(
     -mrelax
     -flto
     -fwhole-program
-    -mmcu=$ENV{MCU}
+    -mmcu=${MCU}
     )
 
 # Without this, avr-gcc throws:
@@ -65,7 +65,7 @@ string(REPLACE "-Wl,-search_paths_first" "" CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LI
 target_include_directories(
     ${PROJECT_NAME}
     PUBLIC
-    src/$ENV{MCU}
+    src/${MCU}
     )
 
 include(avr-gcc.cmake)
