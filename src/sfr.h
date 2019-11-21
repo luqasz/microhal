@@ -16,10 +16,52 @@ namespace SFR {
     void clearBit(uint8_t address, uint8_t bit);
     void clearBit(uint16_t address, uint8_t bit);
 
+    template <typename REG_TYPE, typename uint_type>
+    class RegisterRO : public REG_TYPE {
+    public:
+        uint_type
+        read() const
+        {
+            return iomem(REG_TYPE::address);
+        }
+
+        bool
+        isSet(const uint8_t bit) const
+        {
+            return read() & bit;
+        }
+    };
+
+    template <typename REG_TYPE, typename uint_type>
+    class DataRegisterRO : public REG_TYPE {
+    public:
+        uint_type
+        read() const
+        {
+            return iomem(REG_TYPE::address);
+        }
+    };
+
+    template <typename REG_TYPE, typename uint_type>
+    class DataRegisterRW : public DataRegisterRO<REG_TYPE, uint_type> {
+    public:
+        void
+        write(const uint_type value) const
+        {
+            SFR::iomem(REG_TYPE::address) = value;
+        }
+
+        void
+        operator=(const uint_type value) const
+        {
+            write(value);
+        }
+    };
+
 }
 
 template <typename REG_TYPE, typename uint_type = uint8_t>
-class Register : public REG_TYPE {
+class Register : public SFR::RegisterRO<REG_TYPE, uint_type> {
 public:
     void
     write(const uint_type value) const
@@ -27,16 +69,10 @@ public:
         SFR::iomem(REG_TYPE::address) = value;
     }
 
-    uint_type
-    read() const
-    {
-        return SFR::iomem(REG_TYPE::address);
-    }
-
     void
     operator=(const uint_type value) const
     {
-        SFR::iomem(REG_TYPE::address) = value;
+        write(value);
     }
 
     void
@@ -49,12 +85,6 @@ public:
     clearBit(const uint_type bit) const
     {
         SFR::iomem(REG_TYPE::address) &= static_cast<uint_type>(~bit);
-    }
-
-    bool
-    isSet(const uint8_t bit) const
-    {
-        return SFR::iomem(REG_TYPE::address) & bit;
     }
 };
 
