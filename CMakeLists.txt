@@ -10,13 +10,6 @@ set(CMAKE_BUILD_TYPE MinSizeRel)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
-string(
-    TIMESTAMP
-    UTC_DATETIME
-    "%Y.%m.%d %H:%M"
-    UTC
-    )
-
 add_executable(
     ${EXECUTABLE_NAME}
     src/main.cpp
