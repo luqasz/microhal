@@ -4,7 +4,6 @@ project(
     LANGUAGES CXX
     )
 
-set(CMAKE_CROSSCOMPILING 1)
 set(AVR_PROGRAMMER usbasp)
 set(AVR_PROGRAMMER_PORT usb)
 set(F_CPU 11059200)
