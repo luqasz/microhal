@@ -1,3 +1,3 @@
-[![CircleCI](https://circleci.com/gh/luqasz/avr.svg?style=svg)](https://circleci.com/gh/luqasz/avr)
+![](https://github.com/luqasz/avr/workflows/CI/badge.svg)
 
 ### Personal collection of AVR programming stuff.
