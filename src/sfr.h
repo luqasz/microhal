@@ -7,14 +7,26 @@
 
 namespace SFR {
 
-    uint8_t volatile &  iomem(uint8_t address);
-    uint16_t volatile & iomem(uint16_t address);
+    template <typename UINT>
+    UINT volatile &
+    iomem(UINT address)
+    {
+        return *reinterpret_cast<UINT volatile *>(address);
+    }
 
-    void setBit(uint8_t address, uint8_t bit);
-    void setBit(uint16_t address, uint8_t bit);
+    template <typename UINT>
+    void
+    setBit(UINT address, uint8_t bit)
+    {
+        iomem(address) |= bit;
+    }
 
-    void clearBit(uint8_t address, uint8_t bit);
-    void clearBit(uint16_t address, uint8_t bit);
+    template <typename UINT>
+    void
+    clearBit(UINT address, uint8_t bit)
+    {
+        iomem(address) &= static_cast<uint8_t>(~bit);
+    }
 
     template <typename REG_TYPE, typename uint_type>
     class RegisterRO : public REG_TYPE {

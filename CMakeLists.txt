@@ -13,7 +13,6 @@ set(AVR_PROGRAMMER_PORT usb)
 add_executable(
     ${PROJECT_NAME}
     main.cpp
-    src/sfr.cpp
     )
 
 set_property(
