@@ -7,7 +7,6 @@ project(
 set(AVR_PROGRAMMER usbasp)
 set(AVR_PROGRAMMER_PORT usb)
 set(CMAKE_BUILD_TYPE MinSizeRel)
-set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 add_executable(
     ${PROJECT_NAME}
