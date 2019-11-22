@@ -14,7 +14,6 @@ add_executable(
     ${PROJECT_NAME}
     main.cpp
     src/sfr.cpp
-    src/eeprom.cpp
     )
 
 set_property(
