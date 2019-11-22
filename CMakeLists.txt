@@ -61,11 +61,5 @@ target_link_options(
 # avr-ld: warning: cannot find entry symbol arch_paths_first; defaulting to 0000000000000000
 string(REPLACE "-Wl,-search_paths_first" "" CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS}")
 string(REPLACE "-Wl,-search_paths_first" "" CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS}")
-
-target_include_directories(
-    ${PROJECT_NAME}
-    PUBLIC
-    src/${MCU}
-    )
-
+include(src/mcu.cmake)
 include(avr-gcc.cmake)
