@@ -3,6 +3,7 @@
 #include <eeprom.h>
 #include <gpio.h>
 #include <irq.h>
+#include <pin_irq.h>
 #include <printer.h>
 #include <stdlib.h>
 #include <usart.h>
@@ -24,6 +25,8 @@ main(void)
     uint16_t eeaddress = EEPROM::start;
     uint8_t  read      = EEPROM::read(eeaddress);
     serial.printLn(read);
+    PinIRQ::set(PinIRQ::INT0, PinIRQ::Trigger::Rising);
+    PinIRQ::enable(PinIRQ::INT0);
     while (true) {
     }
 }
