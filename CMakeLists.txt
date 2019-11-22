@@ -7,7 +7,6 @@ project(
 set(AVR_PROGRAMMER usbasp)
 set(AVR_PROGRAMMER_PORT usb)
 set(CMAKE_BUILD_TYPE MinSizeRel)
-set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 add_executable(
@@ -15,6 +14,14 @@ add_executable(
     src/main.cpp
     src/sfr.cpp
     src/eeprom.cpp
+    )
+
+set_property(
+    TARGET
+    ${PROJECT_NAME}
+    PROPERTY
+    CXX_STANDARD
+    17
     )
 
 target_compile_definitions(
