@@ -1,8 +1,8 @@
 #ifndef ds1337_h
 #define ds1337_h
 
+#include "datetime.h"
 #include "i2c.h"
-#include "time.h"
 
 #include <stdint.h>
 

@@ -3,7 +3,6 @@
 #include "bcd.h"
 #include "buffer.h"
 #include "i2c.h"
-#include "time.h"
 
 #include <stdint.h>
 
