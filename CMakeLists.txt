@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
+# Without this, avr-gcc throws:
+# avr-ld: warning: cannot find entry symbol arch_paths_first; defaulting to 0000000000000000
+set(HAVE_FLAG_SEARCH_PATHS_FIRST 0)
 project(
     avr_libs
     LANGUAGES CXX
@@ -9,7 +12,7 @@ set(AVR_PROGRAMMER_PORT usb)
 
 add_executable(
     ${PROJECT_NAME}
-    src/main.cpp
+    main.cpp
     src/sfr.cpp
     src/eeprom.cpp
     )
@@ -62,9 +65,16 @@ target_link_options(
     -mmcu=${MCU}
     )
 
-# Without this, avr-gcc throws:
-# avr-ld: warning: cannot find entry symbol arch_paths_first; defaulting to 0000000000000000
-string(REPLACE "-Wl,-search_paths_first" "" CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS}")
-string(REPLACE "-Wl,-search_paths_first" "" CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS}")
-include(src/mcu.cmake)
+target_include_directories(
+    ${PROJECT_NAME}
+    PUBLIC
+    src/${MCU}
+    )
+
+target_include_directories(
+    ${PROJECT_NAME}
+    PUBLIC
+    src/
+    )
+
 include(avr-gcc.cmake)

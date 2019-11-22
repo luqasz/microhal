@@ -1,12 +1,11 @@
-#include "adc.h"
-#include "display/hd44780.h"
-#include "eeprom.h"
-#include "gpio.h"
-#include "irq.h"
-#include "printer.h"
-#include "usart.h"
-
+#include <adc.h>
+#include <display/hd44780.h>
+#include <eeprom.h>
+#include <gpio.h>
+#include <irq.h>
+#include <printer.h>
 #include <stdlib.h>
+#include <usart.h>
 
 auto constexpr baud = USART::get_baud<115200, 2>();
 auto usart          = USART::Async<USART::USART0>();
