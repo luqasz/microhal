@@ -2,6 +2,7 @@
 #define i2c_h
 
 #include "buffer.h"
+#include "sfr.h"
 
 #include <stdint.h>
 
@@ -43,7 +44,7 @@ namespace I2C {
     void
     twcr_wait(const uint8_t bit)
     {
-        while (!(TWCR & bit)) {
+        while (!TWCR.isSet(bit)) {
         };
     }
 
@@ -76,7 +77,7 @@ namespace I2C {
         TWCR = (TWCR.TWINT | ack | TWCR.TWEN);
         // Wait until byte is present in register.
         twcr_wait(TWCR.TWINT);
-        return TWDR;
+        return TWDR.read();
     }
 
     void
@@ -88,7 +89,7 @@ namespace I2C {
     class Master {
     public:
         void
-        write(const I2C::Target & target, Buffer::Bytes)
+        write(const I2C::Target & target, Buffer::Bytes buffer)
         {
             set_speed(target.speed);
             start_signal();
@@ -111,8 +112,8 @@ namespace I2C {
             write_blocking(static_cast<uint8_t>((target.address << 1) + 1));
             uint8_t counter = static_cast<uint8_t>(target.end_address - target.start_address);
             for (auto & value : buffer) {
-                counter--;
                 value = read_blocking(counter ? ACK : NACK);
+                counter--;
             }
             stop_signal();
         }
