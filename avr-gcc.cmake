@@ -58,7 +58,7 @@ add_custom_target(
 add_custom_target(
    flash
        ${avr_uploadtool}
-       -p ${AVR_MCU}
+       -p ${MCU}
        -c ${AVR_PROGRAMMER}
        -U flash:w:${bin_file}:${avrdude_format}
        -P ${AVR_PROGRAMMER_PORT}
@@ -69,7 +69,7 @@ add_custom_target(
 add_custom_target(
    eeprom
        ${avr_uploadtool}
-       -p ${AVR_MCU}
+       -p ${MCU}
        -c ${AVR_PROGRAMMER}
        -U eeprom:w:${eeprom_file}:${avrdude_format}
        -P ${AVR_PROGRAMMER_PORT}
@@ -79,7 +79,7 @@ add_custom_target(
 add_custom_target(
    status
        ${avr_uploadtool}
-       -p ${AVR_MCU}
+       -p ${MCU}
        -c ${AVR_PROGRAMMER}
        -P ${AVR_PROGRAMMER_PORT}
        -n
@@ -89,7 +89,7 @@ add_custom_target(
 add_custom_target(
    get_fuses
        ${avr_uploadtool}
-       -p ${AVR_MCU}
+       -p ${MCU}
        -c ${AVR_PROGRAMMER}
        -P ${AVR_PROGRAMMER_PORT}
        -n
@@ -100,7 +100,7 @@ add_custom_target(
 add_custom_target(
    set_fuses
        ${avr_uploadtool}
-       -p ${AVR_MCU}
+       -p ${MCU}
        -c ${AVR_PROGRAMMER}
        -P ${AVR_PROGRAMMER_PORT}
        -U lfuse:w:${AVR_L_FUSE}:m
