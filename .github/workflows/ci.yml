@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: lukaszkostka/avr:alpine_3.9
+      image: lukaszkostka/avr:alpine_3.10
       env:
         CXX: avr-g++
     steps:
@@ -23,5 +23,25 @@ jobs:
           -Bbuild
       - name: Build
         run: ninja -C build
-      - name: Size
-        run: ninja -C build size
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: lukaszkostka/avr:alpine_3.10
+      env:
+        CXX: clang++
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Run cmake
+        run: >
+          cmake
+          -DF_CPU=11059200
+          -DMCU=atmega32
+          -DBUILD_TESTS=ON
+          -H.
+          -GNinja
+          -Bbuild
+      - name: Build
+        run: ninja -C build tests
+      - name: Run tests
+        run: build/tests

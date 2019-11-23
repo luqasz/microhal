@@ -43,6 +43,7 @@
 *.pdb
 
 build
+build_tests
 
 # GNU backup files
 *~
