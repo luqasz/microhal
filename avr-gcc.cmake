@@ -10,8 +10,8 @@ set(avrdude_format r)
 
 function(binutils target_name)
 
-    set(eeprom_file ${taget_name}.eeprom)
-    set(bin_file ${taget_name}.bin)
+    set(eeprom_file ${target_name}.eeprom)
+    set(bin_file ${target_name}.bin)
 
     add_custom_command(
         OUTPUT ${bin_file}
@@ -19,8 +19,8 @@ function(binutils target_name)
             ${avr_objcopy}
             -j .text
             -j .data
-            -O ${objdump_format} ${taget_name} ${bin_file}
-            DEPENDS ${taget_name}
+            -O ${objdump_format} ${target_name} ${bin_file}
+            DEPENDS ${target_name}
     )
 
     add_custom_command(
@@ -31,8 +31,8 @@ function(binutils target_name)
            --set-section-flags=.eeprom=alloc,load
            --change-section-lma .eeprom=0
            --no-change-warnings
-           -O ${objdump_format} ${taget_name} ${eeprom_file}
-           DEPENDS ${taget_name}
+           -O ${objdump_format} ${target_name} ${eeprom_file}
+           DEPENDS ${target_name}
     )
 
     add_custom_target(
@@ -43,8 +43,8 @@ function(binutils target_name)
            -j .data
            -C
            -S
-           ${taget_name}
-           DEPENDS ${taget_name}
+           ${target_name}
+           DEPENDS ${target_name}
     )
 
     add_custom_target(
@@ -52,13 +52,13 @@ function(binutils target_name)
            ${avr_size_tool}
            -w
            -P mem-usage
-           ${taget_name}
-           DEPENDS ${taget_name}
+           ${target_name}
+           DEPENDS ${target_name}
     )
 endfunction()
 
 function(avrdude target_name)
-    set(bin_file ${taget_name}.bin)
+    set(bin_file ${target_name}.bin)
 
     add_custom_target(
        flash_${target_name}
