@@ -85,6 +85,7 @@ endfunction()
 
 example(rtc)
 example(usart)
+example(flash)
 
 
 if(${BUILD_TESTS})

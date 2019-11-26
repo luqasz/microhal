@@ -2,6 +2,7 @@
 #define printer_h
 
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 struct RN {
@@ -13,9 +14,9 @@ struct None {
 };
 
 template <typename Output, typename LE = None>
-struct Printer : LE {
+struct Printer {
     Output output;
-    char   buf[8];
+    char   buf[12];
     constexpr Printer(Output o) :
         output(o) {}
 
@@ -36,16 +37,31 @@ struct Printer : LE {
     }
 
     constexpr void
-    print(const uint32_t num)
+    print(const unsigned int num)
     {
-        itoa(static_cast<int>(num), buf, 10);
+        utoa(num, buf, 10);
         print(buf);
     }
 
     constexpr void
-    printLn(const uint32_t num)
+    printLn(const unsigned int num)
     {
-        itoa(static_cast<int>(num), buf, 10);
+        utoa(num, buf, 10);
+        print(buf);
+        print(LE::lineEnd);
+    }
+
+    constexpr void
+    print(const unsigned long int num)
+    {
+        ultoa(num, buf, 10);
+        print(buf);
+    }
+
+    constexpr void
+    printLn(const unsigned long int num)
+    {
+        ultoa(num, buf, 10);
         print(buf);
         print(LE::lineEnd);
     }
