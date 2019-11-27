@@ -1,59 +1,56 @@
-#ifndef adc_h
-#define adc_h
-
-#include "sfr.h"
+#pragma once
 
 #include <mcu_adc.h>
 #include <stdint.h>
 
 namespace ADC {
 
-    enum class Channel {
-        ADC0 = 0,
-        ADC1 = ADC::ADMUX_REG::MUX0,
-        ADC2 = ADC::ADMUX_REG::MUX1,
-        ADC3 = ADC::ADMUX_REG::MUX0 | ADC::ADMUX_REG::MUX1,
-        ADC4 = ADC::ADMUX_REG::MUX2,
-        ADC5 = ADC::ADMUX_REG::MUX0 | ADC::ADMUX_REG::MUX2,
-        ADC6 = ADC::ADMUX_REG::MUX1 | ADC::ADMUX_REG::MUX2,
-        ADC7 = ADC::ADMUX_REG::MUX0 | ADC::ADMUX_REG::MUX1 | ADC::ADMUX_REG::MUX2,
-    };
+    void
+    enable()
+    {
+        ControllRegister.setBit(ControllRegister.ADEN);
+    }
 
-    enum class Vref {
-        Internal = ADC::VREF_REG::REFS0 | ADC::VREF_REG::REFS1,
-        AVCC     = ADC::VREF_REG::REFS0,
-        AREF     = 0,
-    };
+    void
+    disable()
+    {
+        ControllRegister.clearBit(ControllRegister.ADEN);
+    }
 
-    enum class Prescaler {
-        DIV_2   = ADC::PRESCALER_REG::ADPS0,
-        DIV_4   = ADC::PRESCALER_REG::ADPS1,
-        DIV_8   = ADC::PRESCALER_REG::ADPS0 | ADC::PRESCALER_REG::ADPS1,
-        DIV_16  = ADC::PRESCALER_REG::ADPS2,
-        DIV_32  = ADC::PRESCALER_REG::ADPS0 | ADC::PRESCALER_REG::ADPS2,
-        DIV_64  = ADC::PRESCALER_REG::ADPS1 | ADC::PRESCALER_REG::ADPS2,
-        DIV_128 = ADC::PRESCALER_REG::ADPS0 | ADC::PRESCALER_REG::ADPS1 | ADC::PRESCALER_REG::ADPS2,
-    };
+    uint16_t
+    read(const Channel ch)
+    {
+        enable();
+        ChannelRegister.clearBit(MUX_BITS);
+        ChannelRegister.setBit(ch);
+        ControllRegister.setBit(ControllRegister.ADSC);         // Start conversion
+        while (ControllRegister.isSet(ControllRegister.ADSC)) { // Wait untill conversion is ready
+        }
+        return DataRegister.read();
+    }
 
-    enum class TriggerSource {
-        FreeRunning                  = 0,
-        AnalogComparator             = ADC::TRIGGER_REG::ADTS0,
-        ExternalInterrupt0           = ADC::TRIGGER_REG::ADTS1,
-        TimerCounter0_CompareMatch_A = ADC::TRIGGER_REG::ADTS0 | ADC::TRIGGER_REG::ADTS1,
-        TimerCounter0_Overflow       = ADC::TRIGGER_REG::ADTS2,
-        TimerCounter1_CompareMatch_B = ADC::TRIGGER_REG::ADTS0 | ADC::TRIGGER_REG::ADTS2,
-        TimerCounter1_Overflow       = ADC::TRIGGER_REG::ADTS0 | ADC::TRIGGER_REG::ADTS2,
-        TimerCounter1_CaptureEvent   = ADC::TRIGGER_REG::ADTS0 | ADC::TRIGGER_REG::ADTS1 | ADC::TRIGGER_REG::ADTS2,
-    };
+    void
+    set(const Prescaler value)
+    {
+        PrescalerRegister.clearBit(PRESCALER_BITS);
+        PrescalerRegister.setBit(value);
+    }
 
-    uint16_t read();
-    void     start();
-    void     enable();
-    void     disable();
-    void     set(Prescaler);
-    void     set(Channel);
-    void     set(Vref);
-    void     set(TriggerSource);
+    void
+    set(const Vref ref)
+    {
+        VrefRegister.clearBit(VREF_BITS);
+        VrefRegister.setBit(ref);
+    }
+
+    void
+    set(const TriggerSource src)
+    {
+        ControllRegister.setBit(ControllRegister.ADIE);  // Enable interrupt
+        ControllRegister.setBit(ControllRegister.ADATE); // Enable auto trigger
+        ControllRegister.setBit(ControllRegister.ADSC);  // Start conversion
+        TriggerRegister.clearBit(TRIGGER_BITS);
+        TriggerRegister.setBit(src);
+    }
+
 }
-
-#endif
