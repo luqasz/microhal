@@ -23,9 +23,9 @@ namespace MCP49x2 {
     };
 
     class DAC {
+    public:
         uint16_t bits = 0;
 
-    public:
         void
         set(Gain gain)
         {

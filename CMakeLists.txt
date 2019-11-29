@@ -87,6 +87,7 @@ example(rtc)
 example(usart)
 example(flash)
 example(adc)
+example(spi)
 
 
 if(${BUILD_TESTS})
