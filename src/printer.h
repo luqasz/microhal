@@ -37,21 +37,6 @@ struct Printer {
     }
 
     constexpr void
-    print(const unsigned int num)
-    {
-        utoa(num, buf, 10);
-        print(buf);
-    }
-
-    constexpr void
-    printLn(const unsigned int num)
-    {
-        utoa(num, buf, 10);
-        print(buf);
-        print(LE::lineEnd);
-    }
-
-    constexpr void
     print(const unsigned long int num)
     {
         ultoa(num, buf, 10);

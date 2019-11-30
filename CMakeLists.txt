@@ -88,6 +88,7 @@ example(usart)
 example(flash)
 example(adc)
 example(spi)
+example(watchdog)
 
 
 if(${BUILD_TESTS})
