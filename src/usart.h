@@ -172,7 +172,7 @@ namespace USART {
     constexpr static inline void
     set_ubrr_single(const uint16_t speed)
     {
-        Register<REG>() = speed;
+        SFR::BitRegisterRW<REG, uint16_t>() = speed;
     }
 
     template <typename REGS>

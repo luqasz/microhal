@@ -32,9 +32,9 @@ namespace GPIO {
     class Input8Bit;
 
     struct Port {
-        const uint8_t port_address;
-        const uint8_t pin_address;
-        const uint8_t ddr_address;
+        const uint16_t port_address;
+        const uint16_t pin_address;
+        const uint16_t ddr_address;
 
         Output8Bit output() const;
         Input8Bit  input() const;
@@ -58,7 +58,7 @@ namespace GPIO {
         OutputPin(const Pin & pin) :
             pin(pin)
         {
-            SFR::setBit(pin.port.ddr_address, pin.number);
+            SFR::setBit<uint8_t>(pin.port.ddr_address, pin.number);
         }
 
         void
@@ -72,10 +72,10 @@ namespace GPIO {
         {
             switch (state) {
                 case GPIO::PinState::High:
-                    SFR::setBit(pin.port.port_address, pin.number);
+                    SFR::setBit<uint8_t>(pin.port.port_address, pin.number);
                     break;
                 case GPIO::PinState::Low:
-                    SFR::clearBit(pin.port.port_address, pin.number);
+                    SFR::clearBit<uint8_t>(pin.port.port_address, pin.number);
                     break;
             }
         }
@@ -88,7 +88,7 @@ namespace GPIO {
         InputPin(const Pin & pin) :
             pin(pin)
         {
-            SFR::clearBit(pin.port.ddr_address, pin.number);
+            SFR::clearBit<uint8_t>(pin.port.ddr_address, pin.number);
         }
 
         bool
@@ -102,10 +102,10 @@ namespace GPIO {
         {
             switch (mode) {
                 case GPIO::PullMode::HiZ:
-                    SFR::clearBit(pin.port.port_address, pin.number);
+                    SFR::clearBit<uint8_t>(pin.port.port_address, pin.number);
                     break;
                 case GPIO::PullMode::PullUp:
-                    SFR::setBit(pin.port.port_address, pin.number);
+                    SFR::setBit<uint8_t>(pin.port.port_address, pin.number);
                     break;
             }
         }
@@ -113,7 +113,7 @@ namespace GPIO {
         PinState
         read() const
         {
-            if (SFR::iomem(pin.port.pin_address) & pin.number) {
+            if (SFR::iomem<uint8_t>(pin.port.pin_address) & pin.number) {
                 return GPIO::PinState::High;
             }
             return GPIO::PinState::Low;
@@ -127,7 +127,7 @@ namespace GPIO {
         Output8Bit(const GPIO::Port & port) :
             port(port)
         {
-            SFR::iomem(port.ddr_address) = 255;
+            SFR::iomem<uint8_t>(port.ddr_address) = 255;
         }
 
         void
@@ -139,7 +139,7 @@ namespace GPIO {
         void
         write(const uint8_t value) const
         {
-            SFR::iomem(port.port_address) = value;
+            SFR::iomem<uint8_t>(port.port_address) = value;
         }
     };
 
@@ -150,7 +150,7 @@ namespace GPIO {
         Input8Bit(const GPIO::Port & port) :
             port(port)
         {
-            SFR::iomem(port.ddr_address) = 0;
+            SFR::iomem<uint8_t>(port.ddr_address) = 0;
         }
 
         bool
@@ -162,7 +162,7 @@ namespace GPIO {
         uint8_t
         read() const
         {
-            return SFR::iomem(port.pin_address);
+            return SFR::iomem<uint8_t>(port.pin_address);
         }
 
         void
@@ -170,10 +170,10 @@ namespace GPIO {
         {
             switch (mode) {
                 case GPIO::PullMode::HiZ:
-                    SFR::iomem(port.port_address) = 0;
+                    SFR::iomem<uint8_t>(port.port_address) = 0;
                     break;
                 case GPIO::PullMode::PullUp:
-                    SFR::iomem(port.port_address) = 255;
+                    SFR::iomem<uint8_t>(port.port_address) = 255;
                     break;
             }
         }

@@ -7,34 +7,34 @@
 
 namespace SFR {
 
-    template <typename UINT>
-    UINT volatile &
-    iomem(UINT address)
+    template <typename WIDTH>
+    WIDTH volatile &
+    iomem(uint16_t address)
     {
-        return *reinterpret_cast<UINT volatile *>(address);
+        return *reinterpret_cast<WIDTH volatile *>(address);
     }
 
-    template <typename UINT>
+    template <typename WIDTH>
     void
-    setBit(UINT address, uint8_t bit)
+    setBit(uint16_t address, uint8_t bit)
     {
-        iomem(address) |= bit;
+        iomem<WIDTH>(address) |= bit;
     }
 
-    template <typename UINT>
+    template <typename WIDTH>
     void
-    clearBit(UINT address, uint8_t bit)
+    clearBit(uint16_t address, uint8_t bit)
     {
-        iomem(address) &= static_cast<uint8_t>(~bit);
+        iomem<WIDTH>(address) &= static_cast<uint8_t>(~bit);
     }
 
-    template <typename REG_TYPE, typename uint_type>
-    class RegisterRO : public REG_TYPE {
+    template <typename REG_TYPE, typename WIDTH>
+    class BitRegisterRO : public REG_TYPE {
     public:
-        uint_type
+        WIDTH
         read() const
         {
-            return iomem(REG_TYPE::address);
+            return iomem<WIDTH>(REG_TYPE::address);
         }
 
         bool
@@ -44,59 +44,86 @@ namespace SFR {
         }
     };
 
-    template <typename REG_TYPE, typename uint_type>
+    template <typename REG_TYPE, typename WIDTH>
     class DataRegisterRO : public REG_TYPE {
     public:
-        uint_type
+        WIDTH
         read() const
         {
-            return iomem(REG_TYPE::address);
+            return iomem<WIDTH>(REG_TYPE::address);
         }
     };
 
-    template <typename REG_TYPE, typename uint_type>
-    class DataRegisterRW : public DataRegisterRO<REG_TYPE, uint_type> {
+    template <typename REG_TYPE, typename WIDTH>
+    class DataRegisterRW : public DataRegisterRO<REG_TYPE, WIDTH> {
     public:
         void
-        write(const uint_type value) const
+        write(const WIDTH value) const
         {
-            SFR::iomem(REG_TYPE::address) = value;
+            SFR::iomem<WIDTH>(REG_TYPE::address) = value;
         }
 
         void
-        operator=(const uint_type value) const
+        operator=(const WIDTH value) const
         {
             write(value);
         }
     };
 
+    template <typename REG_TYPE, typename WIDTH>
+    class BitRegisterRW : public SFR::BitRegisterRO<REG_TYPE, WIDTH> {
+    public:
+        void
+        write(const WIDTH value) const
+        {
+            SFR::iomem<WIDTH>(REG_TYPE::address) = value;
+        }
+
+        void
+        operator=(const WIDTH value) const
+        {
+            write(value);
+        }
+
+        void
+        setBit(const WIDTH bit) const
+        {
+            SFR::iomem<WIDTH>(REG_TYPE::address) |= bit;
+        }
+
+        void
+        clearBit(const WIDTH bit) const
+        {
+            SFR::iomem<WIDTH>(REG_TYPE::address) &= static_cast<WIDTH>(~bit);
+        }
+    };
 }
 
-template <typename REG_TYPE, typename uint_type = uint8_t>
-class Register : public SFR::RegisterRO<REG_TYPE, uint_type> {
+template <typename REG_TYPE, typename WIDTH = uint8_t>
+class Register : public SFR::BitRegisterRO<REG_TYPE, WIDTH> {
 public:
     void
-    write(const uint_type value) const
+    write(const WIDTH value) const
     {
-        SFR::iomem(REG_TYPE::address) = value;
+        SFR::iomem<WIDTH>(REG_TYPE::address) = value;
     }
 
     void
-    operator=(const uint_type value) const
+    operator=(const WIDTH value) const
     {
         write(value);
     }
 
     void
-    setBit(const uint_type bit) const
+    setBit(const WIDTH bit) const
     {
-        SFR::iomem(REG_TYPE::address) |= bit;
+        SFR::iomem<WIDTH>(REG_TYPE::address) |= bit;
     }
 
     void
-    clearBit(const uint_type bit) const
+    clearBit(const WIDTH bit) const
     {
-        SFR::iomem(REG_TYPE::address) &= static_cast<uint_type>(~bit);
+        SFR::iomem<WIDTH>(REG_TYPE::address) &= static_cast<WIDTH>(~bit);
     }
 };
 
