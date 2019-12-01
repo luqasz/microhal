@@ -3,7 +3,7 @@
 
 namespace Watchdog {
 
-    constexpr auto    wdt     = Register<SFR::WDTCR>();
+    constexpr auto    wdt     = Register<SFR::WDTCSR>();
     constexpr auto    status  = Register<SFR::MCUSR, uint8_t>();
     constexpr uint8_t DISABLE = wdt.WDCE | wdt.WDE;
     constexpr uint8_t CHANGE  = wdt.WDCE;
