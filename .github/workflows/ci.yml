@@ -18,6 +18,9 @@ jobs:
           -DF_CPU=11059200
           -DCMAKE_BUILD_TYPE=MinSizeRel
           -DMCU=atmega32
+          -DAVR_PROGRAMMER=stk500v2
+          -DAVR_PROGRAMMER_BAUD=112500
+          -DAVR_PROGRAMMER_PORT=/dev/null
           -H.
           -GNinja
           -Bbuild
@@ -38,6 +41,9 @@ jobs:
           -DF_CPU=11059200
           -DMCU=atmega32
           -DBUILD_TESTS=ON
+          -DAVR_PROGRAMMER=stk500v2
+          -DAVR_PROGRAMMER_BAUD=112500
+          -DAVR_PROGRAMMER_PORT=/dev/null
           -H.
           -GNinja
           -Bbuild

@@ -7,9 +7,6 @@ project(
     LANGUAGES CXX
     )
 
-set(AVR_PROGRAMMER usbasp)
-set(AVR_PROGRAMMER_PORT usb)
-
 include(avr-gcc.cmake)
 
 function(target_options target_name)

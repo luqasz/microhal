@@ -67,6 +67,7 @@ function(avrdude target_name)
            -c ${AVR_PROGRAMMER}
            -U flash:w:${bin_file}:${avrdude_format}
            -P ${AVR_PROGRAMMER_PORT}
+           -b ${AVR_PROGRAMMER_BAUD}
            DEPENDS ${bin_file}
     )
 endfunction()
@@ -77,6 +78,7 @@ add_custom_target(
        -p ${MCU}
        -c ${AVR_PROGRAMMER}
        -P ${AVR_PROGRAMMER_PORT}
+       -b ${AVR_PROGRAMMER_BAUD}
        -n
        -v
 )
@@ -87,6 +89,7 @@ add_custom_target(
        -p ${MCU}
        -c ${AVR_PROGRAMMER}
        -P ${AVR_PROGRAMMER_PORT}
+       -b ${AVR_PROGRAMMER_BAUD}
        -n
        -U lfuse:r:-:b
        -U hfuse:r:-:b
@@ -95,6 +98,7 @@ add_custom_target(
 add_custom_target(
    set_fuses
        ${avr_uploadtool}
+       -b ${AVR_PROGRAMMER_BAUD}
        -p ${MCU}
        -c ${AVR_PROGRAMMER}
        -P ${AVR_PROGRAMMER_PORT}
