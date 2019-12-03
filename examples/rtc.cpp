@@ -8,7 +8,7 @@
 #include <usart.h>
 #include <util/delay.h>
 
-auto constexpr baud = USART::get_baud<115200, 2>();
+auto constexpr baud = USART::get_baud<BAUD, 2>();
 auto usart          = USART::Async<USART::USART0>();
 auto serial         = Printer<USART::Async<USART::USART0>, RN>(usart);
 

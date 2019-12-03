@@ -20,6 +20,7 @@ function(target_options target_name)
         ${target_name}
         PUBLIC
         F_CPU=${F_CPU}UL
+        BAUD=${BAUD}
         )
 
     target_compile_options(
