@@ -8,7 +8,7 @@ namespace SFR {
 {% for reg in registers %}
     // {{ reg.description }}
     struct {{ reg.name }} {
-        static const {{ size_to_uint[reg.size] }} address = {{ "{0:#0{padding}x}".format(reg.address, padding=4) }};
+        static const uint16_t address = {{ "{0:#0{padding}x}".format(reg.address, padding=4) }};
         {% if reg.bit_fields %}
         enum bits : uint8_t {
         {% for field in reg.bit_fields %}

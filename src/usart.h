@@ -9,7 +9,7 @@ namespace USART {
 
     template <typename REG>
     struct UCSRA {
-        constexpr static uint8_t address = REG::address;
+        constexpr static uint16_t address = REG::address;
         enum bits {
             MPCM = 1,   // Multi-processor Communication Mode
             U2X  = 2,   // Double the USART transmission speed
@@ -24,7 +24,7 @@ namespace USART {
 
     template <typename REG>
     struct UCSRB {
-        constexpr static uint8_t address = REG::address;
+        constexpr static uint16_t address = REG::address;
         enum bits {
             TXB8  = 1,   // Transmit Data Bit 8
             RXB8  = 2,   // Receive Data Bit 8
@@ -39,7 +39,7 @@ namespace USART {
 
     template <typename REG>
     struct UCSRC {
-        constexpr static uint8_t address = REG::address;
+        constexpr static uint16_t address = REG::address;
         enum bits {
             UCPOL = 1,   // Clock Polarity
             UCSZ0 = 2,   // Character Size

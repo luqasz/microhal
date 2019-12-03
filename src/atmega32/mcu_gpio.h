@@ -8,84 +8,6 @@
 
 namespace GPIO {
 
-    auto const PortC = GPIO::Port {
-        SFR::PORTC::address,
-        SFR::PINC::address,
-        SFR::DDRC::address,
-    };
-
-    auto const PC0 = GPIO::Pin {
-        PortC,
-        GPIO::Pin0,
-    };
-    auto const PC1 = GPIO::Pin {
-        PortC,
-        GPIO::Pin1,
-    };
-    auto const PC2 = GPIO::Pin {
-        PortC,
-        GPIO::Pin2,
-    };
-    auto const PC3 = GPIO::Pin {
-        PortC,
-        GPIO::Pin3,
-    };
-    auto const PC4 = GPIO::Pin {
-        PortC,
-        GPIO::Pin4,
-    };
-    auto const PC5 = GPIO::Pin {
-        PortC,
-        GPIO::Pin5,
-    };
-    auto const PC6 = GPIO::Pin {
-        PortC,
-        GPIO::Pin6,
-    };
-    auto const PC7 = GPIO::Pin {
-        PortC,
-        GPIO::Pin7,
-    };
-
-    auto const PortA = GPIO::Port {
-        SFR::PORTA::address,
-        SFR::PINA::address,
-        SFR::DDRA::address,
-    };
-
-    auto const PA0 = GPIO::Pin {
-        PortA,
-        GPIO::Pin0,
-    };
-    auto const PA1 = GPIO::Pin {
-        PortA,
-        GPIO::Pin1,
-    };
-    auto const PA2 = GPIO::Pin {
-        PortA,
-        GPIO::Pin2,
-    };
-    auto const PA3 = GPIO::Pin {
-        PortA,
-        GPIO::Pin3,
-    };
-    auto const PA4 = GPIO::Pin {
-        PortA,
-        GPIO::Pin4,
-    };
-    auto const PA5 = GPIO::Pin {
-        PortA,
-        GPIO::Pin5,
-    };
-    auto const PA6 = GPIO::Pin {
-        PortA,
-        GPIO::Pin6,
-    };
-    auto const PA7 = GPIO::Pin {
-        PortA,
-        GPIO::Pin7,
-    };
-
     auto const PortD = GPIO::Port {
         SFR::PORTD::address,
         SFR::PIND::address,
@@ -161,6 +83,84 @@ namespace GPIO {
     };
     auto const PB7 = GPIO::Pin {
         PortB,
+        GPIO::Pin7,
+    };
+
+    auto const PortA = GPIO::Port {
+        SFR::PORTA::address,
+        SFR::PINA::address,
+        SFR::DDRA::address,
+    };
+
+    auto const PA0 = GPIO::Pin {
+        PortA,
+        GPIO::Pin0,
+    };
+    auto const PA1 = GPIO::Pin {
+        PortA,
+        GPIO::Pin1,
+    };
+    auto const PA2 = GPIO::Pin {
+        PortA,
+        GPIO::Pin2,
+    };
+    auto const PA3 = GPIO::Pin {
+        PortA,
+        GPIO::Pin3,
+    };
+    auto const PA4 = GPIO::Pin {
+        PortA,
+        GPIO::Pin4,
+    };
+    auto const PA5 = GPIO::Pin {
+        PortA,
+        GPIO::Pin5,
+    };
+    auto const PA6 = GPIO::Pin {
+        PortA,
+        GPIO::Pin6,
+    };
+    auto const PA7 = GPIO::Pin {
+        PortA,
+        GPIO::Pin7,
+    };
+
+    auto const PortC = GPIO::Port {
+        SFR::PORTC::address,
+        SFR::PINC::address,
+        SFR::DDRC::address,
+    };
+
+    auto const PC0 = GPIO::Pin {
+        PortC,
+        GPIO::Pin0,
+    };
+    auto const PC1 = GPIO::Pin {
+        PortC,
+        GPIO::Pin1,
+    };
+    auto const PC2 = GPIO::Pin {
+        PortC,
+        GPIO::Pin2,
+    };
+    auto const PC3 = GPIO::Pin {
+        PortC,
+        GPIO::Pin3,
+    };
+    auto const PC4 = GPIO::Pin {
+        PortC,
+        GPIO::Pin4,
+    };
+    auto const PC5 = GPIO::Pin {
+        PortC,
+        GPIO::Pin5,
+    };
+    auto const PC6 = GPIO::Pin {
+        PortC,
+        GPIO::Pin6,
+    };
+    auto const PC7 = GPIO::Pin {
+        PortC,
         GPIO::Pin7,
     };
 
