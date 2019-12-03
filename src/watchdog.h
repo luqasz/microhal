@@ -28,7 +28,9 @@ namespace Watchdog {
         // Start proceduee.
         wdt.setBit(CHANGE | wdt.WDE);
         // Set prescaler and enable watchdog.
-        wdt.setBit(mode | clock);
+        // This operation must be a write operation,
+        // since watchdog change bit can't be set.
+        wdt.write(mode | clock | wdt.WDE);
     }
 
 }
