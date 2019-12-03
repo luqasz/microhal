@@ -16,6 +16,7 @@ jobs:
         run: >
           cmake
           -DF_CPU=11059200
+          -DBAUD=115200
           -DCMAKE_BUILD_TYPE=MinSizeRel
           -DMCU=atmega32
           -DAVR_PROGRAMMER=stk500v2
@@ -39,6 +40,7 @@ jobs:
         run: >
           cmake
           -DF_CPU=11059200
+          -DBAUD=115200
           -DMCU=atmega32
           -DBUILD_TESTS=ON
           -DAVR_PROGRAMMER=stk500v2
