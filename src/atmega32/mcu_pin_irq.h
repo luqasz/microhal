@@ -7,6 +7,11 @@ namespace PinIRQ {
 
     constexpr uint8_t INT1_TRIGGER_MASK = inverted<uint8_t>(INT_EDGE_REG.ISC11 | INT_EDGE_REG.ISC10);
     constexpr uint8_t INT0_TRIGGER_MASK = inverted<uint8_t>(INT_EDGE_REG.ISC01 | INT_EDGE_REG.ISC00);
+
+    enum Pin {
+        INT0 = 0,
+        INT1,
+    };
 }
 
 #endif

@@ -16,11 +16,6 @@ namespace PinIRQ {
         Rising  = 0x03,
     };
 
-    enum Pin {
-        INT0 = 0,
-        INT1,
-    };
-
     void
     set_int_edge(const uint8_t value, const uint8_t mask)
     {
