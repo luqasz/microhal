@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: lukaszkostka/avr:alpine_3.10
+      image: lukaszkostka/avr:debian_buster
       env:
         CXX: avr-g++
     steps:
