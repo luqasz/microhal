@@ -31,8 +31,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: lukaszkostka/avr:alpine_3.10
-      env:
-        CXX: clang++
     steps:
       - name: Checkout
         uses: actions/checkout@v1

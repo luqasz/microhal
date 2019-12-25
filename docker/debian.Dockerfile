@@ -15,7 +15,8 @@ RUN apt-get update
 RUN apt-get install -y  cmake \
                         ninja-build \
                         gcc-avr \
-                        avr-libc
+                        avr-libc \
+                        g++
 
 RUN apt-get purge -y gnupg2 wget
 RUN apt-get -y autoremove
