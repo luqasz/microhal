@@ -36,25 +36,27 @@ function(target_options target_name)
         -Woverloaded-virtual
         -pedantic-errors
         -funsigned-char
-        -ffunction-sections
-        -flto
         -fno-exceptions
         -fno-asynchronous-unwind-tables
         -fno-rtti
-        $<$<CXX_COMPILER_ID:GNU>:-fwhole-program>
-        $<$<CXX_COMPILER_ID:GNU>:-fpack-struct>
-        $<$<CXX_COMPILER_ID:GNU>:-funsigned-bitfields>
-        $<$<AND:$<NOT:$<BOOL:${BUILD_TESTS}>>,$<CXX_COMPILER_ID:GNU>>:-mmcu=${MCU}>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-flto>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-ffunction-sections>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-fdata-sections>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-Wl,--gc-sections>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-fwhole-program>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-mmcu=${MCU}>
         )
 
     target_link_options(
         ${target_name}
         PUBLIC
-        -mrelax
-        -flto
-        $<$<CXX_COMPILER_ID:GNU>:-Wl,--gc-sections>
-        $<$<CXX_COMPILER_ID:GNU>:-fwhole-program>
-        $<$<AND:$<NOT:$<BOOL:${BUILD_TESTS}>>,$<CXX_COMPILER_ID:GNU>>:-mmcu=${MCU}>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-flto>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-ffunction-sections>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-fdata-sections>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-Wl,--gc-sections>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-fwhole-program>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-mmcu=${MCU}>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-mrelax>
         )
 
     target_include_directories(
