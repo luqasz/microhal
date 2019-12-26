@@ -54,21 +54,21 @@ namespace HD44780 {
     Line and row start from 0.
     */
     struct Position {
-        uint8_t line;
-        uint8_t row;
+        const uint8_t line;
+        const uint8_t row;
     };
 
     template <typename DATA_LINE>
     class LCD {
-        const DATA_LINE       dataLine;
-        const GPIO::OutputPin rs;
-        const GPIO::OutputPin rw;
-        const GPIO::OutputPin e;
+        const DATA_LINE dataLine;
+        const GPIO::Pin rs;
+        const GPIO::Pin rw;
+        const GPIO::Pin e;
 
         void
         waitUntillReady() const
         {
-            rs = COMMAND;
+            GPIO::write(rs, COMMAND);
             while ((read() & BUSY_FLAG)) {
             };
         }
@@ -76,16 +76,17 @@ namespace HD44780 {
         void
         enable(const GPIO::PinState state) const
         {
-            e = state;
+            GPIO::write(e, state);
             _delay_us(1);
         }
 
         uint8_t
         read() const
         {
-            rw = High;
+            GPIO::write(rw, High);
             enable(High);
-            uint8_t result = dataLine.input().read();
+            GPIO::set(dataLine, GPIO::Input);
+            const uint8_t result = GPIO::read(dataLine);
             enable(Low);
             return result;
         }
@@ -93,10 +94,11 @@ namespace HD44780 {
         void
         sendByte(const uint8_t byte, const GPIO::PinState reg) const
         {
-            rs = reg;
-            rw = Low;
+            GPIO::write(rs, reg);
+            GPIO::write(rw, Low);
             enable(High);
-            dataLine.output().write(byte);
+            GPIO::set(dataLine, GPIO::Output);
+            GPIO::write(dataLine, byte);
             enable(Low);
             waitUntillReady();
         }
@@ -111,10 +113,13 @@ namespace HD44780 {
         */
         LCD(const DATA_LINE & dataLine, const GPIO::Pin & rs, const GPIO::Pin & rw, const GPIO::Pin & e) :
             dataLine(dataLine),
-            rs(rs.output()),
-            rw(rw.output()),
-            e(e.output())
+            rs(rs),
+            rw(rw),
+            e(e)
         {
+            GPIO::set(rs, GPIO::Mode::Output);
+            GPIO::set(rw, GPIO::Mode::Output);
+            GPIO::set(e, GPIO::Mode::Output);
             _delay_ms(15);
             sendByte(Mode_8Bit | Lines_2 | Dots_5x8, COMMAND);
             sendByte(HideCursor, COMMAND);

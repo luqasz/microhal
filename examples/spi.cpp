@@ -16,11 +16,11 @@ template <typename SENDER, typename DAC>
 void
 send(SENDER spi, DAC dac, uint16_t value)
 {
-    dac     = value;
-    auto cs = SPI::SS.output();
-    cs.set(GPIO::PinState::Low);
+    dac = value;
+    GPIO::set(SPI::SS, GPIO::Output);
+    GPIO::write(SPI::SS, GPIO::Low);
     spi.communicate(dac.bits);
-    cs.set(GPIO::PinState::High);
+    GPIO::write(SPI::SS, GPIO::High);
 }
 
 int

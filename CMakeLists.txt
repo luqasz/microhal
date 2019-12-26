@@ -89,6 +89,8 @@ example(flash)
 example(adc)
 example(spi)
 example(watchdog)
+example(ws2812)
+example(lcd)
 
 
 if(${BUILD_TESTS})

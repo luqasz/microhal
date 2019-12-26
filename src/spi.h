@@ -2,6 +2,7 @@
 
 #include "sfr.h"
 
+#include <gpio.h>
 #include <mcu_spi.h>
 #include <stdint.h>
 
@@ -44,9 +45,9 @@ namespace SPI {
         */
         Master()
         {
-            SCK.output();
-            MOSI.output();
-            SS.output();
+            GPIO::set(SCK, GPIO::Output);
+            GPIO::set(SS, GPIO::Output);
+            GPIO::set(MOSI, GPIO::Output);
             NUM::SPCR.setBit(NUM::SPCR.MSTR);
         }
 

@@ -18,190 +18,106 @@ namespace GPIO {
         Pin7 = 0x80,
     };
 
-    enum class PinState {
+    enum Mode {
+        Output,
+        Input,
+    };
+
+    enum PinState {
         Low,
         High,
     };
 
-    enum class PullMode {
+    enum PullMode {
         HiZ,
         PullUp,
     };
-
-    class Output8Bit;
-    class Input8Bit;
 
     struct Port {
         const uint16_t port_address;
         const uint16_t pin_address;
         const uint16_t ddr_address;
-
-        Output8Bit output() const;
-        Input8Bit  input() const;
     };
-
-    class OutputPin;
-    class InputPin;
 
     struct Pin {
     public:
         const GPIO::Port      port;
         const GPIO::PinNumber number;
-        OutputPin             output() const;
-        InputPin              input() const;
     };
 
-    class OutputPin {
-        const Pin pin;
-
-    public:
-        OutputPin(const Pin & pin) :
-            pin(pin)
-        {
-            SFR::setBit<uint8_t>(pin.port.ddr_address, pin.number);
-        }
-
-        void
-        operator=(const GPIO::PinState state) const
-        {
-            set(state);
-        }
-
-        void
-        set(const GPIO::PinState state) const
-        {
-            switch (state) {
-                case GPIO::PinState::High:
-                    SFR::setBit<uint8_t>(pin.port.port_address, pin.number);
-                    break;
-                case GPIO::PinState::Low:
-                    SFR::clearBit<uint8_t>(pin.port.port_address, pin.number);
-                    break;
-            }
-        }
-    };
-
-    class InputPin {
-        const GPIO::Pin pin;
-
-    public:
-        InputPin(const Pin & pin) :
-            pin(pin)
-        {
-            SFR::clearBit<uint8_t>(pin.port.ddr_address, pin.number);
-        }
-
-        bool
-        operator==(const GPIO::PinState state) const
-        {
-            return read() == state;
-        }
-
-        void
-        set(const GPIO::PullMode mode) const
-        {
-            switch (mode) {
-                case GPIO::PullMode::HiZ:
-                    SFR::clearBit<uint8_t>(pin.port.port_address, pin.number);
-                    break;
-                case GPIO::PullMode::PullUp:
-                    SFR::setBit<uint8_t>(pin.port.port_address, pin.number);
-                    break;
-            }
-        }
-
-        PinState
-        read() const
-        {
-            if (SFR::iomem<uint8_t>(pin.port.pin_address) & pin.number) {
-                return GPIO::PinState::High;
-            }
-            return GPIO::PinState::Low;
-        }
-    };
-
-    class Output8Bit {
-        const GPIO::Port port;
-
-    public:
-        Output8Bit(const GPIO::Port & port) :
-            port(port)
-        {
-            SFR::iomem<uint8_t>(port.ddr_address) = 255;
-        }
-
-        void
-        operator=(const uint8_t value) const
-        {
-            write(value);
-        }
-
-        void
-        write(const uint8_t value) const
-        {
-            SFR::iomem<uint8_t>(port.port_address) = value;
-        }
-    };
-
-    class Input8Bit {
-        const GPIO::Port port;
-
-    public:
-        Input8Bit(const GPIO::Port & port) :
-            port(port)
-        {
-            SFR::iomem<uint8_t>(port.ddr_address) = 0;
-        }
-
-        bool
-        operator==(const uint8_t value) const
-        {
-            return read() == value;
-        }
-
-        uint8_t
-        read() const
-        {
-            return SFR::iomem<uint8_t>(port.pin_address);
-        }
-
-        void
-        set(const GPIO::PullMode mode) const
-        {
-            switch (mode) {
-                case GPIO::PullMode::HiZ:
-                    SFR::iomem<uint8_t>(port.port_address) = 0;
-                    break;
-                case GPIO::PullMode::PullUp:
-                    SFR::iomem<uint8_t>(port.port_address) = 255;
-                    break;
-            }
-        }
-    };
-
-    Output8Bit
-    Port::output() const
+    void
+    set(const Pin pin, const Mode mode)
     {
-        return Output8Bit(*this);
+        switch (mode) {
+            case Output:
+                SFR::setBit<uint8_t>(pin.port.ddr_address, pin.number);
+                break;
+            case Input:
+                SFR::clearBit<uint8_t>(pin.port.ddr_address, pin.number);
+                break;
+        }
     }
 
-    Input8Bit
-    Port::input() const
+    void
+    write(const Pin pin, const PinState state)
     {
-        return Input8Bit(*this);
+        switch (state) {
+            case PinState::High:
+                SFR::setBit<uint8_t>(pin.port.port_address, pin.number);
+                break;
+            case PinState::Low:
+                SFR::clearBit<uint8_t>(pin.port.port_address, pin.number);
+                break;
+        }
     }
 
-    OutputPin
-    Pin::output() const
+    PinState
+    read(const Pin pin)
     {
-        return OutputPin(*this);
+        if (SFR::iomem<uint8_t>(pin.port.pin_address) & pin.number) {
+            return GPIO::PinState::High;
+        }
+        return GPIO::PinState::Low;
     }
 
-    InputPin
-    Pin::input() const
+    void
+    set(const Port port, const Mode mode)
     {
-        return InputPin(*this);
+        switch (mode) {
+            case Output:
+                SFR::iomem<uint8_t>(port.ddr_address) = 255;
+                break;
+            case Input:
+                SFR::iomem<uint8_t>(port.ddr_address) = 0;
+                break;
+        }
     }
+
+    void
+    write(const Port port, const uint8_t value)
+    {
+        SFR::iomem<uint8_t>(port.port_address) = value;
+    }
+
+    uint8_t
+    read(const Port port)
+    {
+        return SFR::iomem<uint8_t>(port.pin_address);
+    }
+
+    void
+    set(const Port port, const PullMode mode)
+    {
+        switch (mode) {
+            case PullMode::HiZ:
+                SFR::iomem<uint8_t>(port.port_address) = 0;
+                break;
+            case PullMode::PullUp:
+                SFR::iomem<uint8_t>(port.port_address) = 255;
+                break;
+        }
+    }
+
 }
 
 #include <mcu_gpio.h>
