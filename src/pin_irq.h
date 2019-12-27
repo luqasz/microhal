@@ -1,5 +1,4 @@
-#ifndef pin_irq_h
-#define pin_irq_h
+#pragma once
 
 #include "sfr.h"
 #include "utils.h"
@@ -16,59 +15,30 @@ namespace PinIRQ {
         Rising  = 0x03,
     };
 
-    void
-    set_int_edge(const uint8_t value, const uint8_t mask)
-    {
-        uint8_t reg_value = INT_EDGE_REG.read();
-        reg_value &= mask;
-        reg_value |= value;
-        INT_EDGE_REG = reg_value;
-    }
+    template <typename PIN>
+    class INT {
 
-    void
-    set(Pin pin, Trigger trigger)
-    {
-        uint8_t reg_value;
-        uint8_t bit_position;
-        switch (pin) {
-            case Pin::INT0:
-                bit_position = firstLSBBitPos(static_cast<uint8_t>(INT_EDGE_REG.ISC00)) - 1;
-                reg_value    = static_cast<uint8_t>(trigger << bit_position);
-                set_int_edge(reg_value, INT0_TRIGGER_MASK);
-                break;
-            case Pin::INT1:
-                bit_position = firstLSBBitPos(static_cast<uint8_t>(INT_EDGE_REG.ISC01)) - 1;
-                reg_value    = static_cast<uint8_t>(trigger << bit_position);
-                set_int_edge(reg_value, INT1_TRIGGER_MASK);
-                break;
+    public:
+        void
+        set(const Trigger trigger) const
+        {
+            const uint8_t bit_position = firstLSBBitPos(PIN::EDGE_REG_BIT) - 1;
+            uint8_t       reg_value    = PIN::EDGE_REG.read();
+            reg_value &= PIN::MASK;
+            reg_value |= static_cast<uint8_t>(trigger << bit_position);
+            PIN::EDGE_REG = reg_value;
         }
-    }
 
-    void
-    enable(Pin pin)
-    {
-        switch (pin) {
-            case Pin::INT0:
-                INT_IRQ_ENABLE_REG.setBit(INT_IRQ_ENABLE_REG.INT0);
-                break;
-            case Pin::INT1:
-                INT_IRQ_ENABLE_REG.setBit(INT_IRQ_ENABLE_REG.INT1);
-                break;
+        void
+        enable() const
+        {
+            PIN::ENABLE_REG.setBit(PIN::ENABLE_REG_BIT);
         }
-    }
 
-    void
-    disable(Pin pin)
-    {
-        switch (pin) {
-            case Pin::INT0:
-                INT_IRQ_ENABLE_REG.clearBit(INT_IRQ_ENABLE_REG.INT0);
-                break;
-            case Pin::INT1:
-                INT_IRQ_ENABLE_REG.clearBit(INT_IRQ_ENABLE_REG.INT1);
-                break;
+        void
+        disable() const
+        {
+            PIN::ENABLE_REG.clearBit(PIN::ENABLE_REG_BIT);
         }
-    }
+    };
 }
-
-#endif

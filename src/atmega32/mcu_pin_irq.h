@@ -1,17 +1,20 @@
-#ifndef mcu_pin_irq_h
-#define mcu_pin_irq_h
+#pragma once
 
 namespace PinIRQ {
-    auto INT_EDGE_REG       = Register<SFR::MCUCR>();
-    auto INT_IRQ_ENABLE_REG = Register<SFR::GICR>();
 
-    constexpr uint8_t INT1_TRIGGER_MASK = inverted<uint8_t>(INT_EDGE_REG.ISC11 | INT_EDGE_REG.ISC10);
-    constexpr uint8_t INT0_TRIGGER_MASK = inverted<uint8_t>(INT_EDGE_REG.ISC01 | INT_EDGE_REG.ISC00);
+    struct INT0 {
+        static constexpr auto    EDGE_REG       = Register<SFR::MCUCR>();
+        static constexpr uint8_t EDGE_REG_BIT   = EDGE_REG.ISC00;
+        static constexpr auto    ENABLE_REG     = Register<SFR::GICR>();
+        static constexpr uint8_t ENABLE_REG_BIT = ENABLE_REG.INT0;
+        static constexpr uint8_t MASK           = inverted<uint8_t>(EDGE_REG.ISC01 | EDGE_REG.ISC00);
+    };
 
-    enum Pin {
-        INT0 = 0,
-        INT1,
+    struct INT1 {
+        static constexpr auto    EDGE_REG       = Register<SFR::MCUCR>();
+        static constexpr uint8_t EDGE_REG_BIT   = EDGE_REG.ISC10;
+        static constexpr auto    ENABLE_REG     = Register<SFR::GICR>();
+        static constexpr uint8_t ENABLE_REG_BIT = ENABLE_REG.INT1;
+        static constexpr uint8_t MASK           = inverted<uint8_t>(EDGE_REG.ISC11 | EDGE_REG.ISC10);
     };
 }
-
-#endif

@@ -71,6 +71,12 @@ namespace GPIO {
         }
     }
 
+    void
+    toggle(const Pin pin)
+    {
+        SFR::iomem<uint8_t>(pin.port.port_address) ^= pin.number;
+    }
+
     PinState
     read(const Pin pin)
     {

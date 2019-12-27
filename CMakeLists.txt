@@ -91,6 +91,7 @@ example(spi)
 example(watchdog)
 example(ws2812)
 example(lcd)
+example(pin_irq)
 
 
 if(${BUILD_TESTS})
