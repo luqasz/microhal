@@ -7,9 +7,9 @@
 #include <stdint.h>
 
 namespace I2C {
-    auto TWCR = Register<SFR::TWCR>();
-    auto TWBR = Register<SFR::TWBR>();
-    auto TWDR = Register<SFR::TWDR>();
+    auto TWCR = SFR::BitRegisterRW<SFR::TWCR, uint8_t>();
+    auto TWBR = SFR::BitRegisterRW<SFR::TWBR, uint8_t>();
+    auto TWDR = SFR::DataRegisterRW<SFR::TWDR, uint8_t>();
 
     const uint8_t ACK  = TWCR.TWEA;
     const uint8_t NACK = 0;

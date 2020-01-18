@@ -5,8 +5,8 @@
 namespace SPI {
 
     struct SPI0 {
-        constexpr static auto SPCR = Register<SFR::SPCR>();
-        constexpr static auto SPSR = Register<SFR::SPSR>();
+        constexpr static auto SPCR = SFR::BitRegisterRW<SFR::SPCR, uint8_t>();
+        constexpr static auto SPSR = SFR::BitRegisterRW<SFR::SPSR, uint8_t>();
         constexpr static auto SPDR = SFR::DataRegisterRW<SFR::SPDR, uint8_t>();
     };
 

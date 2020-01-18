@@ -32,15 +32,13 @@ namespace ADC {
     void
     set(const Prescaler value)
     {
-        PrescalerRegister.clearBit(PRESCALER_BITS);
-        PrescalerRegister.setBit(value);
+        PrescalerRegister.setBit(value, PRESCALER_BITS);
     }
 
     void
     set(const Vref ref)
     {
-        VrefRegister.clearBit(VREF_BITS);
-        VrefRegister.setBit(ref);
+        VrefRegister.setBit(ref, VREF_BITS);
     }
 
     void
@@ -49,8 +47,8 @@ namespace ADC {
         ControllRegister.setBit(ControllRegister.ADIE);  // Enable interrupt
         ControllRegister.setBit(ControllRegister.ADATE); // Enable auto trigger
         ControllRegister.setBit(ControllRegister.ADSC);  // Start conversion
-        TriggerRegister.clearBit(TRIGGER_BITS);
-        TriggerRegister.setBit(src);
+        TriggerRegister.setBit(src, TRIGGER_BITS);
     }
 
 }
+

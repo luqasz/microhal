@@ -23,10 +23,8 @@ namespace PinIRQ {
         set(const Trigger trigger) const
         {
             const uint8_t bit_position = firstLSBBitPos(PIN::EDGE_REG_BIT) - 1;
-            uint8_t       reg_value    = PIN::EDGE_REG.read();
-            reg_value &= PIN::MASK;
-            reg_value |= static_cast<uint8_t>(trigger << bit_position);
-            PIN::EDGE_REG = reg_value;
+            const uint8_t bits         = static_cast<uint8_t>(trigger << bit_position);
+            PIN::EDGE_REG.setBit(bits, PIN::MASK);
         }
 
         void
@@ -42,3 +40,4 @@ namespace PinIRQ {
         }
     };
 }
+

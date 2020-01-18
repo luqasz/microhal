@@ -8,7 +8,7 @@
 class RestoreIrq {
 private:
     uint8_t               sreg_value;
-    constexpr static auto reg = Register<SFR::SREG>();
+    constexpr static auto reg = SFR::BitRegisterRW<SFR::SREG, uint8_t>();
 
 public:
     RestoreIrq()

@@ -50,10 +50,10 @@ namespace GPIO {
     {
         switch (mode) {
             case Output:
-                SFR::setBit<uint8_t>(pin.port.ddr_address, pin.number);
+                SFR::setBit(pin.port.ddr_address, pin.number);
                 break;
             case Input:
-                SFR::clearBit<uint8_t>(pin.port.ddr_address, pin.number);
+                SFR::clearBit(pin.port.ddr_address, pin.number);
                 break;
         }
     }
@@ -63,10 +63,10 @@ namespace GPIO {
     {
         switch (state) {
             case PinState::High:
-                SFR::setBit<uint8_t>(pin.port.port_address, pin.number);
+                SFR::setBit(pin.port.port_address, pin.number);
                 break;
             case PinState::Low:
-                SFR::clearBit<uint8_t>(pin.port.port_address, pin.number);
+                SFR::clearBit(pin.port.port_address, pin.number);
                 break;
         }
     }

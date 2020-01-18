@@ -14,18 +14,24 @@ namespace SFR {
         return *reinterpret_cast<WIDTH volatile *>(address);
     }
 
-    template <typename WIDTH>
     void
-    setBit(uint16_t address, uint8_t bit)
+    setBit(const uint16_t address, const uint8_t bit)
     {
-        iomem<WIDTH>(address) |= bit;
+        iomem<uint8_t>(address) |= bit;
     }
 
-    template <typename WIDTH>
     void
-    clearBit(uint16_t address, uint8_t bit)
+    setBit(const uint16_t address, const uint8_t bit, const uint8_t set_mask)
     {
-        iomem<WIDTH>(address) &= static_cast<uint8_t>(~bit);
+        uint8_t current = iomem<uint8_t>(address);
+        current         = current | inverted<uint8_t>(set_mask);
+        iomem<uint8_t>(address) |= bit;
+    }
+
+    void
+    clearBit(const uint16_t address, const uint8_t bit)
+    {
+        iomem<uint8_t>(address) &= static_cast<uint8_t>(~bit);
     }
 
     template <typename REG_TYPE, typename WIDTH>
@@ -86,47 +92,26 @@ namespace SFR {
         }
 
         void
-        setBit(const WIDTH bit) const
+        setBit(const uint8_t bit) const
         {
-            SFR::iomem<WIDTH>(REG_TYPE::address) |= bit;
+            SFR::setBit(REG_TYPE::address, bit);
+        }
+
+        void
+        setBit(const uint8_t bit, const uint8_t set_mask) const
+        {
+            SFR::setBit(REG_TYPE::address, bit, set_mask);
         }
 
         void
         clearBit(const WIDTH bit) const
         {
-            SFR::iomem<WIDTH>(REG_TYPE::address) &= static_cast<WIDTH>(~bit);
+            SFR::clearBit(REG_TYPE::address, bit);
         }
     };
 }
 
-template <typename REG_TYPE, typename WIDTH = uint8_t>
-class Register : public SFR::BitRegisterRO<REG_TYPE, WIDTH> {
-public:
-    void
-    write(const WIDTH value) const
-    {
-        SFR::iomem<WIDTH>(REG_TYPE::address) = value;
-    }
-
-    void
-    operator=(const WIDTH value) const
-    {
-        write(value);
-    }
-
-    void
-    setBit(const WIDTH bit) const
-    {
-        SFR::iomem<WIDTH>(REG_TYPE::address) |= bit;
-    }
-
-    void
-    clearBit(const WIDTH bit) const
-    {
-        SFR::iomem<WIDTH>(REG_TYPE::address) &= static_cast<WIDTH>(~bit);
-    }
-};
-
 #include <mcu_sfr.h>
 
 #endif
+
