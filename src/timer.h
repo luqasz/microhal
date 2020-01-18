@@ -80,10 +80,8 @@ public:
     {
         constexpr uint8_t TCCRA_MASK = (TCCRA::WGM0 | TCCRA::WGM1);
         constexpr uint8_t TCCRB_MASK = (TCCRB::WGM2 | TCCRB::WGM3);
-        REGS::TCCRA.clearBit(TCCRA_MASK);
-        REGS::TCCRB.clearBit(TCCRB_MASK);
-        REGS::TCCRA.setBit(mode & TCCRA_MASK);
-        REGS::TCCRB.setBit(mode & TCCRB_MASK);
+        REGS::TCCRA.setBit(mode & TCCRA_MASK, TCCRA_MASK);
+        REGS::TCCRB.setBit(mode & TCCRB_MASK, TCCRB_MASK);
     }
 
     void
