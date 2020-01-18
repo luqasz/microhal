@@ -92,6 +92,7 @@ example(watchdog)
 example(ws2812)
 example(lcd)
 example(pin_irq)
+example(pwm)
 
 
 if(${BUILD_TESTS})
