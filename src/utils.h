@@ -7,13 +7,11 @@ bool constexpr isPowerOfTwo(T number)
     return (number != 0) && (number & (number - 1)) == 0;
 }
 
+// Return first bit position starting from LSB and counting from 0.
 template <typename T>
 T constexpr firstLSBBitPos(T n)
 {
-    if (!isPowerOfTwo(n))
-        return 0;
-
-    T i = 1, pos = 1;
+    T i = 1, pos = 0;
     // Iterate through bits of n till we find a set bit
     // i&n will be non-zero only when 'i' and 'n' have a set bit
     // at same position
@@ -63,3 +61,4 @@ inverted(T value)
 }
 
 #endif
+

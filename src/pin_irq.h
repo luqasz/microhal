@@ -22,7 +22,7 @@ namespace PinIRQ {
         void
         set(const Trigger trigger) const
         {
-            const uint8_t bit_position = firstLSBBitPos(PIN::EDGE_REG_BIT) - 1;
+            const uint8_t bit_position = firstLSBBitPos(PIN::EDGE_REG_BIT);
             const uint8_t bits         = static_cast<uint8_t>(trigger << bit_position);
             PIN::EDGE_REG.setBit(bits, PIN::MASK);
         }
