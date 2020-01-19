@@ -5,8 +5,6 @@
 enum TCCRA : uint8_t {
     WGM0  = 1,
     WGM1  = 2,
-    FOCB  = 4,
-    FOCA  = 8,
     COMB0 = 16,
     COMB1 = 32,
     COMA0 = 64,

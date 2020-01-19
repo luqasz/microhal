@@ -5,9 +5,9 @@
 namespace SPI {
 
     struct SPI0 {
-        constexpr static auto SPCR = SFR::BitRegisterRW<SFR::SPCR, uint8_t>();
-        constexpr static auto SPSR = SFR::BitRegisterRW<SFR::SPSR, uint8_t>();
-        constexpr static auto SPDR = SFR::DataRegisterRW<SFR::SPDR, uint8_t>();
+        constexpr static auto SPCR = SFR::RegisterRW<SFR::SPCR, uint8_t>();
+        constexpr static auto SPSR = SFR::RegisterRW<SFR::SPSR, uint8_t>();
+        constexpr static auto SPDR = SFR::RegisterRW<SFR::SPDR, uint8_t>();
     };
 
     const auto SS   = GPIO::PB4;

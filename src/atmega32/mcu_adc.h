@@ -15,12 +15,12 @@ namespace ADC {
     const uint8_t VREF_BITS      = (ADMUX_REG::REFS0 | ADMUX_REG::REFS1);
     const uint8_t TRIGGER_BITS   = (TRIGGER_REG::ADTS0 | TRIGGER_REG::ADTS1 | TRIGGER_REG::ADTS2);
 
-    auto ControllRegister  = SFR::BitRegisterRW<CTL_REG, uint8_t>();
-    auto TriggerRegister   = SFR::BitRegisterRW<TRIGGER_REG, uint8_t>();
-    auto ChannelRegister   = SFR::BitRegisterRW<ADMUX_REG, uint8_t>();
-    auto VrefRegister      = SFR::BitRegisterRW<VREF_REG, uint8_t>();
-    auto PrescalerRegister = SFR::BitRegisterRW<PRESCALER_REG, uint8_t>();
-    auto DataRegister      = SFR::DataRegisterRO<SFR::ADC, uint16_t>();
+    auto ControllRegister  = SFR::RegisterRW<CTL_REG, uint8_t>();
+    auto TriggerRegister   = SFR::RegisterRW<TRIGGER_REG, uint8_t>();
+    auto ChannelRegister   = SFR::RegisterRW<ADMUX_REG, uint8_t>();
+    auto VrefRegister      = SFR::RegisterRW<VREF_REG, uint8_t>();
+    auto PrescalerRegister = SFR::RegisterRW<PRESCALER_REG, uint8_t>();
+    auto DataRegister      = SFR::RegisterRO<SFR::ADC, uint16_t>();
 
     enum Vref {
         Internal_2_56 = VREF_REG::REFS0 | VREF_REG::REFS1,

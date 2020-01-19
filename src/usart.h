@@ -163,16 +163,16 @@ namespace USART {
         /* This bit selects between accessing the UCSRC or the UBRRH Register.
         It is read as one when reading UCSRC.
         The URSEL must be zero when writing the UBRRH. */
-        SFR::BitRegisterRW<C_REG, uint8_t>().clearBit(C_REG::URSEL);
-        SFR::BitRegisterRW<HIGH, uint8_t>() = static_cast<uint8_t>((speed >> 8));
-        SFR::BitRegisterRW<LOW, uint8_t>()  = static_cast<uint8_t>(speed);
+        SFR::RegisterRW<C_REG, uint8_t>().clearBit(C_REG::URSEL);
+        SFR::RegisterRW<HIGH, uint8_t>() = static_cast<uint8_t>((speed >> 8));
+        SFR::RegisterRW<LOW, uint8_t>()  = static_cast<uint8_t>(speed);
     }
 
     template <typename REG>
     constexpr static inline void
     set_ubrr_single(const uint16_t speed)
     {
-        SFR::BitRegisterRW<REG, uint16_t>() = speed;
+        SFR::RegisterRW<REG, uint16_t>() = speed;
     }
 
     template <typename REGS>

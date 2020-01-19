@@ -35,7 +35,7 @@ namespace SFR {
     }
 
     template <typename REG_TYPE, typename WIDTH>
-    class BitRegisterRO : public REG_TYPE {
+    class RegisterRO : public REG_TYPE {
     public:
         WIDTH
         read() const
@@ -51,38 +51,12 @@ namespace SFR {
     };
 
     template <typename REG_TYPE, typename WIDTH>
-    class DataRegisterRO : public REG_TYPE {
-    public:
-        WIDTH
-        read() const
-        {
-            return iomem<WIDTH>(REG_TYPE::address);
-        }
-    };
-
-    template <typename REG_TYPE, typename WIDTH>
-    class DataRegisterRW : public DataRegisterRO<REG_TYPE, WIDTH> {
+    class RegisterRW : public SFR::RegisterRO<REG_TYPE, WIDTH> {
     public:
         void
         write(const WIDTH value) const
         {
-            SFR::iomem<WIDTH>(REG_TYPE::address) = value;
-        }
-
-        void
-        operator=(const WIDTH value) const
-        {
-            write(value);
-        }
-    };
-
-    template <typename REG_TYPE, typename WIDTH>
-    class BitRegisterRW : public SFR::BitRegisterRO<REG_TYPE, WIDTH> {
-    public:
-        void
-        write(const WIDTH value) const
-        {
-            SFR::iomem<WIDTH>(REG_TYPE::address) = value;
+            iomem<WIDTH>(REG_TYPE::address) = value;
         }
 
         void

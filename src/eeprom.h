@@ -8,9 +8,9 @@
 
 namespace EEPROM {
 
-    auto ControllRegister = SFR::BitRegisterRW<SFR::EECR, uint8_t>();
-    auto AddressRegister  = SFR::DataRegisterRW<SFR::EEAR, uint16_t>();
-    auto DataRegister     = SFR::DataRegisterRW<SFR::EEDR, uint8_t>();
+    auto ControllRegister = SFR::RegisterRW<SFR::EECR, uint8_t>();
+    auto AddressRegister  = SFR::RegisterRW<SFR::EEAR, uint16_t>();
+    auto DataRegister     = SFR::RegisterRW<SFR::EEDR, uint8_t>();
 
     /*
     Return if EEPROM is still pending read/write operation.

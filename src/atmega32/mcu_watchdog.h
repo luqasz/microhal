@@ -3,8 +3,8 @@
 
 namespace Watchdog {
 
-    constexpr auto    wdt     = SFR::BitRegisterRW<SFR::WDTCR, uint8_t>();
-    constexpr auto    status  = SFR::BitRegisterRW<SFR::MCUCSR, uint8_t>();
+    constexpr auto    wdt     = SFR::RegisterRW<SFR::WDTCR, uint8_t>();
+    constexpr auto    status  = SFR::RegisterRW<SFR::MCUCSR, uint8_t>();
     constexpr uint8_t DISABLE = wdt.WDTOE | wdt.WDE;
     constexpr uint8_t CHANGE  = wdt.WDTOE;
 
