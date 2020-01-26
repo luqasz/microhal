@@ -38,8 +38,8 @@ struct Timer5 {
 
 enum TIRQ {
     Overflow = 0,
-    CompareA      = 2,
-    CompareB      = 4,
-    CompareC      = 8,
+    CompareA = 2,
+    CompareB = 4,
+    CompareC = 8,
 };
 
