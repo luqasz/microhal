@@ -9,6 +9,11 @@ jobs:
       image: lukaszkostka/avr:debian_buster
       env:
         CXX: avr-g++
+    strategy:
+      matrix:
+        mcu:
+          - atmega32
+          - atmega2560
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -18,7 +23,7 @@ jobs:
           -DF_CPU=11059200
           -DBAUD=115200
           -DCMAKE_BUILD_TYPE=MinSizeRel
-          -DMCU=atmega32
+          -DMCU={{ matrix.mcu }}
           -DAVR_PROGRAMMER=stk500v2
           -DAVR_PROGRAMMER_BAUD=112500
           -DAVR_PROGRAMMER_PORT=/dev/null
