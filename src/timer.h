@@ -63,7 +63,7 @@ frequencyToTop(const unsigned long desired, const Clock clock)
 }
 
 /*
- * Each modes TOP = ICR register.
+ * Each mode TOP = ICR register.
  */
 enum TimerMode {
     CTC                   = TCCRB::WGM2 | TCCRB::WGM3,
