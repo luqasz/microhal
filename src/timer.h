@@ -66,10 +66,13 @@ frequencyToTop(const unsigned long desired, const Clock clock)
  * Each modes TOP = ICR register.
  */
 enum TimerMode {
-    CTC = TCCRB::WGM2 | TCCRB::WGM3,               // Compare match.
-    PWM = TCCRA::WGM1 | TCCRB::WGM2 | TCCRB::WGM3,
-    PFC = TCCRB::WGM3,                             // PWM Phase and Frequency Correct.
-    PC  = TCCRA::WGM1 | TCCRB::WGM3,               // Phase correct.
+    CTC                   = TCCRB::WGM2 | TCCRB::WGM3,
+    PWM                   = TCCRA::WGM1 | TCCRB::WGM2 | TCCRB::WGM3,
+    PFC                   = TCCRB::WGM3,
+    PC                    = TCCRA::WGM1 | TCCRB::WGM3,
+    CompareMatch          = CTC,
+    PhaseFrequencyCorrect = PFC,
+    PhaseCorrect          = PC,
 };
 
 enum PinMode {
