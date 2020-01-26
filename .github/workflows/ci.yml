@@ -30,7 +30,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: lukaszkostka/avr:alpine_3.10
+      image: lukaszkostka/avr:debian_buster
     steps:
       - name: Checkout
         uses: actions/checkout@v1
