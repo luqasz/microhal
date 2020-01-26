@@ -23,7 +23,7 @@ jobs:
           -DF_CPU=11059200
           -DBAUD=115200
           -DCMAKE_BUILD_TYPE=MinSizeRel
-          -DMCU={{ matrix.mcu }}
+          -DMCU=${{ matrix.mcu }}
           -DAVR_PROGRAMMER=stk500v2
           -DAVR_PROGRAMMER_BAUD=112500
           -DAVR_PROGRAMMER_PORT=/dev/null
