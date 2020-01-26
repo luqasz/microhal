@@ -11,3 +11,9 @@ struct Timer1 {
     constexpr static auto OCRB  = SFR::RegisterRW<SFR::OCR1B, uint16_t>();
 };
 
+enum TIRQ {
+    Overflow = 4,
+    CompareA = 16,
+    CompareB = 8,
+};
+
