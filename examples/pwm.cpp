@@ -13,11 +13,10 @@ main(void)
     timer.set(CTC);
     timer.set(ToggleA);
     timer.set(ToggleB);
-    timer.setTop(200);
+    timer.top = 200;
     timer.set(Clock::_1);
-    constexpr uint16_t counter = 2;
-    timer.setCompareA(counter);
-    timer.setCompareB(counter);
+    timer.compareMatch.A = 4;
+    timer.compareMatch.B = 8;
     Irq::enable();
     while (true) {
     }

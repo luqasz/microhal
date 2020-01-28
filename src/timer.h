@@ -85,32 +85,11 @@ enum PinMode {
 };
 
 template <typename REGS>
-class Timer {
+class Timer: REGS {
 
 public:
-    void
-    setCompareA(const uint16_t value) const
-    {
-        REGS::OCRA = value;
-    }
-
-    void
-    setCompareB(const uint16_t value) const
-    {
-        REGS::OCRB = value;
-    }
-
-    void
-    setTop(const uint16_t value) const
-    {
-        REGS::ICR = value;
-    }
-
-    uint16_t
-    getTop() const
-    {
-        return REGS::ICR.read();
-    }
+    using REGS::compareMatch;
+    using REGS::top;
 
     void
     set(const TimerMode mode) const
