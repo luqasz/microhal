@@ -11,12 +11,13 @@ main(void)
 
     auto timer = Timer<Timer1>();
     timer.set(CTC);
-    timer.set(ToggleA);
-    timer.set(ToggleB);
+    timer.inverting(timer.PinA);
+    timer.inverting(timer.PinB);
     timer.top = 200;
     timer.set(Clock::_1);
     timer.compareMatch.A = 4;
     timer.compareMatch.B = 8;
+    timer.enable(timer.CompareA);
     Irq::enable();
     while (true) {
     }

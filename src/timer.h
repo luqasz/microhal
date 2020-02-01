@@ -2,25 +2,6 @@
 
 #include <mcu_timer.h>
 
-enum TCCRA : uint8_t {
-    WGM0  = 1,
-    WGM1  = 2,
-    COMB0 = 16,
-    COMB1 = 32,
-    COMA0 = 64,
-    COMA1 = 128,
-};
-
-enum TCCRB : uint8_t {
-    CS0  = 1,
-    CS1  = 2,
-    CS2  = 4,
-    WGM2 = 8,
-    WGM3 = 16,
-    ICES = 64,
-    ICNC = 128,
-};
-
 enum Clock {
     _1    = TCCRB::CS0,
     _8    = TCCRB::CS1,
@@ -68,27 +49,18 @@ frequencyToTop(const unsigned long desired, const Clock clock)
 enum TimerMode {
     CTC                   = TCCRB::WGM2 | TCCRB::WGM3,
     PWM                   = TCCRA::WGM1 | TCCRB::WGM2 | TCCRB::WGM3,
-    PFC                   = TCCRB::WGM3,
-    PC                    = TCCRA::WGM1 | TCCRB::WGM3,
     CompareMatch          = CTC,
-    PhaseFrequencyCorrect = PFC,
-    PhaseCorrect          = PC,
-};
-
-enum PinMode {
-    InvertingA    = TCCRA::COMA1 | TCCRA::COMA0,
-    InvertingB    = TCCRA::COMB1 | TCCRA::COMB0,
-    NonInvertingA = TCCRA::COMA1,
-    NonInvertingB = TCCRA::COMB1,
-    ToggleA       = TCCRA::COMA0,
-    ToggleB       = TCCRA::COMB0,
 };
 
 template <typename REGS>
-class Timer: REGS {
+class Timer : public REGS {
 
 public:
     using REGS::compareMatch;
+    using REGS::IRQ;
+    using REGS::tccra;
+    using REGS::tccrb;
+    using REGS::timsk;
     using REGS::top;
 
     void
@@ -96,34 +68,42 @@ public:
     {
         constexpr uint8_t TCCRA_MASK = (TCCRA::WGM0 | TCCRA::WGM1);
         constexpr uint8_t TCCRB_MASK = (TCCRB::WGM2 | TCCRB::WGM3);
-        REGS::TCCRA.setBit(mode & TCCRA_MASK, TCCRA_MASK);
-        REGS::TCCRB.setBit(mode & TCCRB_MASK, TCCRB_MASK);
+        tccra.setBit(mode & TCCRA_MASK, TCCRA_MASK);
+        tccrb.setBit(mode & TCCRB_MASK, TCCRB_MASK);
     }
 
     void
     set(const Clock cl)
     {
         constexpr uint8_t CLOCK_MASK = TCCRB::CS0 | TCCRB::CS1 | TCCRB::CS2;
-        REGS::TCCRB.setBit(cl, CLOCK_MASK);
+        tccrb.setBit(cl, CLOCK_MASK);
     }
 
     void
-    set(const PinMode mode) const
+    inverting(const typename REGS::Pin pin)
     {
-        constexpr uint8_t PIN_MASK = TCCRA::COMA1 | TCCRA::COMA0 | TCCRA::COMB1 | TCCRA::COMB0;
-        REGS::TCCRA.setBit(mode, PIN_MASK);
+        const uint8_t mode = static_cast<uint8_t>(pin | pin << 1);
+        tccra.setBit(mode);
     }
 
     void
-    enable(const TIRQ irq) const
+    nonInverting(const typename REGS::Pin pin)
     {
-        REGS::TIMSK.setBit(irq);
+        const uint8_t mode = static_cast<uint8_t>(pin << 1);
+        const uint8_t mask = static_cast<uint8_t>(pin | pin >> 1);
+        tccra.setBit(mode, mask);
     }
 
     void
-    disable(const TIRQ irq) const
+    enable(const typename REGS::IRQ irq) const
     {
-        REGS::TIMSK.clearBit(irq);
+        timsk.setBit(irq);
+    }
+
+    void
+    disable(const typename REGS::IRQ irq) const
+    {
+        timsk.clearBit(irq);
     }
 };
 
