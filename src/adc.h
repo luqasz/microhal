@@ -43,9 +43,7 @@ namespace ADC {
     void
     set(const TriggerSource src)
     {
-        ControllRegister.setBit(ControllRegister.ADIE);  // Enable interrupt
-        ControllRegister.setBit(ControllRegister.ADATE); // Enable auto trigger
-        ControllRegister.setBit(ControllRegister.ADSC);  // Start conversion
+        ControllRegister.setBit(ControllRegister.ADIE | ControllRegister.ADIE | ControllRegister.ADSC);
         TriggerRegister.setBit(src, TRIGGER_MASK);
     }
 
