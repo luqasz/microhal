@@ -21,8 +21,7 @@ namespace ADC {
     read(const Channel ch)
     {
         enable();
-        ChannelRegister.clearBit(MUX_BITS);
-        ChannelRegister.setBit(ch);
+        ChannelRegister.setBit(ch, MUX_BITS);
         ControllRegister.setBit(ControllRegister.ADSC);         // Start conversion
         while (ControllRegister.isSet(ControllRegister.ADSC)) { // Wait untill conversion is ready
         }
