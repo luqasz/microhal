@@ -42,14 +42,16 @@ namespace ADC {
     };
 
     enum Channel {
-        ADC0 = 0,
-        ADC1 = ADMUX_REG::MUX0,
-        ADC2 = ADMUX_REG::MUX1,
-        ADC3 = ADMUX_REG::MUX0 | ADMUX_REG::MUX1,
-        ADC4 = ADMUX_REG::MUX2,
-        ADC5 = ADMUX_REG::MUX0 | ADMUX_REG::MUX2,
-        ADC6 = ADMUX_REG::MUX1 | ADMUX_REG::MUX2,
-        ADC7 = ADMUX_REG::MUX0 | ADMUX_REG::MUX1 | ADMUX_REG::MUX2,
+        ADC0    = 0,
+        ADC1    = ADMUX_REG::MUX0,
+        ADC2    = ADMUX_REG::MUX1,
+        ADC3    = ADMUX_REG::MUX0 | ADMUX_REG::MUX1,
+        ADC4    = ADMUX_REG::MUX2,
+        ADC5    = ADMUX_REG::MUX0 | ADMUX_REG::MUX2,
+        ADC6    = ADMUX_REG::MUX1 | ADMUX_REG::MUX2,
+        ADC7    = ADMUX_REG::MUX0 | ADMUX_REG::MUX1 | ADMUX_REG::MUX2,
+        BandGap = ADMUX_REG::MUX1 | ADMUX_REG::MUX2 | ADMUX_REG::MUX3 | ADMUX_REG::MUX4,
+        GND     = ADMUX_REG::MUX0 | ADMUX_REG::MUX1 | ADMUX_REG::MUX2 | ADMUX_REG::MUX3 | ADMUX_REG::MUX4,
     };
 
     enum Prescaler {
