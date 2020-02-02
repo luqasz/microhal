@@ -3,6 +3,7 @@
 #include "../sfr.h"
 
 namespace ADC {
+
     typedef SFR::ADCSRA ADCSRA_REG;
     typedef SFR::ADCSRB TRIGGER_REG;
     typedef SFR::ADMUX  ADMUX_REG;
@@ -10,10 +11,10 @@ namespace ADC {
     typedef SFR::ADCSRA CTL_REG;
     typedef SFR::ADCSRA PRESCALER_REG;
 
-    const uint8_t PRESCALER_BITS = (ADCSRA_REG::ADPS0 | ADCSRA_REG::ADPS1 | ADCSRA_REG::ADPS2);
-    const uint8_t MUX_BITS       = (ADMUX_REG::MUX0 | ADMUX_REG::MUX1 | ADMUX_REG::MUX2 | ADMUX_REG::MUX3 | ADMUX_REG::MUX4);
-    const uint8_t VREF_BITS      = (ADMUX_REG::REFS0 | ADMUX_REG::REFS1);
-    const uint8_t TRIGGER_BITS   = (TRIGGER_REG::ADTS0 | TRIGGER_REG::ADTS1 | TRIGGER_REG::ADTS2);
+    constexpr uint8_t PRESCALER_BITS = ADCSRA_REG::ADPS0 | ADCSRA_REG::ADPS1 | ADCSRA_REG::ADPS2;
+    constexpr uint8_t MUX_BITS       = ADMUX_REG::MUX0 | ADMUX_REG::MUX1 | ADMUX_REG::MUX2 | ADMUX_REG::MUX3 | ADMUX_REG::MUX4;
+    constexpr uint8_t VREF_BITS      = ADMUX_REG::REFS0 | ADMUX_REG::REFS1;
+    constexpr uint8_t TRIGGER_BITS   = TRIGGER_REG::ADTS0 | TRIGGER_REG::ADTS1 | TRIGGER_REG::ADTS2;
 
     auto ControllRegister  = SFR::RegisterRW<CTL_REG, uint8_t>();
     auto TriggerRegister   = SFR::RegisterRW<TRIGGER_REG, uint8_t>();
@@ -62,3 +63,4 @@ namespace ADC {
     };
 
 }
+
