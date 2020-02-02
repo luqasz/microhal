@@ -21,7 +21,7 @@ namespace ADC {
     read(const Channel ch)
     {
         enable();
-        ChannelRegister.setBit(ch, MUX_BITS);
+        ChannelRegister.setBit(ch, MUX_MASK);
         ControllRegister.setBit(ControllRegister.ADSC);         // Start conversion
         while (ControllRegister.isSet(ControllRegister.ADSC)) { // Wait untill conversion is ready
         }
@@ -31,13 +31,13 @@ namespace ADC {
     void
     set(const Prescaler value)
     {
-        PrescalerRegister.setBit(value, PRESCALER_BITS);
+        PrescalerRegister.setBit(value, PRESCALER_MASK);
     }
 
     void
     set(const Vref ref)
     {
-        VrefRegister.setBit(ref, VREF_BITS);
+        VrefRegister.setBit(ref, VREF_MASK);
     }
 
     void
@@ -46,7 +46,7 @@ namespace ADC {
         ControllRegister.setBit(ControllRegister.ADIE);  // Enable interrupt
         ControllRegister.setBit(ControllRegister.ADATE); // Enable auto trigger
         ControllRegister.setBit(ControllRegister.ADSC);  // Start conversion
-        TriggerRegister.setBit(src, TRIGGER_BITS);
+        TriggerRegister.setBit(src, TRIGGER_MASK);
     }
 
 }
