@@ -1,5 +1,4 @@
-#ifndef mcp49xx_h
-#define mcp49xx_h
+#pragma once
 
 #include <stdint.h>
 
@@ -89,5 +88,3 @@ namespace MCP49x2 {
     };
 
 }
-
-#endif

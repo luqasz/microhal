@@ -1,5 +1,4 @@
-#ifndef i2c_h
-#define i2c_h
+#pragma once
 
 #include "buffer.h"
 #include "sfr.h"
@@ -119,5 +118,3 @@ namespace I2C {
         }
     };
 }
-
-#endif

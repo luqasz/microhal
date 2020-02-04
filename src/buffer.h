@@ -1,5 +1,4 @@
-#ifndef buffer_h
-#define buffer_h
+#pragma once
 
 #include "utils.h"
 
@@ -131,5 +130,3 @@ namespace Buffer {
     };
 
 }
-
-#endif

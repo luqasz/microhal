@@ -1,5 +1,4 @@
-#ifndef ds1337_h
-#define ds1337_h
+#pragma once
 
 #include "bcd.h"
 #include "buffer.h"
@@ -80,5 +79,3 @@ public:
         i2c_bus.write(clock_target, buffer);
     }
 };
-
-#endif

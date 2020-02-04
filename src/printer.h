@@ -1,5 +1,4 @@
-#ifndef printer_h
-#define printer_h
+#pragma once
 
 #include <stdint.h>
 #include <stdio.h>
@@ -51,5 +50,3 @@ struct Printer {
         print(LE::lineEnd);
     }
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef hd44780_h
-#define hd44780_h
+#pragma once
 
 #include "../gpio.h"
 
@@ -162,5 +161,3 @@ namespace HD44780 {
         }
     };
 }
-
-#endif

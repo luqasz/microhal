@@ -1,5 +1,4 @@
-#ifndef irq_h
-#define irq_h
+#pragma once
 
 #include "sfr.h"
 
@@ -58,5 +57,3 @@ public:
 };
 
 #include <mcu_irq.h>
-
-#endif

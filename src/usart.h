@@ -1,5 +1,4 @@
-#ifndef USART_H
-#define USART_H
+#pragma once
 
 #include "sfr.h"
 
@@ -233,5 +232,3 @@ namespace USART {
 }
 
 #include <mcu_usart.h>
-#endif
-

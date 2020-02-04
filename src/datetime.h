@@ -1,5 +1,4 @@
-#ifndef datetime_h
-#define datetime_h
+#pragma once
 
 #include <stdint.h>
 
@@ -12,5 +11,3 @@ typedef struct {
     uint8_t  month;
     uint16_t year;
 } DateTime;
-
-#endif

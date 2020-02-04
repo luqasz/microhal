@@ -1,5 +1,4 @@
-#ifndef utils_h
-#define utils_h
+#pragma once
 
 template <typename T>
 bool constexpr isPowerOfTwo(T number)
@@ -59,6 +58,3 @@ inverted(T value)
 {
     return static_cast<T>(~value);
 }
-
-#endif
-

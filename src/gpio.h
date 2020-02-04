@@ -1,5 +1,4 @@
-#ifndef gpio_h
-#define gpio_h
+#pragma once
 
 #include "sfr.h"
 
@@ -127,5 +126,3 @@ namespace GPIO {
 }
 
 #include <mcu_gpio.h>
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef mcu_sfr_h
-#define mcu_sfr_h
+#pragma once
 
 #include <stdint.h>
 
@@ -1429,5 +1428,3 @@ namespace SFR {
     };
 
 }
-
-#endif

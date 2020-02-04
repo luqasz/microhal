@@ -1,5 +1,4 @@
-#ifndef mcu_irq_h
-#define mcu_irq_h
+#pragma once
 
 #include "../irq.h"
 
@@ -46,5 +45,3 @@ public:
     static void
     SPM() VECTOR("__vector_20");
 };
-
-#endif

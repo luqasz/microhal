@@ -1,5 +1,4 @@
-#ifndef eeprom_h
-#define eeprom_h
+#pragma once
 
 #include "sfr.h"
 
@@ -43,5 +42,3 @@ namespace EEPROM {
     }
 
 }
-
-#endif

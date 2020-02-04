@@ -1,5 +1,4 @@
-#ifndef bcd_h
-#define bcd_h
+#pragma once
 
 #include <stdint.h>
 
@@ -14,5 +13,3 @@ bcd_to_dec(const uint8_t bcd)
 {
     return static_cast<uint8_t>((((bcd & 0xF0) >> 4) * 10) + (bcd & 0x0F));
 }
-
-#endif

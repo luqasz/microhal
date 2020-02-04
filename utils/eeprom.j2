@@ -1,5 +1,4 @@
-#ifndef {{ device.name | lower }}_eeprom_h
-#define {{ device.name | lower }}_eeprom_h
+#pragma once
 
 #include <stdint.h>
 
@@ -18,5 +17,3 @@ namespace EEPROM {
     constexpr uint8_t page_size = {{ "{0:#0{padding}x}".format(device.eeprom.page_size, padding=4) }};
 
 }
-
-#endif
