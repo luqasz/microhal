@@ -28,9 +28,8 @@ main(void)
 {
     auto spi = SPI::Master<SPI::SPI0>();
     spi.set(SPI::Mode::m0);
-    spi.set(spi.Speed::d2);
+    spi.set(spi.Clock::_2);
     spi.enable();
-    // spi.set(SPI::DataOrder::LSB_First);
     auto dac = MCP49x2::MCP4922(MCP49x2::Channel::A);
     dac.set(MCP49x2::Gain::x1);
     dac.set(MCP49x2::BufferControl::Unbuffered);

@@ -29,14 +29,14 @@ namespace SPI {
     template <typename NUM>
     class Master {
     public:
-        enum Speed {
-            d2,
-            d4,
-            d8,
-            d16,
-            d32,
-            d64,
-            d128,
+        enum Clock {
+            _2,
+            _4,
+            _8,
+            _16,
+            _32,
+            _64,
+            _128,
         };
 
         /*
@@ -64,40 +64,40 @@ namespace SPI {
         }
 
         void
-        set(const Speed speed)
+        set(const Clock c)
         {
-            switch (speed) {
-                case Speed::d2:
+            switch (c) {
+                case Clock::_2:
                     NUM::SPSR.setBit(NUM::SPSR.SPI2X);
                     NUM::SPCR.clearBit(NUM::SPCR.SPR0);
                     NUM::SPCR.clearBit(NUM::SPCR.SPR1);
                     break;
-                case Speed::d4:
+                case Clock::_4:
                     NUM::SPSR.clearBit(NUM::SPSR.SPI2X);
                     NUM::SPCR.clearBit(NUM::SPCR.SPR0);
                     NUM::SPCR.clearBit(NUM::SPCR.SPR1);
                     break;
-                case Speed::d8:
+                case Clock::_8:
                     NUM::SPSR.setBit(NUM::SPSR.SPI2X);
                     NUM::SPCR.setBit(NUM::SPCR.SPR0);
                     NUM::SPCR.clearBit(NUM::SPCR.SPR1);
                     break;
-                case Speed::d16:
+                case Clock::_16:
                     NUM::SPSR.clearBit(NUM::SPSR.SPI2X);
                     NUM::SPCR.setBit(NUM::SPCR.SPR0);
                     NUM::SPCR.clearBit(NUM::SPCR.SPR1);
                     break;
-                case Speed::d32:
+                case Clock::_32:
                     NUM::SPSR.setBit(NUM::SPSR.SPI2X);
                     NUM::SPCR.clearBit(NUM::SPCR.SPR0);
                     NUM::SPCR.setBit(NUM::SPCR.SPR1);
                     break;
-                case Speed::d64:
+                case Clock::_64:
                     NUM::SPSR.setBit(NUM::SPSR.SPI2X);
                     NUM::SPCR.setBit(NUM::SPCR.SPR0);
                     NUM::SPCR.setBit(NUM::SPCR.SPR1);
                     break;
-                case Speed::d128:
+                case Clock::_128:
                     NUM::SPSR.clearBit(NUM::SPSR.SPI2X);
                     NUM::SPCR.setBit(NUM::SPCR.SPR0);
                     NUM::SPCR.setBit(NUM::SPCR.SPR1);
