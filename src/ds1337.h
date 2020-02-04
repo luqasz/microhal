@@ -50,7 +50,7 @@ public:
     }
 
     void
-    getDateTime(DateTime & dt)
+    getDateTime(DateTime & dt) const
     {
         auto buffer = Buffer::SizedBytesArray<DATE_TIME_BUFFER_SIZE>();
         i2c_bus.read(clock_target, buffer);
@@ -65,7 +65,7 @@ public:
     }
 
     void
-    setDateTime(DateTime & dt)
+    setDateTime(DateTime & dt) const
     {
         auto buffer           = Buffer::SizedBytesArray<DATE_TIME_BUFFER_SIZE>();
         buffer[REG_SECONDS]   = dec_to_bcd(dt.second);

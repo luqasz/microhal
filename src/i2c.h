@@ -62,7 +62,7 @@ namespace I2C {
     }
 
     void
-    write_blocking(uint8_t byte)
+    write_blocking(const uint8_t byte)
     {
         TWDR = byte;
         TWCR = (TWCR.TWINT | TWCR.TWEN);
@@ -71,7 +71,7 @@ namespace I2C {
     }
 
     uint8_t
-    read_blocking(uint8_t ack)
+    read_blocking(const uint8_t ack)
     {
         TWCR = (TWCR.TWINT | ack | TWCR.TWEN);
         // Wait until byte is present in register.
@@ -88,7 +88,7 @@ namespace I2C {
     class Master {
     public:
         void
-        write(const I2C::Target target, Buffer::Bytes buffer)
+        write(const I2C::Target target, Buffer::Bytes buffer) const
         {
             set_speed(target.speed);
             start_signal();
@@ -101,7 +101,7 @@ namespace I2C {
         }
 
         void
-        read(const I2C::Target target, Buffer::Bytes buffer)
+        read(const I2C::Target target, Buffer::Bytes buffer) const
         {
             set_speed(target.speed);
             start_signal();
