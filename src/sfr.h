@@ -47,6 +47,20 @@ namespace SFR {
         {
             return read() & bit;
         }
+
+        void
+        waitForSetBit(const uint8_t bit) const
+        {
+            while (!isSet(bit)) {
+            };
+        }
+
+        void
+        waitForClearedBit(const uint8_t bit) const
+        {
+            while (isSet(bit)) {
+            };
+        }
     };
 
     template <typename REG_TYPE, typename WIDTH>

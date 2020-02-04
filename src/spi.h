@@ -145,9 +145,7 @@ namespace SPI {
         communicate(const uint8_t byte)
         {
             NUM::SPDR = byte;
-            // Wait for transmission complete
-            while (!(NUM::SPSR.isSet(NUM::SPSR.SPIF))) {
-            }
+            NUM::SPSR.waitForSetBit(NUM::SPSR.SPIF); // Wait for transmission complete
             return NUM::SPDR.read();
         }
 

@@ -22,9 +22,8 @@ namespace ADC {
     {
         enable();
         ChannelRegister.setBit(ch, MUX_MASK);
-        ControllRegister.setBit(ControllRegister.ADSC);         // Start conversion
-        while (ControllRegister.isSet(ControllRegister.ADSC)) { // Wait untill conversion is ready
-        }
+        ControllRegister.setBit(ControllRegister.ADSC);            // Start conversion
+        ControllRegister.waitForClearedBit(ControllRegister.ADSC); // Wait untill conversion is ready
         return DataRegister.read();
     }
 

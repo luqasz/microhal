@@ -11,20 +11,10 @@ namespace EEPROM {
     auto AddressRegister  = SFR::RegisterRW<SFR::EEAR, uint16_t>();
     auto DataRegister     = SFR::RegisterRW<SFR::EEDR, uint8_t>();
 
-    /*
-    Return if EEPROM is still pending read/write operation.
-    */
-    bool
-    is_busy()
-    {
-        return ControllRegister.isSet(ControllRegister.EEWE);
-    }
-
     void
     write(const uint8_t byte, const uint16_t address)
     {
-        while (is_busy()) {
-        }
+        ControllRegister.waitForClearedBit(ControllRegister.EEWE); // Wait untill ready.
         AddressRegister = address;
         DataRegister    = byte;
         ControllRegister.setBit(ControllRegister.EEMWE);
@@ -34,8 +24,7 @@ namespace EEPROM {
     uint8_t
     read(const uint16_t address)
     {
-        while (is_busy()) {
-        }
+        ControllRegister.waitForClearedBit(ControllRegister.EEWE); // Wait untill ready.
         AddressRegister = address;
         ControllRegister.setBit(ControllRegister.EERE);
         return DataRegister.read();

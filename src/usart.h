@@ -217,7 +217,7 @@ namespace USART {
         bool
         is_tx_buffer_empty() const
         {
-            return static_cast<bool>(REGS::ucsra.read() & REGS::ucsra.UDRE);
+            return REGS::ucsra.isSet(REGS::ucsra.UDRE);
         }
 
         void

@@ -37,24 +37,17 @@ namespace I2C {
     };
 
     void
-    twcr_wait(const uint8_t bit)
-    {
-        while (!TWCR.isSet(bit)) {
-        };
-    }
-
-    void
     start_signal(void)
     {
         TWCR = (TWCR.TWINT | TWCR.TWEN | TWCR.TWSTA);
-        twcr_wait(TWCR.TWINT);
+        TWCR.waitForSetBit(TWCR.TWINT); // Wait for operation to complete.
     }
 
     void
     stop_signal(void)
     {
         TWCR = (TWCR.TWINT | TWCR.TWEN | TWCR.TWSTO);
-        twcr_wait(TWCR.TWSTO);
+        TWCR.waitForSetBit(TWCR.TWSTO); // Wait for operation to complete.
     }
 
     void
@@ -62,16 +55,14 @@ namespace I2C {
     {
         TWDR = byte;
         TWCR = (TWCR.TWINT | TWCR.TWEN);
-        // Wait until byte is pushed out of register.
-        twcr_wait(TWCR.TWINT);
+        TWCR.waitForSetBit(TWCR.TWINT); // Wait until byte is pushed out of register.
     }
 
     uint8_t
     read_blocking(const uint8_t ack)
     {
         TWCR = (TWCR.TWINT | ack | TWCR.TWEN);
-        // Wait until byte is present in register.
-        twcr_wait(TWCR.TWINT);
+        TWCR.waitForSetBit(TWCR.TWINT); // Wait until byte is present in register.
         return TWDR.read();
     }
 
