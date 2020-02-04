@@ -29,7 +29,7 @@ namespace ADC {
     }
 
     void
-    set(const Prescaler value)
+    set(const Clock value)
     {
         PrescalerRegister.setBit(value, PRESCALER_MASK);
     }

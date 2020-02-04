@@ -13,7 +13,7 @@ main(void)
 {
     usart.set(baud);
     usart.enable(USART::Channel::TX);
-    ADC::set(ADC::Prescaler::DIV_2);
+    ADC::set(ADC::Clock::_2);
     ADC::set(ADC::Vref::AVCC);
     while (true) {
         serial.printLn("Reading ADC");
