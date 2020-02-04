@@ -4,6 +4,7 @@
 #include "buffer.h"
 #include "datetime.h"
 #include "i2c.h"
+#include "units.h"
 
 #include <stdint.h>
 
@@ -37,7 +38,7 @@ constexpr auto clock_target = I2C::Target {
     DS1337_ADDRESS,
     REG_SECONDS,
     REG_YEAR,
-    I2C::Speed::kHz100,
+    100_kHz,
 };
 
 class DS1337 {
