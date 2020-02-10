@@ -32,7 +32,6 @@ namespace I2C {
         */
         const uint8_t   address;
         const uint8_t   start_address;
-        const uint8_t   end_address;
         const Frequency speed;
     };
 
@@ -75,7 +74,7 @@ namespace I2C {
     class Master {
     public:
         void
-        write(const I2C::Target target, Buffer::Bytes buffer) const
+        write(const I2C::Target target, const Buffer::Bytes buffer) const
         {
             set_speed(target.speed);
             start_signal();
@@ -88,7 +87,7 @@ namespace I2C {
         }
 
         void
-        read(const I2C::Target target, Buffer::Bytes buffer) const
+        read(const I2C::Target target, const Buffer::Bytes buffer) const
         {
             set_speed(target.speed);
             start_signal();
@@ -96,10 +95,9 @@ namespace I2C {
             write_blocking(target.start_address);
             start_signal();
             write_blocking(static_cast<uint8_t>((target.address << 1) + 1));
-            uint8_t counter = static_cast<uint8_t>(target.end_address - target.start_address);
-            for (auto & value : buffer) {
-                value = read_blocking(counter ? ACK : NACK);
-                counter--;
+            for (uint8_t & byte : buffer) {
+                const uint8_t signal = &byte == buffer.lastElemPtr() ? ACK : NACK;
+                byte                 = read_blocking(signal);
             }
             stop_signal();
         }

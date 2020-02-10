@@ -6,30 +6,52 @@
 
 namespace Buffer {
 
+    using SIZE_TYPE = unsigned int;
+
     class Bytes {
     private:
-        uint8_t * begin_ptr;
-        uint8_t * end_ptr;
+        uint8_t * const begin_ptr;
+        uint8_t * const end_ptr;
 
     protected:
-        Bytes(uint8_t * b, uint8_t * e) :
+        Bytes(uint8_t * const b, uint8_t * const e) :
             begin_ptr(b),
             end_ptr(e)
         {
         }
 
     public:
-        uint8_t *
-        begin()
+        constexpr uint8_t *
+        begin() const
         {
             return begin_ptr;
         };
-        uint8_t *
-        end()
+
+        constexpr uint8_t *
+        end() const
         {
             return end_ptr;
         };
-        uint8_t & operator[](uint8_t idx) { return begin_ptr[idx]; };
+
+        /*
+         * Return pointer to last element in array.
+         */
+        constexpr uint8_t *
+        lastElemPtr() const
+        {
+            return end() - 1;
+        }
+
+        constexpr uint8_t & operator[](const SIZE_TYPE idx) const
+        {
+            return begin_ptr[idx];
+        };
+
+        constexpr SIZE_TYPE
+        size() const
+        {
+            return static_cast<SIZE_TYPE>(end() - begin());
+        };
     };
 
     template <unsigned int SIZE>

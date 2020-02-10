@@ -37,7 +37,6 @@ constexpr uint8_t  CENTURY_MASK          = 0x80;
 constexpr auto clock_target = I2C::Target {
     DS1337_ADDRESS,
     REG_SECONDS,
-    REG_YEAR,
     100_kHz,
 };
 
