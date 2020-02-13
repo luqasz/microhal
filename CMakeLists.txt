@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
-# Without this, avr-gcc throws:
-# avr-ld: warning: cannot find entry symbol arch_paths_first; defaulting to 0000000000000000
-set(HAVE_FLAG_SEARCH_PATHS_FIRST 0)
+
+SET(CMAKE_SYSTEM_NAME Generic)
+SET(CMAKE_SYSTEM_PROCESSOR ${MCU})
+SET(CMAKE_CROSSCOMPILING 1)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
 project(
     avr_libs
     LANGUAGES CXX
@@ -44,7 +47,7 @@ function(target_options target_name)
         $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-fdata-sections>
         $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-Wl,--gc-sections>
         $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-fwhole-program>
-        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-mmcu=${MCU}>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-mmcu=${CMAKE_SYSTEM_PROCESSOR}>
         )
 
     target_link_options(
@@ -55,14 +58,14 @@ function(target_options target_name)
         $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-fdata-sections>
         $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-Wl,--gc-sections>
         $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-fwhole-program>
-        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-mmcu=${MCU}>
+        $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-mmcu=${CMAKE_SYSTEM_PROCESSOR}>
         $<$<NOT:$<BOOL:${BUILD_TESTS}>>:-mrelax>
         )
 
     target_include_directories(
         ${target_name}
         PUBLIC
-        src/${MCU}
+        src/${CMAKE_SYSTEM_PROCESSOR}
         )
 
     target_include_directories(

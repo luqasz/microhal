@@ -1,7 +1,5 @@
-find_program(avr_objcopy avr-objcopy)
-find_program(avr_size_tool avr-objdump)
-find_program(avr_objdump avr-objdump)
 find_program(avr_uploadtool avrdude)
+
 # Below values must match. e.g.
 # ihex for objdump i for avrdude
 # binary for objdump r for avrdude
@@ -16,7 +14,7 @@ function(binutils target_name)
     add_custom_command(
         OUTPUT ${bin_file}
         COMMAND
-            ${avr_objcopy}
+            ${CMAKE_OBJCOPY}
             -j .text
             -j .data
             -O ${objdump_format} ${target_name} ${bin_file}
@@ -26,7 +24,7 @@ function(binutils target_name)
     add_custom_command(
        OUTPUT ${eeprom_file}
        COMMAND
-           ${avr_objcopy}
+           ${CMAKE_OBJCOPY}
            -j .eeprom
            --set-section-flags=.eeprom=alloc,load
            --change-section-lma .eeprom=0
@@ -37,7 +35,7 @@ function(binutils target_name)
 
     add_custom_target(
        dis_${target_name}
-           ${avr_objdump}
+           ${CMAKE_OBJDUMP}
            -w
            -j .text
            -j .data
@@ -49,7 +47,7 @@ function(binutils target_name)
 
     add_custom_target(
        size_${target_name}
-           ${avr_size_tool}
+           ${CMAKE_OBJDUMP}
            -w
            -P mem-usage
            ${target_name}
@@ -63,7 +61,7 @@ function(avrdude target_name)
     add_custom_target(
        flash_${target_name}
            ${avr_uploadtool}
-           -p ${MCU}
+           -p ${CMAKE_SYSTEM_PROCESSOR}
            -c ${AVR_PROGRAMMER}
            -b ${AVR_PROGRAMMER_BAUD}
            -P ${AVR_PROGRAMMER_PORT}
@@ -75,7 +73,7 @@ endfunction()
 add_custom_target(
    status
        ${avr_uploadtool}
-       -p ${MCU}
+       -p ${CMAKE_SYSTEM_PROCESSOR}
        -c ${AVR_PROGRAMMER}
        -P ${AVR_PROGRAMMER_PORT}
        -b ${AVR_PROGRAMMER_BAUD}
@@ -86,7 +84,7 @@ add_custom_target(
 add_custom_target(
    get_fuses
        ${avr_uploadtool}
-       -p ${MCU}
+       -p ${CMAKE_SYSTEM_PROCESSOR}
        -c ${AVR_PROGRAMMER}
        -P ${AVR_PROGRAMMER_PORT}
        -b ${AVR_PROGRAMMER_BAUD}
@@ -99,7 +97,7 @@ add_custom_target(
    set_fuses
        ${avr_uploadtool}
        -b ${AVR_PROGRAMMER_BAUD}
-       -p ${MCU}
+       -p ${CMAKE_SYSTEM_PROCESSOR}
        -c ${AVR_PROGRAMMER}
        -P ${AVR_PROGRAMMER_PORT}
        -b ${AVR_PROGRAMMER_BAUD}
