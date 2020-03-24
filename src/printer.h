@@ -23,7 +23,7 @@ struct Printer {
     print(const char * string)
     {
         uint8_t c;
-        while ((c = *string++)) {
+        while ((c = static_cast<uint8_t>(*string++))) {
             output.write(c);
         }
     }
