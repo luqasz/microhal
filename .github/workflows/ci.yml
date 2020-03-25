@@ -7,8 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: lukaszkostka/avr:debian_buster
-      env:
-        CXX: avr-g++
     strategy:
       matrix:
         mcu:
@@ -17,19 +15,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Run cmake
+      - name: Run meson
         run: >
-          cmake
-          -DF_CPU=11059200
-          -DBAUD=115200
-          -DCMAKE_BUILD_TYPE=MinSizeRel
-          -DMCU=${{ matrix.mcu }}
-          -DAVR_PROGRAMMER=stk500v2
-          -DAVR_PROGRAMMER_BAUD=112500
-          -DAVR_PROGRAMMER_PORT=/dev/null
-          -H.
-          -GNinja
-          -Bbuild
+          meson
+          .
+          build
+          --cross-file ${{ matrix.mcu }}.conf
+          --buildtype=minsize
       - name: Build
         run: ninja -C build
   test:
@@ -39,19 +31,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Run cmake
+      - name: Run meson
         run: >
           cmake
-          -DF_CPU=11059200
-          -DBAUD=115200
-          -DMCU=atmega32
-          -DBUILD_TESTS=ON
-          -DAVR_PROGRAMMER=stk500v2
-          -DAVR_PROGRAMMER_BAUD=112500
-          -DAVR_PROGRAMMER_PORT=/dev/null
-          -H.
-          -GNinja
-          -Bbuild
+          meson
+          .
+          build
       - name: Build
         run: ninja -C build tests
       - name: Run tests
