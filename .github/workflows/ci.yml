@@ -33,7 +33,6 @@ jobs:
         uses: actions/checkout@v1
       - name: Run meson
         run: >
-          cmake
           meson
           .
           build

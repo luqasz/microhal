@@ -14,13 +14,10 @@ project(
         )
 
 add_project_arguments(
-        '-fmerge-constants',
         '-Wconversion',
         '-Wsign-conversion',
         '-Wfloat-conversion',
         '-fno-asynchronous-unwind-tables',
-        '-ffunction-sections',
-        '-fdata-sections',
         language: ['cpp', 'c'],
         )
 
@@ -31,15 +28,6 @@ add_project_arguments(
         language: ['cpp'],
         )
 
-add_project_link_arguments(
-        '-Wl,--print-memory-usage',
-        '-ffunction-sections',
-        '-fdata-sections',
-        '-Wl,--gc-sections',
-        language: ['cpp', 'c'],
-        )
-
-mcu_dir = include_directories('src/' + host_machine.cpu())
 src_dir = include_directories('src/')
 
 examples = [
@@ -55,16 +43,51 @@ examples = [
   'pwm',
 ]
 
-foreach e : examples
+if meson.is_cross_build()
+  add_project_arguments(
+        '-fmerge-constants',
+        '-ffunction-sections',
+        '-fdata-sections',
+        language: ['cpp', 'c'],
+      )
+  add_project_link_arguments(
+          '-Wl,--print-memory-usage',
+          '-Wl,--gc-sections',
+          '-ffunction-sections',
+          '-fdata-sections',
+          language: ['cpp', 'c'],
+          )
+
+  mcu_dir = include_directories('src/' + host_machine.cpu())
+
+  foreach e : examples
+    executable(
+        e,
+        'examples/@0@.cpp'.format(e),
+        build_by_default: true,
+        include_directories : [
+          mcu_dir,
+          src_dir
+        ]
+    )
+  endforeach
+
+endif
+
+if not meson.is_cross_build()
+
+  add_project_arguments(
+      '-DF_CPU=11059200',
+      language: ['c', 'cpp']
+      )
+
   executable(
-      e,
-      'examples/@0@.cpp'.format(e),
-      build_by_default: true,
+      'tests',
+      'tests/ubrr.cpp',
       include_directories : [
-        mcu_dir,
+        'src/atmega32',
         src_dir
       ]
   )
-endforeach
-
+endif
 
