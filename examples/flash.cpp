@@ -25,7 +25,7 @@ main(void)
     usart.enable(USART::Channel::TX);
     auto string = Flash::Array(arr);
     for (char c : string) {
-        usart.write(c);
+        usart.write(static_cast<uint8_t>(c));
     }
     serial.printLn("");
     serial.printLn(Flash::read(word));
