@@ -85,7 +85,7 @@ if not meson.is_cross_build()
       'tests',
       'tests/ubrr.cpp',
       include_directories : [
-        'src/atmega32',
+        include_directories('src/atmega32'),
         src_dir
       ]
   )
