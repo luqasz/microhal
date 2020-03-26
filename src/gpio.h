@@ -6,7 +6,7 @@
 
 namespace GPIO {
 
-    enum PinNumber {
+    enum PinNumber : uint8_t {
         Pin0 = 0x01,
         Pin1 = 0x02,
         Pin2 = 0x04,

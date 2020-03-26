@@ -21,7 +21,7 @@ namespace Watchdog {
         s8    = wdt.WDP3 | wdt.WDP0,
     };
 
-    enum Mode {
+    enum Mode : uint8_t {
         Reset             = wdt.WDE,
         Interrupt         = wdt.WDIE,
         InterruptAndReset = wdt.WDIE | wdt.WDE,

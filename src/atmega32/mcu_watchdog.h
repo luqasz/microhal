@@ -19,7 +19,7 @@ namespace Watchdog {
         s2    = wdt.WDP2 | wdt.WDP0 | wdt.WDP1,
     };
 
-    enum Mode {
+    enum Mode : uint8_t {
         Reset = wdt.WDE,
     };
 
