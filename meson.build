@@ -23,8 +23,6 @@ add_project_arguments(
 
 add_project_arguments(
         '-Woverloaded-virtual',
-        '-fno-exceptions',
-        '-fno-rtti',
         language: ['cpp'],
         )
 
@@ -44,19 +42,24 @@ examples = [
 ]
 
 if meson.is_cross_build()
-  add_project_arguments(
+    add_project_arguments(
         '-fmerge-constants',
         '-ffunction-sections',
         '-fdata-sections',
         language: ['cpp', 'c'],
-      )
+        )
+    add_project_arguments(
+        '-fno-exceptions',
+        '-fno-rtti',
+        language: ['cpp'],
+        )
   add_project_link_arguments(
-          '-Wl,--print-memory-usage',
-          '-Wl,--gc-sections',
-          '-ffunction-sections',
-          '-fdata-sections',
-          language: ['cpp', 'c'],
-          )
+        '-Wl,--print-memory-usage',
+        '-Wl,--gc-sections',
+        '-ffunction-sections',
+        '-fdata-sections',
+        language: ['cpp', 'c'],
+        )
 
   mcu_dir = include_directories('src/' + host_machine.cpu())
 
