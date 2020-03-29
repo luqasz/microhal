@@ -1,12 +1,14 @@
 #include <adc.h>
 #include <printer.h>
 #include <stdio.h>
+#include <units.h>
 #include <usart.h>
 #include <util/delay.h>
 
-auto constexpr baud = USART::get_baud<BAUD, 2>();
-auto usart          = USART::Async<USART::USART0>();
-auto serial         = Printer<USART::Async<USART::USART0>, RN>(usart);
+auto constexpr baud = USART::get_baud(11059200_Hz, 115200, 2);
+static_assert(baud.is_ok, "Calculated error rate too high");
+auto usart  = USART::Async<USART::USART0>();
+auto serial = Printer<USART::Async<USART::USART0>, RN>(usart);
 
 int
 main(void)

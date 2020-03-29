@@ -76,11 +76,6 @@ endif
 
 if not meson.is_cross_build()
 
-  add_project_arguments(
-      '-DF_CPU=11059200',
-      language: ['c', 'cpp']
-      )
-
   executable(
       'tests',
       'tests/ubrr.cpp',

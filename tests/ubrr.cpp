@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
-#include <usart.h>
+#include <ubrr.h>
 /*
  * Below tests only check baud rates that are
  * possible to configure for a given frequency

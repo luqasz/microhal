@@ -6,12 +6,14 @@
 #include <printer.h>
 #include <sfr.h>
 #include <stdio.h>
+#include <units.h>
 #include <usart.h>
 #include <util/delay.h>
 
-auto constexpr baud = USART::get_baud<115200, 2>();
-auto usart          = USART::Async<USART::USART0>();
-auto serial         = Printer<USART::Async<USART::USART0>, RN>(usart);
+auto constexpr baud = USART::get_baud(11059200_Hz, 115200u, 2);
+static_assert(baud.is_ok, "Calculated error rate too high");
+auto usart  = USART::Async<USART::USART0>();
+auto serial = Printer<USART::Async<USART::USART0>, RN>(usart);
 
 PGMSPACE const char     arr[] = "text from flash";
 PGMSPACE const uint16_t word  = 65534;

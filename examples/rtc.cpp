@@ -5,12 +5,15 @@
 #include <printer.h>
 #include <sfr.h>
 #include <stdio.h>
+#include <units.h>
 #include <usart.h>
 #include <util/delay.h>
 
-auto constexpr baud = USART::get_baud<BAUD, 2>();
-auto usart          = USART::Async<USART::USART0>();
-auto serial         = Printer<USART::Async<USART::USART0>, RN>(usart);
+auto constexpr fcpu = 11059200_Hz;
+auto constexpr baud = USART::get_baud(fcpu, 115200, 2);
+static_assert(baud.is_ok, "Calculated error rate too high");
+auto usart  = USART::Async<USART::USART0>();
+auto serial = Printer<USART::Async<USART::USART0>, RN>(usart);
 
 int
 main(void)
@@ -18,7 +21,7 @@ main(void)
     Irq::enable();
     usart.set(baud);
     usart.enable(USART::Channel::TX);
-    auto bus     = I2C::Master();
+    auto bus     = I2C::Master(fcpu);
     auto rtc     = DS1337(bus);
     auto dt      = DateTime {};
     dt.year      = 2019;

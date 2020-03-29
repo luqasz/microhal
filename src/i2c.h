@@ -14,11 +14,15 @@ namespace I2C {
     const uint8_t ACK  = TWCR.TWEA;
     const uint8_t NACK = 0;
 
-    /* Calculate register value based on desired speed in Hz*/
+    /*
+     * Calculate TWBR register value based on:
+     * CPU frequency
+     * desired frequency
+     * */
     constexpr uint8_t
-    calculate_twbr(const Frequency freq)
+    calculate_twbr(const Frequency cpu_freq, const Frequency freq)
     {
-        return static_cast<uint8_t>(((F_CPU / freq.value) - 16) / 2);
+        return static_cast<uint8_t>(((cpu_freq.value / freq.value) - 16) / 2);
     }
 
     struct Target {
@@ -66,17 +70,24 @@ namespace I2C {
     }
 
     void
-    set_speed(const Frequency freq)
+    set_speed(const Frequency cpu_freq, const Frequency freq)
     {
-        TWBR = calculate_twbr(freq);
+        TWBR = calculate_twbr(cpu_freq, freq);
     }
 
     class Master {
     public:
+        const Frequency cpu_freq;
+
+        Master(const Frequency fcpu) :
+            cpu_freq(fcpu)
+        {
+        }
+
         void
         write(const I2C::Target target, const Buffer::Bytes buffer) const
         {
-            set_speed(target.speed);
+            set_speed(cpu_freq, target.speed);
             start_signal();
             write_blocking(static_cast<uint8_t>(target.address << 1));
             write_blocking(target.start_address);
@@ -89,7 +100,7 @@ namespace I2C {
         void
         read(const I2C::Target target, const Buffer::Bytes buffer) const
         {
-            set_speed(target.speed);
+            set_speed(cpu_freq, target.speed);
             start_signal();
             write_blocking(static_cast<uint8_t>(target.address << 1));
             write_blocking(target.start_address);
