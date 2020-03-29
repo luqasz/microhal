@@ -26,9 +26,9 @@ namespace USART {
         const uint8_t   tol = 2,
         const uint8_t   div = 1)
     {
-        uint32_t calc  = (16UL / div) * ((ubrr) + 1);
-        uint32_t plus  = calc * (100UL * (baud) + (baud) * (tol));
-        uint32_t minus = calc * (100UL * (baud) - (baud) * (tol));
+        uint32_t calc  = (16u / div) * (ubrr + 1u);
+        uint32_t plus  = calc * (100u * (baud) + (baud) * (tol));
+        uint32_t minus = calc * (100u * (baud) - (baud) * (tol));
         if ((100 * freq.value) > plus) {
             return true;
         }
@@ -47,8 +47,8 @@ namespace USART {
     constexpr uint16_t
     calc_ubrr(const Frequency freq, const uint32_t baud, const uint8_t divisor)
     {
-        uint32_t value = (freq.value + (8UL / divisor) * baud);
-        value /= ((16UL / divisor) * baud);
+        uint32_t value = (freq.value + (8u / divisor) * baud);
+        value /= ((16u / divisor) * baud);
         return static_cast<uint16_t>(value - 1);
     }
 
