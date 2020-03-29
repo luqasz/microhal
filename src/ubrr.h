@@ -47,9 +47,9 @@ namespace USART {
     constexpr uint16_t
     calc_ubrr(const Frequency freq, const uint32_t baud, const uint8_t divisor)
     {
-        uint16_t value = static_cast<uint16_t>(freq.value + (8UL / divisor) * baud);
-        value /= static_cast<uint16_t>((16UL / divisor) * baud);
-        return value - 1;
+        uint32_t value = (freq.value + (8UL / divisor) * baud);
+        value /= ((16UL / divisor) * baud);
+        return static_cast<uint16_t>(value - 1);
     }
 
     struct BaudRate {
