@@ -1,3 +1,4 @@
+#include <buffer.h>
 #include <gpio.h>
 #include <irq.h>
 #include <mcp49xx.h>
@@ -18,10 +19,12 @@ template <typename SENDER, typename DAC>
 void
 send(SENDER spi, DAC dac, uint16_t value)
 {
-    dac = value;
-    GPIO::set(SPI::SS, GPIO::Output);
+    auto buffer = Buffer::SizedBytesArray<2>();
+    dac         = value;
+    buffer[0]   = static_cast<uint8_t>(dac.bits >> 8);
+    buffer[1]   = static_cast<uint8_t>(dac.bits);
     GPIO::write(SPI::SS, GPIO::Low);
-    spi.communicate(dac.bits);
+    spi.communicate(buffer);
     GPIO::write(SPI::SS, GPIO::High);
 }
 
@@ -32,6 +35,8 @@ main(void)
     spi.set(SPI::Mode::m0);
     spi.set(spi.Clock::_2);
     spi.enable();
+    GPIO::set(SPI::SS, GPIO::Output);
+    GPIO::write(SPI::SS, GPIO::High);
     auto dac = MCP49x2::MCP4922(MCP49x2::Channel::A);
     dac.set(MCP49x2::Gain::x1);
     dac.set(MCP49x2::BufferControl::Unbuffered);

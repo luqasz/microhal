@@ -1,5 +1,6 @@
 #pragma once
 
+#include "buffer.h"
 #include "sfr.h"
 
 #include <gpio.h>
@@ -149,15 +150,12 @@ namespace SPI {
             return NUM::SPDR.read();
         }
 
-        uint16_t
-        communicate(const uint16_t bytes)
+        void
+        communicate(const Buffer::Bytes buffer)
         {
-
-            uint8_t b1 = static_cast<uint8_t>(bytes >> 8);
-            uint8_t b2 = static_cast<uint8_t>(bytes);
-            b1         = communicate(b1);
-            b2         = communicate(b2);
-            return static_cast<uint16_t>(b1 << 8) | b2;
+            for (uint8_t & byte : buffer) {
+                byte = communicate(byte);
+            }
         }
     };
 }
