@@ -17,3 +17,12 @@ def ocr(ftimer, desired):
     desired: Desired frequency in Hz.
     """
     return int((ftimer / desired) - 1)
+
+
+def calc(fcpu, desired, max_top, prescalers):
+    for p in prescalers:
+        ftimer = int(fcpu / p)
+        top = ocr(ftimer, desired)
+        if top <= max_top:
+            return p, top
+    return 0, 0

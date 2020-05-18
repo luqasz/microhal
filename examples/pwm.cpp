@@ -2,24 +2,25 @@
 #include <irq.h>
 #include <stdio.h>
 #include <timer.h>
+#include <units.h>
+
+constexpr auto FCPU   = 11059200_Hz;
+constexpr auto config = getConfig(25_Hz, FCPU);
 
 int
 main(void)
 {
-    GPIO::set(GPIO::PD5, GPIO::Output);
-    GPIO::set(GPIO::PD4, GPIO::Output);
+    GPIO::set(GPIO::PB1, GPIO::Output);
+    GPIO::set(GPIO::PB2, GPIO::Output);
 
     auto timer = Timer<Timer1>();
-    timer.set(CTC);
+    timer.set(PWM);
     timer.inverting(timer.PinA);
     timer.inverting(timer.PinB);
-    timer.top = 200;
-    timer.set(Clock::_1);
-    timer.compareMatch.A = 4;
-    timer.compareMatch.B = 8;
-    timer.enable(timer.CompareA);
-    Irq::enable();
+    timer.set(25_Hz, FCPU);
+    timer.compareMatch.A = timer.top.read() / 2;
+    timer.compareMatch.B = timer.top.read() / 4;
+    timer.start();
     while (true) {
     }
 }
-
