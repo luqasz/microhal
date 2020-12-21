@@ -13,7 +13,7 @@ auto constexpr fcpu = 11059200_Hz;
 auto constexpr baud = USART::get_baud(fcpu, 115200, 2);
 static_assert(baud.is_ok, "Calculated error rate too high");
 auto usart  = USART::Async<USART::USART0>();
-auto serial = Printer<RN>(usart);
+auto serial = Printer(usart, LineEnd::CRLF);
 
 int
 main(void)

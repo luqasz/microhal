@@ -6,22 +6,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct RN {
-    constexpr static char lineEnd[] = "\r\n";
-};
+namespace LineEnd {
+    constexpr char CRLF[] = "\r\n";
+    constexpr char LF[]   = "\n";
+    constexpr char CR[]   = "\r";
+    constexpr char None[] = "";
+}
 
-struct None {
-    constexpr static char lineEnd[] = "";
-};
-
-template <typename LE = None>
 struct Printer {
-    Writer & output;
-    char     buf[12];
-    constexpr Printer(Writer & o) :
-        output(o) { }
+    Writer &           output;
+    char               buf[12] = { 0 };
+    const char * const line_end;
 
-    constexpr void
+    constexpr Printer(Writer & o, const char * const le) :
+        output(o),
+        line_end(le) { }
+
+    void
     print(const char * string)
     {
         uint8_t c;
@@ -30,25 +31,25 @@ struct Printer {
         }
     }
 
-    constexpr void
+    void
     printLn(const char * string)
     {
         print(string);
-        print(LE::lineEnd);
+        print(line_end);
     }
 
-    constexpr void
+    void
     print(const unsigned long int num)
     {
         ultoa(num, buf, 10);
         print(buf);
     }
 
-    constexpr void
+    void
     printLn(const unsigned long int num)
     {
         ultoa(num, buf, 10);
         print(buf);
-        print(LE::lineEnd);
+        print(line_end);
     }
 };
