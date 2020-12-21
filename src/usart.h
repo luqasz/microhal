@@ -1,5 +1,6 @@
 #pragma once
 
+#include "interface.h"
 #include "sfr.h"
 #include "ubrr.h"
 
@@ -95,7 +96,7 @@ namespace USART {
     }
 
     template <typename REGS>
-    class Async {
+    class Async : public Writer {
 
     public:
         constexpr void
@@ -140,8 +141,8 @@ namespace USART {
             return REGS::ucsra.isSet(REGS::ucsra.UDRE);
         }
 
-        void
-        write(const uint8_t byte) const
+        virtual void
+        write(const uint8_t byte)
         {
             while (!is_tx_buffer_empty()) {
             }

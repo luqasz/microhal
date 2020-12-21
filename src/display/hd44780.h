@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../gpio.h"
+#include "../interface.h"
 
 #include <stdint.h>
 #include <util/delay.h>
@@ -58,7 +59,7 @@ namespace HD44780 {
     };
 
     template <typename DATA_LINE>
-    class LCD {
+    class LCD : public Writer {
         const DATA_LINE dataLine;
         const GPIO::Pin rs;
         const GPIO::Pin rw;
@@ -127,8 +128,7 @@ namespace HD44780 {
             sendByte(ClearScreen, COMMAND);
         }
 
-        void
-        write(const uint8_t byte) const
+        void virtual write(const uint8_t byte)
         {
             sendByte(byte, DATA);
         }

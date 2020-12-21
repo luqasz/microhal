@@ -1,5 +1,7 @@
 #pragma once
 
+#include "interface.h"
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,12 +14,12 @@ struct None {
     constexpr static char lineEnd[] = "";
 };
 
-template <typename Output, typename LE = None>
+template <typename LE = None>
 struct Printer {
-    Output output;
-    char   buf[12];
-    constexpr Printer(Output o) :
-        output(o) {}
+    Writer & output;
+    char     buf[12];
+    constexpr Printer(Writer & o) :
+        output(o) { }
 
     constexpr void
     print(const char * string)

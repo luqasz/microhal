@@ -18,6 +18,7 @@ add_project_arguments(
         '-Wsign-conversion',
         '-Wfloat-conversion',
         '-fno-asynchronous-unwind-tables',
+        '-Wno-non-virtual-dtor',
         language: ['cpp', 'c'],
         )
 

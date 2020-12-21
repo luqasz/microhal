@@ -9,7 +9,7 @@
 auto constexpr baud = USART::get_baud(11059200_Hz, 115200, 2);
 static_assert(baud.is_ok, "Calculated error rate too high");
 auto usart  = USART::Async<USART::USART0>();
-auto serial = Printer<USART::Async<USART::USART0>, RN>(usart);
+auto serial = Printer<RN>(usart);
 
 int
 main(void)
