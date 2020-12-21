@@ -39,6 +39,7 @@ examples = [
   'lcd',
   'pin_irq',
   'pwm',
+  'thermistor'
 ]
 
 if meson.is_cross_build()

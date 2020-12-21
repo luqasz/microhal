@@ -42,13 +42,13 @@ namespace SteinHart {
     constexpr COEF
     calc_coef(const RT rt1, const RT rt2, const RT rt3)
     {
-        const float Y1 = 1 / (T1 + KELVIN_C);
-        const float Y2 = 1 / (T2 + KELVIN_C);
-        const float Y3 = 1 / (T3 + KELVIN_C);
+        const float Y1 = 1 / (static_cast<float>(rt1.T) + KELVIN_C);
+        const float Y2 = 1 / (static_cast<float>(rt2.T) + KELVIN_C);
+        const float Y3 = 1 / (static_cast<float>(rt3.T) + KELVIN_C);
 
-        const float L1 = log(R1);
-        const float L2 = log(R2);
-        const float L3 = log(R3);
+        const float L1 = log(static_cast<float>(rt1.R));
+        const float L2 = log(static_cast<float>(rt2.R));
+        const float L3 = log(static_cast<float>(rt3.R));
 
         const float G2 = (Y2 - Y1) / (L2 - L1);
         const float G3 = (Y3 - Y1) / (L3 - L1);
@@ -70,4 +70,4 @@ namespace SteinHart {
         double log_r3 = log_r * log_r * log_r;
         return 1.0 / (coef.A + coef.B * log_r + coef.C * log_r3);
     }
-};
+}
