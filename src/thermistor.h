@@ -8,47 +8,47 @@ constexpr float KELVIN_C = 273.15;
 namespace SteinHart {
     // Steinhart Hart coefficients.
     struct COEF {
-        const float A, B, C;
+        const float a, b, c;
     };
 
     // Struct binding
     // R resistance at a given temperature in celsius.
     // T given temperature.
-    struct RT {
-        const uint32_t T;
-        const uint32_t R;
+    struct ResistanceTemp {
+        const uint32_t t;
+        const uint32_t r;
     };
 
     /*
-    * Return calculated coefficients based on three RT bindings.
-    * Provide each binding in steps of 25 degrees. See producers
+    * Return calculated coefficients based on three values.
+    * Provide each value in steps of 25 degrees. See producers
     * datasheet for table with defined resistances.
     *
     * example:
     * 10k NTC
     * constexpr RT {
-    *   .R = 10000,
-    *   .T = 25,
+    *   .r = 10000,
+    *   .t = 25,
     * };
     * constexpr RT {
-    *   .R = 3605,
-    *   .T = 50,
+    *   .r = 3605,
+    *   .t = 50,
     * };
     * constexpr RT {
-    *   .R = 1481,
-    *   .T = 75,
+    *   .r = 1481,
+    *   .t = 75,
     * };
     */
     constexpr COEF
-    calc_coef(const RT rt1, const RT rt2, const RT rt3)
+    calc_coef(const ResistanceTemp rt1, const ResistanceTemp rt2, const ResistanceTemp rt3)
     {
-        const float Y1 = 1 / (static_cast<float>(rt1.T) + KELVIN_C);
-        const float Y2 = 1 / (static_cast<float>(rt2.T) + KELVIN_C);
-        const float Y3 = 1 / (static_cast<float>(rt3.T) + KELVIN_C);
+        const float Y1 = 1 / (static_cast<float>(rt1.t) + KELVIN_C);
+        const float Y2 = 1 / (static_cast<float>(rt2.t) + KELVIN_C);
+        const float Y3 = 1 / (static_cast<float>(rt3.t) + KELVIN_C);
 
-        const float L1 = log(static_cast<float>(rt1.R));
-        const float L2 = log(static_cast<float>(rt2.R));
-        const float L3 = log(static_cast<float>(rt3.R));
+        const float L1 = log(static_cast<float>(rt1.r));
+        const float L2 = log(static_cast<float>(rt2.r));
+        const float L3 = log(static_cast<float>(rt3.r));
 
         const float G2 = (Y2 - Y1) / (L2 - L1);
         const float G3 = (Y3 - Y1) / (L3 - L1);
@@ -57,17 +57,17 @@ namespace SteinHart {
         const float b = G2 - c * (pow(L1, 2) + (L1 * L2) + pow(L2, 2));
         const float a = Y1 - L1 * (b + c * pow(L1, 2));
         return COEF {
-            .A = a,
-            .B = b,
-            .C = c,
+            .a = a,
+            .b = b,
+            .c = c,
         };
     }
 
-    constexpr double
-    steinhartHart(const double r, const COEF coef)
+    constexpr float
+    steinhartHart(const float resistance, const COEF coef)
     {
-        double log_r  = log(r);
-        double log_r3 = log_r * log_r * log_r;
-        return 1.0 / (coef.A + coef.B * log_r + coef.C * log_r3);
+        const float log_r  = log(resistance);
+        const float log_r3 = log_r * log_r * log_r;
+        return 1.0 / (coef.a + coef.b * log_r + coef.c * log_r3);
     }
 }
