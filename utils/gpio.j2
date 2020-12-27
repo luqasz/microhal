@@ -9,14 +9,14 @@ namespace GPIO {
 
 {% for reg in groupGPIO(registers) %}
 
-    auto const {{ "Port{}".format(reg.letter) }} = GPIO::Port {
+    auto constexpr {{ "Port{}".format(reg.letter) }} = GPIO::Port {
         {{ "SFR::PORT{}::address".format(reg.letter) }},
         {{ "SFR::PIN{}::address".format(reg.letter) }},
         {{ "SFR::DDR{}::address".format(reg.letter) }},
     };
 
     {% for pin_no in range(0,8) %}
-    auto const {{ "P{}{}".format(reg.letter, pin_no) }} = GPIO::Pin {
+    auto constexpr {{ "P{}{}".format(reg.letter, pin_no) }} = GPIO::Pin {
         {{ "Port{}".format(reg.letter) }},
         {{ "GPIO::Pin{}".format(pin_no) }},
     };
