@@ -36,7 +36,6 @@ examples = [
   'adc',
   'spi',
   'watchdog',
-  'ws2812',
   'lcd',
   'pin_irq',
   'pwm',

@@ -35,16 +35,6 @@ namespace HD44780 {
     const uint8_t Dots_5x10          = FUNCTION_SET | 0x04;
     const uint8_t Dots_5x8           = FUNCTION_SET | 0x00;
 
-    auto const High = GPIO::PinState::High;
-    auto const Low  = GPIO::PinState::Low;
-    /*
-    RS is a Register select pin.
-    Low for command,
-    High for data,
-    */
-    auto const COMMAND = Low;
-    auto const DATA    = High;
-
     enum Cmd {
         ClearScreen = 0x01,
         CursorHome  = 0x02,
@@ -58,48 +48,52 @@ namespace HD44780 {
         const uint8_t row;
     };
 
-    template <typename DATA_LINE>
     class LCD : public Writer {
-        const DATA_LINE dataLine;
-        const GPIO::Pin rs;
-        const GPIO::Pin rw;
-        const GPIO::Pin e;
+        const GPIO::Bus8Bit bus;
+        const GPIO::Output  rs;
+        const GPIO::Output  rw;
+        const GPIO::Output  e;
+        /*
+        RS is a Register select pin.
+        Low for command,
+        High for data,
+        */
+        auto static constexpr COMMAND = GPIO::Off;
+        auto static constexpr DATA    = GPIO::On;
 
         void
         waitUntillReady() const
         {
-            GPIO::write(rs, COMMAND);
+            rs = COMMAND;
             while ((read() & BUSY_FLAG)) {
             };
         }
 
         void
-        enable(const GPIO::PinState state) const
+        enable(const GPIO::Logic logic) const
         {
-            GPIO::write(e, state);
+            e = logic;
             _delay_us(1);
         }
 
         uint8_t
         read() const
         {
-            GPIO::write(rw, High);
-            enable(High);
-            GPIO::set(dataLine, GPIO::Input);
-            const uint8_t result = GPIO::read(dataLine);
-            enable(Low);
+            rw = GPIO::On;
+            enable(GPIO::On);
+            const uint8_t result = bus.read();
+            enable(GPIO::Off);
             return result;
         }
 
         void
-        sendByte(const uint8_t byte, const GPIO::PinState reg) const
+        sendByte(const uint8_t byte, const GPIO::Logic reg) const
         {
-            GPIO::write(rs, reg);
-            GPIO::write(rw, Low);
-            enable(High);
-            GPIO::set(dataLine, GPIO::Output);
-            GPIO::write(dataLine, byte);
-            enable(Low);
+            rs = reg;
+            rw = GPIO::Off;
+            enable(GPIO::On);
+            bus.write(byte);
+            enable(GPIO::Off);
             waitUntillReady();
         }
 
@@ -111,15 +105,12 @@ namespace HD44780 {
         With winstar WEH oled displays, third stage caused weird characters
         to be displayed, when initialized more than once without power cycle.
         */
-        LCD(const DATA_LINE & dataLine, const GPIO::Pin & rs, const GPIO::Pin & rw, const GPIO::Pin & e) :
-            dataLine(dataLine),
-            rs(rs),
-            rw(rw),
-            e(e)
+        LCD(const GPIO::Bus8Bit b, const GPIO::Output _rs, const GPIO::Output _rw, const GPIO::Output _e) :
+            bus(b),
+            rs(_rs),
+            rw(_rw),
+            e(_e)
         {
-            GPIO::set(rs, GPIO::Mode::Output);
-            GPIO::set(rw, GPIO::Mode::Output);
-            GPIO::set(e, GPIO::Mode::Output);
             _delay_ms(15);
             sendByte(Mode_8Bit | Lines_2 | Dots_5x8, COMMAND);
             sendByte(HideCursor, COMMAND);
@@ -128,7 +119,8 @@ namespace HD44780 {
             sendByte(ClearScreen, COMMAND);
         }
 
-        void virtual write(const uint8_t byte)
+        void
+        write(const uint8_t byte)
         {
             sendByte(byte, DATA);
         }

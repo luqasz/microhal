@@ -44,11 +44,11 @@ namespace SPI {
         Set MOSI SCK SS as outputs only.
         For more information why, see "SPI Pin Overrides" in datasheet.
         */
-        Master()
+        Master(const GPIO::Pin mosi, const GPIO::Pin miso, const GPIO::Pin sck)
         {
-            GPIO::set(SCK, GPIO::Output);
-            GPIO::set(SS, GPIO::Output);
-            GPIO::set(MOSI, GPIO::Output);
+            GPIO::Output(sck, GPIO::High);
+            GPIO::Input(miso, GPIO::High);
+            GPIO::Output(mosi, GPIO::High);
             NUM::SPCR.setBit(NUM::SPCR.MSTR);
         }
 

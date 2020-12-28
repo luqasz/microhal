@@ -17,27 +17,27 @@ auto serial = Printer(usart, LineEnd::CRLF);
 
 template <typename SENDER, typename DAC>
 void
-send(SENDER spi, DAC dac, uint16_t value)
+send(SENDER spi, DAC dac, uint16_t value, const GPIO::Output cs)
 {
     auto buffer = Buffer::SizedBytesArray<2>();
     dac         = value;
     buffer[0]   = static_cast<uint8_t>(dac.bits >> 8);
     buffer[1]   = static_cast<uint8_t>(dac.bits);
-    GPIO::write(SPI::SS, GPIO::Low);
+    cs          = GPIO::Off;
     spi.communicate(buffer);
-    GPIO::write(SPI::SS, GPIO::High);
+    cs = GPIO::On;
 }
 
 int
 main(void)
 {
-    auto spi = SPI::Master<SPI::SPI0>();
+    auto spi = SPI::Master<SPI::SPI0>(SPI::MOSI, SPI::MISO, SPI::SCK);
     spi.set(SPI::Mode::m0);
     spi.set(spi.Clock::_2);
     spi.enable();
-    GPIO::set(SPI::SS, GPIO::Output);
-    GPIO::write(SPI::SS, GPIO::High);
-    auto dac = MCP49x2::MCP4922(MCP49x2::Channel::A);
+    auto DAC_CS = GPIO::Output(SPI::SS, GPIO::Low);
+    DAC_CS      = GPIO::High;
+    auto dac    = MCP49x2::MCP4922(MCP49x2::Channel::A);
     dac.set(MCP49x2::Gain::x1);
     dac.set(MCP49x2::BufferControl::Unbuffered);
     Irq::enable();
@@ -45,7 +45,7 @@ main(void)
     usart.enable(USART::Channel::TX);
     serial.printLn("Sending bytes over SPI");
     while (true) {
-        send(spi, dac, 4095);
-        send(spi, dac, 1);
+        send(spi, dac, 4095, DAC_CS);
+        send(spi, dac, 1, DAC_CS);
     }
 }
