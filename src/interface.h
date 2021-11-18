@@ -4,6 +4,6 @@
 
 struct Writer {
 
-    void virtual write(const uint8_t byte) = 0;
+    void virtual write(const uint8_t byte) const = 0;
 };
 

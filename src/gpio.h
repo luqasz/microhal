@@ -23,10 +23,10 @@ namespace GPIO {
     };
 
     struct Output {
-        const State on_state;
-        const Pin   pin;
+        const State & on_state;
+        const Pin   & pin;
 
-        constexpr Output(const Pin p, const State s = High) :
+        constexpr Output(const Pin & p, const State & s = High) :
             on_state(s),
             pin(p)
         {

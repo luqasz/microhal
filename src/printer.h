@@ -14,16 +14,16 @@ namespace LineEnd {
 }
 
 struct Printer {
-    Writer &           output;
+    const Writer &           output;
     char               buf[12] = { 0 };
     const char * const line_end;
 
-    constexpr Printer(Writer & o, const char * const le) :
+    constexpr Printer(const Writer & o, const char * const le) :
         output(o),
         line_end(le) { }
 
     void
-    print(const char * string)
+    print(const char * string) const
     {
         uint8_t c;
         while ((c = static_cast<uint8_t>(*string++))) {
@@ -32,7 +32,7 @@ struct Printer {
     }
 
     void
-    printLn(const char * string)
+    printLn(const char * string) const
     {
         print(string);
         print(line_end);

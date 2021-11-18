@@ -49,10 +49,10 @@ namespace HD44780 {
     };
 
     class LCD : public Writer {
-        const GPIO::Bus8Bit bus;
-        const GPIO::Output  rs;
-        const GPIO::Output  rw;
-        const GPIO::Output  e;
+        const GPIO::Bus8Bit & bus;
+        const GPIO::Output & rs;
+        const GPIO::Output & rw;
+        const GPIO::Output & e;
         /*
         RS is a Register select pin.
         Low for command,
@@ -105,7 +105,7 @@ namespace HD44780 {
         With winstar WEH oled displays, third stage caused weird characters
         to be displayed, when initialized more than once without power cycle.
         */
-        LCD(const GPIO::Bus8Bit b, const GPIO::Output _rs, const GPIO::Output _rw, const GPIO::Output _e) :
+        LCD(const GPIO::Bus8Bit & b, const GPIO::Output & _rs, const GPIO::Output & _rw, const GPIO::Output & _e) :
             bus(b),
             rs(_rs),
             rw(_rw),
@@ -119,8 +119,8 @@ namespace HD44780 {
             sendByte(ClearScreen, COMMAND);
         }
 
-        void
-        write(const uint8_t byte)
+        void virtual
+        write(const uint8_t byte) const final
         {
             sendByte(byte, DATA);
         }
@@ -132,7 +132,7 @@ namespace HD44780 {
         }
 
         void
-        set(const Position & position) const
+        set(const Position position) const
         {
             uint8_t address;
             switch (position.line) {

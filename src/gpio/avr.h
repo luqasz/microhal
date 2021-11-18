@@ -31,20 +31,25 @@ namespace GPIO {
     };
 
     struct Bus8Bit {
+        void virtual write(const uint8_t byte) const = 0;
+        uint8_t virtual read() const = 0;
+    };
+
+    struct PortBus : public Bus8Bit {
         const Port port;
 
-        constexpr Bus8Bit(const Port p) :
+        constexpr PortBus(const Port & p) :
             port(p) { }
 
-        void
-        write(const uint8_t byte) const
+        virtual void
+        write(const uint8_t byte) const final
         {
             SFR::iomem<uint8_t>(port.ddr_address)  = 255;
             SFR::iomem<uint8_t>(port.port_address) = byte;
         }
 
-        uint8_t
-        read() const
+        virtual uint8_t
+        read() const final
         {
             SFR::iomem<uint8_t>(port.ddr_address) = 0;
             return SFR::iomem<uint8_t>(port.pin_address);
