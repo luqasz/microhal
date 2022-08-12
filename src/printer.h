@@ -14,11 +14,11 @@ namespace LineEnd {
 }
 
 struct Printer {
-    const Writer &           output;
+    Writer &           output;
     char               buf[12] = { 0 };
     const char * const line_end;
 
-    constexpr Printer(const Writer & o, const char * const le) :
+    constexpr Printer(Writer & o, const char * const le) :
         output(o),
         line_end(le) { }
 

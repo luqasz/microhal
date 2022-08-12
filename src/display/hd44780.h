@@ -50,9 +50,9 @@ namespace HD44780 {
 
     class LCD : public Writer {
         const GPIO::Bus8Bit & bus;
-        const GPIO::Output & rs;
-        const GPIO::Output & rw;
-        const GPIO::Output & e;
+        const GPIO::Output &  rs;
+        const GPIO::Output &  rw;
+        const GPIO::Output &  e;
         /*
         RS is a Register select pin.
         Low for command,
@@ -119,8 +119,7 @@ namespace HD44780 {
             sendByte(ClearScreen, COMMAND);
         }
 
-        void virtual
-        write(const uint8_t byte) const final
+        void virtual write(const uint8_t byte) final
         {
             sendByte(byte, DATA);
         }
