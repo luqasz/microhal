@@ -6,7 +6,7 @@ project(
             'buildtype=minsize',
             'optimization=s',
             'strip=true',
-            'cpp_std=c++2a',
+            'cpp_std=c++17',
             'b_lto=true',
             'warning_level=3',
             'werror=true',

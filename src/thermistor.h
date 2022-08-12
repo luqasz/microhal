@@ -1,3 +1,5 @@
+#include "types.h"
+
 #include <math.h>
 #include <stdint.h>
 
@@ -15,30 +17,30 @@ namespace SteinHart {
     // R resistance at a given temperature in celsius.
     // T given temperature.
     struct ResistanceTemp {
-        const uint32_t t;
-        const uint32_t r;
+        const u32 t;
+        const u32 r;
     };
 
     /*
-    * Return calculated coefficients based on three values.
-    * Provide each value in steps of 25 degrees. See producers
-    * datasheet for table with defined resistances.
-    *
-    * example:
-    * 10k NTC
-    * constexpr RT {
-    *   .r = 10000,
-    *   .t = 25,
-    * };
-    * constexpr RT {
-    *   .r = 3605,
-    *   .t = 50,
-    * };
-    * constexpr RT {
-    *   .r = 1481,
-    *   .t = 75,
-    * };
-    */
+     * Return calculated coefficients based on three values.
+     * Provide each value in steps of 25 degrees. See producers
+     * datasheet for table with defined resistances.
+     *
+     * example:
+     * 10k NTC
+     * constexpr RT {
+     *   .r = 10000,
+     *   .t = 25,
+     * };
+     * constexpr RT {
+     *   .r = 3605,
+     *   .t = 50,
+     * };
+     * constexpr RT {
+     *   .r = 1481,
+     *   .t = 75,
+     * };
+     */
     constexpr COEF
     calc_coef(const ResistanceTemp rt1, const ResistanceTemp rt2, const ResistanceTemp rt3)
     {
@@ -57,9 +59,9 @@ namespace SteinHart {
         const float b = G2 - c * (pow(L1, 2) + (L1 * L2) + pow(L2, 2));
         const float a = Y1 - L1 * (b + c * pow(L1, 2));
         return COEF {
-            .a = a,
-            .b = b,
-            .c = c,
+            a,
+            b,
+            c,
         };
     }
 
