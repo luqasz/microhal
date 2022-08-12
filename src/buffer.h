@@ -2,6 +2,7 @@
 
 #include "utils.h"
 
+#include <stddef.h>
 #include <stdint.h>
 
 namespace Buffer {
@@ -42,7 +43,8 @@ namespace Buffer {
             return end() - 1;
         }
 
-        constexpr uint8_t & operator[](const SIZE_TYPE idx) const
+        constexpr uint8_t &
+        operator[](const SIZE_TYPE idx) const
         {
             return begin_ptr[idx];
         };
@@ -61,7 +63,7 @@ namespace Buffer {
 
     public:
         SizedBytesArray() :
-            Bytes(array, array + SIZE) {}
+            Bytes(array, array + SIZE) { }
     };
 
     template <uint8_t BUFFER_SIZE>
@@ -116,39 +118,40 @@ namespace Buffer {
         }
     };
 
-    template <uint8_t BUFFER_SIZE>
+    template <typename DATA_TYPE, size_t BUFFER_SIZE, typename HT_TYPE = size_t>
     class CircularPowerOf2 {
         static_assert(isPowerOfTwo(BUFFER_SIZE), "Size must be power of 2.");
+        static_assert(BUFFER_SIZE > 1, "Buffer must be at least 2 in size.");
 
     private:
-        uint8_t head              = 0;
-        uint8_t tail              = 0;
-        uint8_t data[BUFFER_SIZE] = { 0 };
+        HT_TYPE                 head              = 0;
+        HT_TYPE                 tail              = 0;
+        DATA_TYPE               data[BUFFER_SIZE] = { 0 };
+        constexpr static size_t mask              = BUFFER_SIZE - 1;
 
     public:
-        uint8_t
-        size() volatile
+        constexpr HT_TYPE
+        size() const
         {
-            return static_cast<uint8_t>(head - tail);
+            return BUFFER_SIZE;
         }
 
-        uint8_t
-        mask(uint8_t val) volatile
+        constexpr HT_TYPE
+        len() const
         {
-            return val % BUFFER_SIZE;
+            return static_cast<HT_TYPE>(head - tail);
         }
 
-        void
-        write(uint8_t byte) volatile
+        constexpr void
+        write(const DATA_TYPE byte)
         {
-            data[mask(head++)] = byte;
+            data[head++ & mask] = byte;
         }
 
-        uint8_t
-        read() volatile
+        constexpr DATA_TYPE
+        read()
         {
-            return data[mask(tail++)];
+            return data[tail++ & mask];
         }
     };
-
 }

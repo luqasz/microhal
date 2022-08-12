@@ -1,10 +1,9 @@
-#include "eeprom.h"
-
 #include "buffer.h"
+#include "eeprom.h"
 #include "irq.h"
 #include "sfr.h"
 
-volatile auto buffer = Buffer::CircularPowerOf2<8>();
+auto buffer = Buffer::CircularPowerOf2<uint8_t, 8>();
 
 auto ControllRegister = Register<SFR::EECR>();
 auto AddressRegister  = Register<SFR::EEAR, uint16_t>();
@@ -13,7 +12,7 @@ auto DataRegister     = Register<SFR::EEDR>();
 bool
 isBufferEmpty()
 {
-    return buffer.size() == 0;
+    return buffer.len() == 0;
 }
 
 bool
