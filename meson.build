@@ -24,6 +24,7 @@ add_project_arguments(
 endif
 
 add_project_arguments(
+        '-Wpadded',
         '-Wconversion',
         '-Wsign-conversion',
         '-Wfloat-conversion',
