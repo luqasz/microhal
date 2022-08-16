@@ -7,7 +7,7 @@ project(
             'optimization=s',
             'strip=true',
             'cpp_std=c++17',
-            'b_lto=true',
+            'b_lto=false',
             'warning_level=3',
             'werror=true',
             ]
