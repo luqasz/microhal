@@ -31,6 +31,7 @@ add_project_arguments(
         '-fno-asynchronous-unwind-tables',
         '-Wno-non-virtual-dtor',
         '-Wdouble-promotion',
+        '-fno-short-enums',
         language: ['cpp', 'c'],
         )
 
