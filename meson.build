@@ -14,11 +14,13 @@ project(
         )
 
 add_project_arguments(
+        '-fsingle-precision-constant',
         '-Wconversion',
         '-Wsign-conversion',
         '-Wfloat-conversion',
         '-fno-asynchronous-unwind-tables',
         '-Wno-non-virtual-dtor',
+        '-Wdouble-promotion',
         language: ['cpp', 'c'],
         )
 
