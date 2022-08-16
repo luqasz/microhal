@@ -13,8 +13,17 @@ project(
             ]
         )
 
+cpp_compiler = meson.get_compiler('cpp')
+
+# clang doesn't have this option
+if cpp_compiler.has_argument('-fsingle-precision-constant')
 add_project_arguments(
         '-fsingle-precision-constant',
+        language: ['cpp', 'c'],
+        )
+endif
+
+add_project_arguments(
         '-Wconversion',
         '-Wsign-conversion',
         '-Wfloat-conversion',
