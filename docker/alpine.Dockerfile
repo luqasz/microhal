@@ -6,3 +6,4 @@ RUN apk add --no-cache gcc-avr
 RUN apk add --no-cache avr-libc
 RUN apk add --no-cache avrdude
 RUN apk add --no-cache build-base
+RUN apk add --no-cache meson
