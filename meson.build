@@ -98,6 +98,7 @@ if not meson.is_cross_build()
       'tests/ubrr.cpp',
       'tests/tests_main.cpp',
       'tests/thermistor.cpp',
+      'tests/vdiv.cpp',
       include_directories : [
         include_directories('src/atmega32'),
         src_dir
