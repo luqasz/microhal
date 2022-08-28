@@ -1,6 +1,6 @@
-#include <display/hd44780.h>
-#include <gpio.h>
-#include <printer.h>
+#include <display/hd44780.hpp>
+#include <gpio.hpp>
+#include <printer.hpp>
 
 int
 main(void)

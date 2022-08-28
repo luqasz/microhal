@@ -1,6 +1,6 @@
 #include "catch.hpp"
 
-#include <thermistor.h>
+#include <thermistor.hpp>
 
 constexpr auto rt1 = Thermistor::CelsiusOhm {
     0,

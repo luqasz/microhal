@@ -1,7 +1,7 @@
 #include "catch.hpp"
 
-#include <ubrr.h>
-#include <units.h>
+#include <ubrr.hpp>
+#include <units.hpp>
 /*
  * Below tests only check baud rates that are
  * possible to configure for a given frequency

@@ -1,8 +1,8 @@
-#include <gpio.h>
-#include <irq.h>
+#include <gpio.hpp>
+#include <irq.hpp>
 #include <stdio.h>
-#include <timer.h>
-#include <units.h>
+#include <timer.hpp>
+#include <units.hpp>
 
 constexpr auto FCPU   = 11059200_Hz;
 constexpr auto config = getConfig(25_Hz, FCPU);

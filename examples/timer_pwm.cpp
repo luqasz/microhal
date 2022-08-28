@@ -1,10 +1,10 @@
-#include "adc.h"
-#include "eeprom.h"
-#include "gpio.h"
-#include "irq.h"
-#include "pin_irq.h"
-#include "printer.h"
-#include "usart.h"
+#include "adc.hpp"
+#include "eeprom.hpp"
+#include "gpio.hpp"
+#include "irq.hpp"
+#include "pin_irq.hpp"
+#include "printer.hpp"
+#include "usart.hpp"
 
 #include <stdlib.h>
 #include <util/delay.h>

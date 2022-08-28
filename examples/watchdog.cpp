@@ -1,10 +1,10 @@
-#include <irq.h>
-#include <printer.h>
+#include <irq.hpp>
+#include <printer.hpp>
 #include <stdio.h>
-#include <units.h>
-#include <usart.h>
+#include <units.hpp>
+#include <usart.hpp>
 #include <util/delay.h>
-#include <watchdog.h>
+#include <watchdog.hpp>
 
 auto constexpr baud = USART::get_baud(11059200_Hz, 115200, 2);
 static_assert(baud.is_ok, "Calculated error rate too high");

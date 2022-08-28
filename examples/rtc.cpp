@@ -1,12 +1,12 @@
-#include <datetime.h>
-#include <ds1337.h>
-#include <i2c.h>
-#include <irq.h>
-#include <printer.h>
-#include <sfr.h>
+#include <datetime.hpp>
+#include <ds1337.hpp>
+#include <i2c.hpp>
+#include <irq.hpp>
+#include <printer.hpp>
+#include <sfr.hpp>
 #include <stdio.h>
-#include <units.h>
-#include <usart.h>
+#include <units.hpp>
+#include <usart.hpp>
 #include <util/delay.h>
 
 auto constexpr fcpu = 11059200_Hz;

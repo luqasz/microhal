@@ -1,6 +1,6 @@
-#include <gpio.h>
-#include <irq.h>
-#include <pin_irq.h>
+#include <gpio.hpp>
+#include <irq.hpp>
+#include <pin_irq.hpp>
 
 const auto TOGGLE_PIN = GPIO::Output(GPIO::PA0);
 

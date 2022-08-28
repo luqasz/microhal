@@ -1,13 +1,13 @@
-#include <buffer.h>
-#include <gpio.h>
-#include <irq.h>
-#include <mcp49xx.h>
-#include <printer.h>
-#include <sfr.h>
-#include <spi.h>
+#include <buffer.hpp>
+#include <gpio.hpp>
+#include <irq.hpp>
+#include <mcp49xx.hpp>
+#include <printer.hpp>
+#include <sfr.hpp>
+#include <spi.hpp>
 #include <stdio.h>
-#include <units.h>
-#include <usart.h>
+#include <units.hpp>
+#include <usart.hpp>
 #include <util/delay.h>
 
 auto constexpr baud = USART::get_baud(11059200_Hz, 115200, 2);

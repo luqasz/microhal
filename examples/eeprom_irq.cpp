@@ -1,7 +1,7 @@
-#include "buffer.h"
-#include "eeprom.h"
-#include "irq.h"
-#include "sfr.h"
+#include "buffer.hpp"
+#include "eeprom.hpp"
+#include "irq.hpp"
+#include "sfr.hpp"
 
 auto buffer = Buffer::CircularPowerOf2<uint8_t, 8>();
 

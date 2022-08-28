@@ -1,8 +1,8 @@
-#include <adc.h>
-#include <printer.h>
+#include <adc.hpp>
+#include <printer.hpp>
 #include <stdio.h>
-#include <units.h>
-#include <usart.h>
+#include <units.hpp>
+#include <usart.hpp>
 #include <util/delay.h>
 
 auto constexpr baud = USART::get_baud(11059200_Hz, 115200, 2);
