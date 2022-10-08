@@ -56,4 +56,12 @@ public:
     CatchAll() VECTOR("__vector_default");
 };
 
-#include <mcu_irq.hpp>
+#ifdef MCU
+#    if MCU == atmega32
+#        include "atmega32/mcu_irq.hpp"
+#    elif MCU == atmega328
+#        include "atmega328/mcu_irq.hpp"
+#    endif
+#else
+#    error "Unknown MCU."
+#endif

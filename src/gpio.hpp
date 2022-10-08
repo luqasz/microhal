@@ -26,7 +26,7 @@ namespace GPIO {
         const State & on_state;
         const Pin &   pin;
 
-        constexpr Output(const Pin & p, const State & s = High) :
+        Output(const Pin & p, const State & s = High) :
             on_state(s),
             pin(p)
         {
@@ -77,7 +77,7 @@ namespace GPIO {
         const State on_state;
         const Pin   pin;
 
-        constexpr Input(const Pin p, const State s = High) :
+        Input(const Pin p, const State s = High) :
             on_state(s),
             pin(p)
         {
@@ -126,4 +126,13 @@ namespace GPIO {
     };
 
 }
-#include <mcu_gpio.hpp>
+
+#ifdef MCU
+#    if MCU == atmega32
+#        include "atmega32/mcu_gpio.hpp"
+#    elif MCU == atmega328
+#        include "atmega328/mcu_gpio.hpp"
+#    endif
+#else
+#    error "Unknown MCU."
+#endif

@@ -2,7 +2,15 @@
 
 #include "sfr.hpp"
 
-#include <mcu_watchdog.hpp>
+#ifdef MCU
+#    if MCU == atmega32
+#        include "atmega32/mcu_watchdog.hpp"
+#    elif MCU == atmega328
+#        include "atmega328/mcu_watchdog.hpp"
+#    endif
+#else
+#    error "Unknown MCU."
+#endif
 #include <stdint.h>
 
 namespace Watchdog {

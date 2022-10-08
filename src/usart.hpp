@@ -151,5 +151,12 @@ namespace USART {
     };
 
 }
-
-#include <mcu_usart.hpp>
+#ifdef MCU
+#    if MCU == atmega32
+#        include "atmega32/mcu_usart.hpp"
+#    elif MCU == atmega328
+#        include "atmega328/mcu_usart.hpp"
+#    endif
+#else
+#    error "Unknown MCU."
+#endif

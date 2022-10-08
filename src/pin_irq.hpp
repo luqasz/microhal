@@ -3,7 +3,15 @@
 #include "sfr.hpp"
 #include "utils.hpp"
 
-#include <mcu_pin_irq.hpp>
+#ifdef MCU
+#    if MCU == atmega32
+#        include "atmega32/mcu_pin_irq.hpp"
+#    elif MCU == atmega328
+#        include "atmega328/mcu_pin_irq.hpp"
+#    endif
+#else
+#    error "Unknown MCU."
+#endif
 #include <stdint.h>
 
 namespace PinIRQ {

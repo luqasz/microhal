@@ -2,7 +2,15 @@
 
 #include "units.hpp"
 
-#include <mcu_timer.hpp>
+#ifdef MCU
+#    if MCU == atmega32
+#        include "atmega32/mcu_timer.hpp"
+#    elif MCU == atmega328
+#        include "atmega328/mcu_timer.hpp"
+#    endif
+#else
+#    error "Unknown MCU."
+#endif
 
 enum Clock {
     Stopped = 0,

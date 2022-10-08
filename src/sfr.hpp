@@ -10,27 +10,39 @@ namespace SFR {
     WIDTH volatile &
     iomem(uint16_t address)
     {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
         return *reinterpret_cast<WIDTH volatile *>(address);
+#pragma GCC diagnostic pop
     }
 
     void
     setBit(const uint16_t address, const uint8_t bit)
     {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
         iomem<uint8_t>(address) |= bit;
+#pragma GCC diagnostic pop
     }
 
     void
     setBit(const uint16_t address, const uint8_t bit, const uint8_t set_mask)
     {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
         uint8_t current = iomem<uint8_t>(address);
         current         = current | inverted<uint8_t>(set_mask);
         iomem<uint8_t>(address) |= bit;
+#pragma GCC diagnostic pop
     }
 
     void
     clearBit(const uint16_t address, const uint8_t bit)
     {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
         iomem<uint8_t>(address) &= static_cast<uint8_t>(~bit);
+#pragma GCC diagnostic pop
     }
 
     template <typename REG_TYPE, typename WIDTH>
@@ -39,7 +51,10 @@ namespace SFR {
         WIDTH
         read() const
         {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
             return iomem<WIDTH>(REG_TYPE::address);
+#pragma GCC diagnostic pop
         }
 
         bool
@@ -69,7 +84,10 @@ namespace SFR {
         void
         write(const WIDTH value) const
         {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
             iomem<WIDTH>(REG_TYPE::address) = value;
+#pragma GCC diagnostic pop
         }
 
         void
@@ -98,4 +116,12 @@ namespace SFR {
     };
 }
 
-#include <mcu_sfr.hpp>
+#ifdef MCU
+#    if MCU == atmega32
+#        include "atmega32/mcu_sfr.hpp"
+#    elif MCU == atmega328
+#        include "atmega328/mcu_sfr.hpp"
+#    endif
+#else
+#    error "Unknown MCU."
+#endif

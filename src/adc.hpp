@@ -1,6 +1,14 @@
 #pragma once
 
-#include <mcu_adc.hpp>
+#ifdef MCU
+#    if MCU == atmega32
+#        include "atmega32/mcu_adc.hpp"
+#    elif MCU == atmega328
+#        include "atmega328/mcu_adc.hpp"
+#    endif
+#else
+#    error "Unknown MCU."
+#endif
 #include <stdint.h>
 
 namespace ADC {

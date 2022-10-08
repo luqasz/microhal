@@ -2,7 +2,16 @@
 
 #include "sfr.hpp"
 
-#include <mcu_eeprom.h>
+#ifdef MCU
+#    if MCU == atmega32
+#        include "atmega32/mcu_eeprom.hpp"
+#    elif MCU == atmega328
+#        include "atmega328/mcu_eeprom.hpp"
+#    endif
+#else
+#    error "Unknown MCU."
+#endif
+
 #include <stdint.h>
 
 namespace EEPROM {

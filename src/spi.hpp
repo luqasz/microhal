@@ -4,7 +4,15 @@
 #include "sfr.hpp"
 
 #include <gpio.hpp>
-#include <mcu_spi.hpp>
+#ifdef MCU
+#    if MCU == atmega32
+#        include "atmega32/mcu_spi.hpp"
+#    elif MCU == atmega328
+#        include "atmega328/mcu_spi.hpp"
+#    endif
+#else
+#    error "Unknown MCU."
+#endif
 #include <stdint.h>
 
 namespace SPI {
