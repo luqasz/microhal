@@ -1,7 +1,6 @@
 #include "catch.hpp"
 
-#include <_types/_uint8_t.h>
-#include <bcd.hpp>
+#include <encoders.hpp>
 
 TEST_CASE("BCD to DEC")
 {

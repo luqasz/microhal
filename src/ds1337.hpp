@@ -1,8 +1,8 @@
 #pragma once
 
-#include "bcd.hpp"
 #include "buffer.hpp"
 #include "datetime.hpp"
+#include "encoders.hpp"
 #include "i2c.hpp"
 #include "units.hpp"
 
@@ -55,26 +55,26 @@ public:
         auto buffer = Buffer::SizedBytesArray<DATE_TIME_BUFFER_SIZE>();
         i2c_bus.read(clock_target, buffer);
 
-        dt.second    = bcd_to_dec(buffer[REG_SECONDS]);
-        dt.minute    = bcd_to_dec(buffer[REG_MINUTES]);
-        dt.hour      = bcd_to_dec(buffer[REG_HOURS]);
-        dt.month_day = bcd_to_dec(buffer[REG_MONTH_DAY]);
-        dt.week_day  = bcd_to_dec(buffer[REG_WEEK_DAY]);
-        dt.month     = bcd_to_dec((buffer[REG_MONTH] & MONTH_MASK));
-        dt.year      = bcd_to_dec(buffer[REG_YEAR]) + YEAR_OFFSET;
+        dt.second    = BCD::into_u8(BCD { buffer[REG_SECONDS] });
+        dt.minute    = BCD::into_u8(BCD { buffer[REG_MINUTES] });
+        dt.hour      = BCD::into_u8(BCD { buffer[REG_HOURS] });
+        dt.month_day = BCD::into_u8(BCD { buffer[REG_MONTH_DAY] });
+        dt.week_day  = BCD::into_u8(BCD { buffer[REG_WEEK_DAY] });
+        dt.month     = BCD::into_u8(BCD { static_cast<u8>(buffer[REG_MONTH] & MONTH_MASK) });
+        dt.year      = BCD::into_u8(BCD { buffer[REG_YEAR] }) + YEAR_OFFSET;
     }
 
     void
     setDateTime(DateTime & dt) const
     {
         auto buffer           = Buffer::SizedBytesArray<DATE_TIME_BUFFER_SIZE>();
-        buffer[REG_SECONDS]   = dec_to_bcd(dt.second);
-        buffer[REG_MINUTES]   = dec_to_bcd(dt.minute);
-        buffer[REG_HOURS]     = dec_to_bcd(dt.hour);
-        buffer[REG_MONTH_DAY] = dec_to_bcd(dt.month_day);
-        buffer[REG_WEEK_DAY]  = dec_to_bcd(dt.week_day);
-        buffer[REG_MONTH]     = dec_to_bcd(dt.month);
-        buffer[REG_YEAR]      = dec_to_bcd(static_cast<uint8_t>(dt.year - YEAR_OFFSET));
+        buffer[REG_SECONDS]   = BCD::from_u8(dt.second).value;
+        buffer[REG_MINUTES]   = BCD::from_u8(dt.minute).value;
+        buffer[REG_HOURS]     = BCD::from_u8(dt.hour).value;
+        buffer[REG_MONTH_DAY] = BCD::from_u8(dt.month_day).value;
+        buffer[REG_WEEK_DAY]  = BCD::from_u8(dt.week_day).value;
+        buffer[REG_MONTH]     = BCD::from_u8(dt.month).value;
+        buffer[REG_YEAR]      = BCD::from_u8(static_cast<uint8_t>(dt.year - YEAR_OFFSET)).value;
 
         i2c_bus.write(clock_target, buffer);
     }
