@@ -7,6 +7,7 @@ add_executable(
     thermistor.cpp
     vdiv.cpp
     byte_swap.cpp
+    encoders.cpp
 )
 
 target_link_libraries(${LIBTESTS_TARGET} PUBLIC ${lib_name})
