@@ -3,7 +3,7 @@
 #include "sfr.hpp"
 #include "types.hpp"
 
-namespace GPIO {
+namespace gpio {
 
     enum State {
         Low,

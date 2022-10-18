@@ -1,6 +1,6 @@
 #include <gpio.hpp>
 
-namespace GPIO {
+namespace gpio {
 
     Output::Output(const Pin & p, const State & s) :
         on_state(s),

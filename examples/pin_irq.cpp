@@ -2,7 +2,7 @@
 #include <irq.hpp>
 #include <pin_irq.hpp>
 
-const auto TOGGLE_PIN = GPIO::Output(GPIO::PA0);
+const auto TOGGLE_PIN = gpio::Output(gpio::PA0);
 
 int
 main(void)

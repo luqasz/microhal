@@ -67,7 +67,7 @@ namespace SPI {
         const Instance inst;
 
     public:
-        Master(const Instance _inst, const GPIO::Pin mosi, const GPIO::Pin miso, const GPIO::Pin sck);
+        Master(const Instance _inst, const gpio::Pin mosi, const gpio::Pin miso, const gpio::Pin sck);
 
         void
         enable();

@@ -10,8 +10,8 @@ constexpr auto config = getConfig(25_Hz, FCPU);
 int
 main(void)
 {
-    GPIO::Output(GPIO::PB1);
-    GPIO::Output(GPIO::PB2);
+    gpio::Output(gpio::PB1);
+    gpio::Output(gpio::PB2);
 
     auto timer = Timer<Timer1>();
     timer.set(PWM);

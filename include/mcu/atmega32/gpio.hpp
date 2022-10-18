@@ -5,162 +5,162 @@
 
 #include <stdint.h>
 
-namespace GPIO {
+namespace gpio {
 
-    auto constexpr PortD = GPIO::Port {
+    auto constexpr PortD = Port {
         SFR::PORTD::address,
         SFR::PIND::address,
         SFR::DDRD::address,
     };
 
-    auto constexpr PD0 = GPIO::Pin {
+    auto constexpr PD0 = Pin {
         PortD,
-        GPIO::Pin0,
+        Pin0,
     };
-    auto constexpr PD1 = GPIO::Pin {
+    auto constexpr PD1 = Pin {
         PortD,
-        GPIO::Pin1,
+        Pin1,
     };
-    auto constexpr PD2 = GPIO::Pin {
+    auto constexpr PD2 = Pin {
         PortD,
-        GPIO::Pin2,
+        Pin2,
     };
-    auto constexpr PD3 = GPIO::Pin {
+    auto constexpr PD3 = Pin {
         PortD,
-        GPIO::Pin3,
+        Pin3,
     };
-    auto constexpr PD4 = GPIO::Pin {
+    auto constexpr PD4 = Pin {
         PortD,
-        GPIO::Pin4,
+        Pin4,
     };
-    auto constexpr PD5 = GPIO::Pin {
+    auto constexpr PD5 = Pin {
         PortD,
-        GPIO::Pin5,
+        Pin5,
     };
-    auto constexpr PD6 = GPIO::Pin {
+    auto constexpr PD6 = Pin {
         PortD,
-        GPIO::Pin6,
+        Pin6,
     };
-    auto constexpr PD7 = GPIO::Pin {
+    auto constexpr PD7 = Pin {
         PortD,
-        GPIO::Pin7,
+        Pin7,
     };
 
-    auto constexpr PortB = GPIO::Port {
+    auto constexpr PortB = Port {
         SFR::PORTB::address,
         SFR::PINB::address,
         SFR::DDRB::address,
     };
 
-    auto constexpr PB0 = GPIO::Pin {
+    auto constexpr PB0 = Pin {
         PortB,
-        GPIO::Pin0,
+        Pin0,
     };
-    auto constexpr PB1 = GPIO::Pin {
+    auto constexpr PB1 = Pin {
         PortB,
-        GPIO::Pin1,
+        Pin1,
     };
-    auto constexpr PB2 = GPIO::Pin {
+    auto constexpr PB2 = Pin {
         PortB,
-        GPIO::Pin2,
+        Pin2,
     };
-    auto constexpr PB3 = GPIO::Pin {
+    auto constexpr PB3 = Pin {
         PortB,
-        GPIO::Pin3,
+        Pin3,
     };
-    auto constexpr PB4 = GPIO::Pin {
+    auto constexpr PB4 = Pin {
         PortB,
-        GPIO::Pin4,
+        Pin4,
     };
-    auto constexpr PB5 = GPIO::Pin {
+    auto constexpr PB5 = Pin {
         PortB,
-        GPIO::Pin5,
+        Pin5,
     };
-    auto constexpr PB6 = GPIO::Pin {
+    auto constexpr PB6 = Pin {
         PortB,
-        GPIO::Pin6,
+        Pin6,
     };
-    auto constexpr PB7 = GPIO::Pin {
+    auto constexpr PB7 = Pin {
         PortB,
-        GPIO::Pin7,
+        Pin7,
     };
 
-    auto constexpr PortA = GPIO::Port {
+    auto constexpr PortA = Port {
         SFR::PORTA::address,
         SFR::PINA::address,
         SFR::DDRA::address,
     };
 
-    auto constexpr PA0 = GPIO::Pin {
+    auto constexpr PA0 = Pin {
         PortA,
-        GPIO::Pin0,
+        Pin0,
     };
-    auto constexpr PA1 = GPIO::Pin {
+    auto constexpr PA1 = Pin {
         PortA,
-        GPIO::Pin1,
+        Pin1,
     };
-    auto constexpr PA2 = GPIO::Pin {
+    auto constexpr PA2 = Pin {
         PortA,
-        GPIO::Pin2,
+        Pin2,
     };
-    auto constexpr PA3 = GPIO::Pin {
+    auto constexpr PA3 = Pin {
         PortA,
-        GPIO::Pin3,
+        Pin3,
     };
-    auto constexpr PA4 = GPIO::Pin {
+    auto constexpr PA4 = Pin {
         PortA,
-        GPIO::Pin4,
+        Pin4,
     };
-    auto constexpr PA5 = GPIO::Pin {
+    auto constexpr PA5 = Pin {
         PortA,
-        GPIO::Pin5,
+        Pin5,
     };
-    auto constexpr PA6 = GPIO::Pin {
+    auto constexpr PA6 = Pin {
         PortA,
-        GPIO::Pin6,
+        Pin6,
     };
-    auto constexpr PA7 = GPIO::Pin {
+    auto constexpr PA7 = Pin {
         PortA,
-        GPIO::Pin7,
+        Pin7,
     };
 
-    auto constexpr PortC = GPIO::Port {
+    auto constexpr PortC = Port {
         SFR::PORTC::address,
         SFR::PINC::address,
         SFR::DDRC::address,
     };
 
-    auto constexpr PC0 = GPIO::Pin {
+    auto constexpr PC0 = Pin {
         PortC,
-        GPIO::Pin0,
+        Pin0,
     };
-    auto constexpr PC1 = GPIO::Pin {
+    auto constexpr PC1 = Pin {
         PortC,
-        GPIO::Pin1,
+        Pin1,
     };
-    auto constexpr PC2 = GPIO::Pin {
+    auto constexpr PC2 = Pin {
         PortC,
-        GPIO::Pin2,
+        Pin2,
     };
-    auto constexpr PC3 = GPIO::Pin {
+    auto constexpr PC3 = Pin {
         PortC,
-        GPIO::Pin3,
+        Pin3,
     };
-    auto constexpr PC4 = GPIO::Pin {
+    auto constexpr PC4 = Pin {
         PortC,
-        GPIO::Pin4,
+        Pin4,
     };
-    auto constexpr PC5 = GPIO::Pin {
+    auto constexpr PC5 = Pin {
         PortC,
-        GPIO::Pin5,
+        Pin5,
     };
-    auto constexpr PC6 = GPIO::Pin {
+    auto constexpr PC6 = Pin {
         PortC,
-        GPIO::Pin6,
+        Pin6,
     };
-    auto constexpr PC7 = GPIO::Pin {
+    auto constexpr PC7 = Pin {
         PortC,
-        GPIO::Pin7,
+        Pin7,
     };
 
 }

@@ -23,32 +23,32 @@ namespace HD44780 {
     };
 
     class LCD : public Writer {
-        const GPIO::Bus8Bit & bus;
-        const GPIO::Output &  rs;
-        const GPIO::Output &  rw;
-        const GPIO::Output &  e;
+        const gpio::Bus8Bit & bus;
+        const gpio::Output &  rs;
+        const gpio::Output &  rw;
+        const gpio::Output &  e;
         /*
         RS is a Register select pin.
         Low for command,
         High for data,
         */
-        auto static constexpr COMMAND = GPIO::Off;
-        auto static constexpr DATA    = GPIO::On;
+        auto static constexpr COMMAND = gpio::Off;
+        auto static constexpr DATA    = gpio::On;
 
         void
         waitUntillReady() const;
 
         void
-        enable(const GPIO::Logic logic) const;
+        enable(const gpio::Logic logic) const;
 
         u8
         read() const;
 
         void
-        sendByte(const u8 byte, const GPIO::Logic reg) const;
+        sendByte(const u8 byte, const gpio::Logic reg) const;
 
     public:
-        LCD(const GPIO::Bus8Bit & b, const GPIO::Output & _rs, const GPIO::Output & _rw, const GPIO::Output & _e);
+        LCD(const gpio::Bus8Bit & b, const gpio::Output & _rs, const gpio::Output & _rw, const gpio::Output & _e);
 
         void
         write(const u8 byte) final;

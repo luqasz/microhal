@@ -1,7 +1,7 @@
 #pragma once
 #include "../types.hpp"
 
-namespace GPIO {
+namespace gpio {
 
     enum PinNumber : u8 {
         Pin0 = 0x01,

@@ -23,15 +23,15 @@ auto constexpr target = SPI::Target {
 
 template <typename SENDER, typename DAC>
 void
-send(SENDER spi, DAC dac, uint16_t value, const GPIO::Output cs)
+send(SENDER spi, DAC dac, uint16_t value, const gpio::Output cs)
 {
     auto buffer = buffer::SizedBytesArray<2>();
     dac         = value;
     buffer[0]   = static_cast<uint8_t>(dac.bits >> 8);
     buffer[1]   = static_cast<uint8_t>(dac.bits);
-    cs          = GPIO::Off;
+    cs          = gpio::Off;
     spi.communicate(buffer, target);
-    cs = GPIO::On;
+    cs = gpio::On;
 }
 
 int
@@ -39,8 +39,8 @@ main(void)
 {
     auto spi = SPI::Master(SPI::Instance::SPI0, SPI::SPI0_MOSI, SPI::SPI0_MISO, SPI::SPI0_SCK);
     spi.enable();
-    auto DAC_CS = GPIO::Output(SPI::SPI0_SS, GPIO::Low);
-    DAC_CS      = GPIO::High;
+    auto DAC_CS = gpio::Output(SPI::SPI0_SS, gpio::Low);
+    DAC_CS      = gpio::High;
     auto dac    = MCP49x2::MCP4922(MCP49x2::Channel::A);
     dac.set(MCP49x2::Gain::x1);
     dac.set(MCP49x2::BufferControl::Unbuffered);

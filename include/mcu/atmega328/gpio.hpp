@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 
-namespace GPIO {
+namespace gpio {
 
     auto constexpr PortC = GPIO::Port {
         SFR::PORTC::address,

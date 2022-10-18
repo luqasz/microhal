@@ -8,8 +8,8 @@ namespace SPI {
         SPI0,
     };
 
-    const auto SPI0_SS   = GPIO::PB4;
-    const auto SPI0_MOSI = GPIO::PB5;
-    const auto SPI0_MISO = GPIO::PB6;
-    const auto SPI0_SCK  = GPIO::PB7;
+    const auto SPI0_SS   = gpio::PB4;
+    const auto SPI0_MOSI = gpio::PB5;
+    const auto SPI0_MISO = gpio::PB6;
+    const auto SPI0_SCK  = gpio::PB7;
 }

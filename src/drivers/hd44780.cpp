@@ -36,7 +36,7 @@ namespace HD44780 {
     }
 
     void
-    LCD::enable(const GPIO::Logic logic) const
+    LCD::enable(const gpio::Logic logic) const
     {
         e = logic;
         _delay_us(1);
@@ -45,21 +45,21 @@ namespace HD44780 {
     u8
     LCD::read() const
     {
-        rw = GPIO::On;
-        enable(GPIO::On);
+        rw = gpio::On;
+        enable(gpio::On);
         const u8 result = bus.read();
-        enable(GPIO::Off);
+        enable(gpio::Off);
         return result;
     }
 
     void
-    LCD::sendByte(const u8 byte, const GPIO::Logic reg) const
+    LCD::sendByte(const u8 byte, const gpio::Logic reg) const
     {
         rs = reg;
-        rw = GPIO::Off;
-        enable(GPIO::On);
+        rw = gpio::Off;
+        enable(gpio::On);
         bus.write(byte);
-        enable(GPIO::Off);
+        enable(gpio::Off);
         waitUntillReady();
     }
 
@@ -70,7 +70,7 @@ namespace HD44780 {
     With winstar WEH oled displays, third stage caused weird characters
     to be displayed, when initialized more than once without power cycle.
     */
-    LCD::LCD(const GPIO::Bus8Bit & b, const GPIO::Output & _rs, const GPIO::Output & _rw, const GPIO::Output & _e) :
+    LCD::LCD(const gpio::Bus8Bit & b, const gpio::Output & _rs, const gpio::Output & _rw, const gpio::Output & _e) :
         bus(b),
         rs(_rs),
         rw(_rw),

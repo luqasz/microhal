@@ -6,12 +6,12 @@ namespace SPI {
     constexpr static auto SPSR = SFR::RegisterRW<SFR::SPSR, uint8_t>();
     constexpr static auto SPDR = SFR::RegisterRW<SFR::SPDR, uint8_t>();
 
-    Master::Master(const Instance _inst, const GPIO::Pin mosi, const GPIO::Pin miso, const GPIO::Pin sck) :
+    Master::Master(const Instance _inst, const gpio::Pin mosi, const gpio::Pin miso, const gpio::Pin sck) :
         inst(_inst)
     {
-        GPIO::Output(sck, GPIO::High);
-        GPIO::Input(miso, GPIO::High);
-        GPIO::Output(mosi, GPIO::High);
+        gpio::Output(sck, gpio::High);
+        gpio::Input(miso, gpio::High);
+        gpio::Output(mosi, gpio::High);
         SPCR.setBit(SPCR.MSTR);
     }
 
