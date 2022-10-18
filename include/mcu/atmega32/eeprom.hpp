@@ -10,7 +10,7 @@ Architecture      AVR8
 Device name       ATmega32
 */
 
-namespace EEPROM {
+namespace eeprom {
 
     constexpr uint16_t start     = 0x00;
     constexpr uint16_t end       = 0x3ff;

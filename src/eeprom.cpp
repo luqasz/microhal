@@ -1,6 +1,6 @@
 #include <eeprom.hpp>
 
-namespace EEPROM {
+namespace eeprom {
 
     constexpr static auto ctrl_reg = SFR::RegisterRW<SFR::EECR, u8>();
     constexpr static auto addr_reg = SFR::RegisterRW<SFR::EEAR, u16>();

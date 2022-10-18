@@ -15,7 +15,7 @@
 #    error "Unknown MCU."
 #endif
 
-namespace EEPROM {
+namespace eeprom {
 
     void
     write(const u8 byte, const u16 address);
