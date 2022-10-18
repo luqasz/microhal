@@ -20,7 +20,7 @@ PGMSPACE const uint32_t dword = 4294967295;
 int
 main(void)
 {
-    Irq::enable();
+    IRQ::enable();
     usart.set(baud);
     usart.enable(USART::Channel::TX);
     auto string = Flash::Array(arr);

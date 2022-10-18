@@ -1,19 +1,38 @@
 cmake_minimum_required(VERSION 3.21)
-set(lib_name microhal)
 
 project(
-    ${lib_name}
+    microhal
     LANGUAGES CXX
 )
 
-add_library(${lib_name} INTERFACE)
+add_library(
+    ${PROJECT_NAME}  
+    INTERFACE
+)
 
 target_include_directories(
-    ${lib_name}
+    ${PROJECT_NAME}
     INTERFACE
-    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
 )
 
 if(PROJECT_IS_TOP_LEVEL)
-    add_subdirectory(tests)
+    if(PRESET_NAME STREQUAL "unit-tests")
+        add_subdirectory(tests)
+    else()
+        target_sources(
+            ${PROJECT_NAME}
+            INTERFACE
+            src/i2c.cpp
+            src/printer.cpp
+            src/eeprom.cpp
+            src/gpio.cpp
+            src/adc.cpp
+            src/spi.cpp
+            src/drivers/ds1337.cpp
+            src/drivers/mcp49xx.cpp
+            src/drivers/hd44780.cpp
+        )
+        add_subdirectory(examples)
+    endif()
 endif()

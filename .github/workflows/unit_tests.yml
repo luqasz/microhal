@@ -23,8 +23,7 @@ jobs:
       - name: Configure
         run: >
           cmake
-          -B${{ env.BUILD_DIR }}
-          -GNinja
+          --preset unit-tests
           .
 
       - name: Build

@@ -1,7 +1,7 @@
 #include <buffer.hpp>
 #include <gpio.hpp>
 #include <irq.hpp>
-#include <mcp49xx.hpp>
+#include <drivers/mcp49xx.hpp>
 #include <printer.hpp>
 #include <sfr.hpp>
 #include <spi.hpp>
@@ -15,6 +15,12 @@ static_assert(baud.is_ok, "Calculated error rate too high");
 auto usart  = USART::Async<USART::USART0>();
 auto serial = Printer(usart, LineEnd::CRLF);
 
+auto constexpr target = SPI::Target {
+    SPI::Order::MSB,
+    SPI::Mode::m0,
+    SPI::MasterClock::_2,
+};
+
 template <typename SENDER, typename DAC>
 void
 send(SENDER spi, DAC dac, uint16_t value, const GPIO::Output cs)
@@ -24,23 +30,21 @@ send(SENDER spi, DAC dac, uint16_t value, const GPIO::Output cs)
     buffer[0]   = static_cast<uint8_t>(dac.bits >> 8);
     buffer[1]   = static_cast<uint8_t>(dac.bits);
     cs          = GPIO::Off;
-    spi.communicate(buffer);
+    spi.communicate(buffer, target);
     cs = GPIO::On;
 }
 
 int
 main(void)
 {
-    auto spi = SPI::Master<SPI::SPI0>(SPI::MOSI, SPI::MISO, SPI::SCK);
-    spi.set(SPI::Mode::m0);
-    spi.set(spi.Clock::_2);
+    auto spi = SPI::Master(SPI::Instance::SPI0, SPI::SPI0_MOSI, SPI::SPI0_MISO, SPI::SPI0_SCK);
     spi.enable();
-    auto DAC_CS = GPIO::Output(SPI::SS, GPIO::Low);
+    auto DAC_CS = GPIO::Output(SPI::SPI0_SS, GPIO::Low);
     DAC_CS      = GPIO::High;
     auto dac    = MCP49x2::MCP4922(MCP49x2::Channel::A);
     dac.set(MCP49x2::Gain::x1);
     dac.set(MCP49x2::BufferControl::Unbuffered);
-    Irq::enable();
+    IRQ::enable();
     usart.set(baud);
     usart.enable(USART::Channel::TX);
     serial.printLn("Sending bytes over SPI");

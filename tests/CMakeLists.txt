@@ -10,7 +10,7 @@ add_executable(
     encoders.cpp
 )
 
-target_link_libraries(${LIBTESTS_TARGET} PUBLIC ${lib_name})
+target_link_libraries(${LIBTESTS_TARGET} PUBLIC ${PROJECT_NAME})
 
 set_target_properties(
     ${LIBTESTS_TARGET}
@@ -40,7 +40,6 @@ target_compile_options(
     -fno-exceptions
     -fno-asynchronous-unwind-tables
     -fno-rtti
-    -fshort-enums
 )
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")

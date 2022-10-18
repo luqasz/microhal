@@ -1,5 +1,5 @@
 #include <datetime.hpp>
-#include <ds1337.hpp>
+#include <drivers/ds1337.hpp>
 #include <i2c.hpp>
 #include <irq.hpp>
 #include <printer.hpp>
@@ -18,7 +18,7 @@ auto serial = Printer(usart, LineEnd::CRLF);
 int
 main(void)
 {
-    Irq::enable();
+    IRQ::enable();
     usart.set(baud);
     usart.enable(USART::Channel::TX);
     auto bus     = I2C::Master(fcpu);

@@ -15,7 +15,7 @@ auto serial = Printer(usart, LineEnd::CRLF);
 int
 main(void)
 {
-    Irq::enable();
+    IRQ::enable();
     usart.set(baud);
     usart.enable(USART::Channel::TX);
     while (true) {

@@ -11,10 +11,6 @@ on:
 env:
   BUILD_DIR: build
 
-defaults:
-  run:
-    working-directory: examples
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,13 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - mcu: atmega32
-            preset: release-avr
-            cxx: avr-g++
-
-          - mcu: atmega328
-            preset: release-avr
-            cxx: avr-g++
+          - preset: examples-atmega32
 
     container:
       image: lukaszkostka/avr:alpine_3.16
@@ -37,9 +27,6 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Configure
-        env:
-          MCU: ${{ matrix.mcu }}
-          CXX: ${{ matrix.cxx }}
         run: >
           cmake
           --preset ${{ matrix.preset }}

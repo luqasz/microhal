@@ -14,7 +14,7 @@ auto serial = Printer(usart, LineEnd::CRLF);
 int
 main(void)
 {
-    Irq::enable();
+    IRQ::enable();
     Watchdog::enable(Watchdog::Clock::s1, Watchdog::Mode::Reset);
     usart.set(baud);
     usart.enable(USART::Channel::TX);

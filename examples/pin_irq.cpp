@@ -12,13 +12,13 @@ main(void)
     pinInterrupt.set(PinIRQ::Trigger::Rising);
     pinInterrupt.enable();
 
-    Irq::enable();
+    IRQ::enable();
     while (true) {
     }
 }
 
 void
-Irq::INT0()
+IRQ::INT0()
 {
     TOGGLE_PIN.toggle();
 }

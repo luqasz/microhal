@@ -1,0 +1,52 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "displayName": "Default Config",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "warnings": {
+        "deprecated": true
+      },
+      "errors": {
+        "deprecated": true
+      },
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "1"
+      }
+    },
+    {
+      "name": "avr-gcc",
+      "inherits": [
+        "default"
+      ],
+      "hidden": true,
+      "toolchainFile": "cmake/toolchain/avr-gcc.cmake"
+    },
+    {
+      "name": "examples-atmega32",
+      "inherits": [
+        "avr-gcc"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "MCU": "atmega32",
+        "PRESET_NAME": "${presetName}"
+      }
+    },
+    {
+      "name": "unit-tests",
+      "inherits": [
+        "default"
+      ],
+      "cacheVariables": {
+        "PRESET_NAME": "${presetName}"
+      }
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-#include <display/hd44780.hpp>
+#include <drivers/hd44780.hpp>
 #include <gpio.hpp>
 #include <printer.hpp>
 
