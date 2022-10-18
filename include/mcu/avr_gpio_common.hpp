@@ -1,5 +1,6 @@
 #pragma once
 #include "../types.hpp"
+#include "../gpio.hpp"
 
 namespace gpio {
 
