@@ -15,7 +15,7 @@ int
 main(void)
 {
     IRQ::enable();
-    Watchdog::enable(Watchdog::Clock::s1, Watchdog::Mode::Reset);
+    watchdog::enable(watchdog::Clock::s1, watchdog::Mode::Reset);
     usart.set(baud);
     usart.enable(USART::Channel::TX);
     serial.printLn("Starting.");
@@ -23,14 +23,14 @@ main(void)
     while (counter != 0) {
         serial.printLn("This string will print 4 times.");
         counter--;
-        Watchdog::reset();
+        watchdog::reset();
         _delay_ms(500);
     }
     serial.printLn("Turning off watchdog.");
-    Watchdog::disable();
+    watchdog::disable();
     _delay_ms(10000);
     serial.printLn("Turning on watchdog.");
-    Watchdog::enable(Watchdog::Clock::s1, Watchdog::Mode::Reset);
+    watchdog::enable(watchdog::Clock::s1, watchdog::Mode::Reset);
     serial.printLn("After this string prints, watchdog will reset MCU.");
     _delay_ms(2000);
 }

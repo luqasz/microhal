@@ -1,7 +1,7 @@
 #pragma once
 #include "../../sfr.hpp"
 
-namespace Watchdog {
+namespace watchdog {
 
     constexpr auto    wdt     = SFR::RegisterRW<SFR::WDTCR, uint8_t>();
     constexpr auto    status  = SFR::RegisterRW<SFR::MCUCSR, uint8_t>();
