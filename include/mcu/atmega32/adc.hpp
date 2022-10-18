@@ -1,6 +1,6 @@
 #pragma once
 
-namespace ADC {
+namespace adc {
 
     using ADCSRA_REG    = SFR::ADCSRA;
     using TRIGGER_REG   = SFR::SFIOR;

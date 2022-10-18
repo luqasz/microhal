@@ -15,7 +15,7 @@
 #    error "Unknown MCU."
 #endif
 
-namespace ADC {
+namespace adc {
 
     void
     enable();

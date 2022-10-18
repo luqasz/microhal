@@ -15,11 +15,11 @@ main(void)
 {
     usart.set(baud);
     usart.enable(USART::Channel::TX);
-    ADC::set(ADC::Clock::_2);
-    ADC::set(ADC::Vref::AVCC);
+    adc::set(adc::Clock::_2);
+    adc::set(adc::Vref::AVCC);
     while (true) {
         serial.printLn("Reading ADC");
-        serial.printLn(ADC::read(ADC::Channel::ADC0));
+        serial.printLn(adc::read(adc::Channel::ADC0));
         _delay_ms(1000);
     }
 }

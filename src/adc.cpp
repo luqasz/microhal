@@ -1,6 +1,6 @@
 #include <adc.hpp>
 
-namespace ADC {
+namespace adc {
 
     auto ControllRegister  = SFR::RegisterRW<CTL_REG, u8>();
     auto TriggerRegister   = SFR::RegisterRW<TRIGGER_REG, u8>();

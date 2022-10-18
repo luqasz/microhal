@@ -2,7 +2,7 @@
 
 #include "../../sfr.hpp"
 
-namespace ADC {
+namespace adc {
 
     typedef SFR::ADCSRA ADCSRA_REG;
     typedef SFR::ADCSRB TRIGGER_REG;
