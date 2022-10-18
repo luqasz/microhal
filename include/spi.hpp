@@ -79,6 +79,6 @@ namespace SPI {
         communicate(u8, const Target &);
 
         void
-        communicate(const Buffer::Bytes &, const Target &);
+        communicate(const buffer::Bytes &, const Target &);
     };
 }

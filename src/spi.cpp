@@ -117,7 +117,7 @@ namespace SPI {
     }
 
     void
-    Master::communicate(const Buffer::Bytes & buffer, const Target & target)
+    Master::communicate(const buffer::Bytes & buffer, const Target & target)
     {
         for (u8 & byte : buffer) {
             communicate(byte, target);

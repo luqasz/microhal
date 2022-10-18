@@ -25,7 +25,7 @@ template <typename SENDER, typename DAC>
 void
 send(SENDER spi, DAC dac, uint16_t value, const GPIO::Output cs)
 {
-    auto buffer = Buffer::SizedBytesArray<2>();
+    auto buffer = buffer::SizedBytesArray<2>();
     dac         = value;
     buffer[0]   = static_cast<uint8_t>(dac.bits >> 8);
     buffer[1]   = static_cast<uint8_t>(dac.bits);

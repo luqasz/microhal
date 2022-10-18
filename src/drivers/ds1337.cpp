@@ -8,7 +8,7 @@ DS1337::DS1337(I2C::Master & bus) :
 void
 DS1337::getDateTime(DateTime & dt) const
 {
-    auto buffer = Buffer::SizedBytesArray<DATE_TIME_BUFFER_SIZE>();
+    auto buffer = buffer::SizedBytesArray<DATE_TIME_BUFFER_SIZE>();
     i2c_bus.read(clock_target, buffer);
 
     dt.second    = BCD::into_u8(BCD { buffer[REG_SECONDS] });
@@ -23,7 +23,7 @@ DS1337::getDateTime(DateTime & dt) const
 void
 DS1337::setDateTime(DateTime & dt) const
 {
-    auto buffer           = Buffer::SizedBytesArray<DATE_TIME_BUFFER_SIZE>();
+    auto buffer           = buffer::SizedBytesArray<DATE_TIME_BUFFER_SIZE>();
     buffer[REG_SECONDS]   = BCD::from_u8(dt.second).value;
     buffer[REG_MINUTES]   = BCD::from_u8(dt.minute).value;
     buffer[REG_HOURS]     = BCD::from_u8(dt.hour).value;

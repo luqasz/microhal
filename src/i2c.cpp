@@ -62,7 +62,7 @@ namespace I2C {
     }
 
     void
-    Master::write(const I2C::Target target, const Buffer::Bytes buffer) const
+    Master::write(const I2C::Target target, const buffer::Bytes buffer) const
     {
         set_speed(cpu_freq, target.speed);
         start_signal();
@@ -75,7 +75,7 @@ namespace I2C {
     }
 
     void
-    Master::read(const I2C::Target target, const Buffer::Bytes buffer) const
+    Master::read(const I2C::Target target, const buffer::Bytes buffer) const
     {
         set_speed(cpu_freq, target.speed);
         start_signal();

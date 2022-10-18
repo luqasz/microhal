@@ -3,7 +3,7 @@
 #include "types.hpp"
 #include "utils.hpp"
 
-namespace Buffer {
+namespace buffer {
 
     class Bytes {
     private:
