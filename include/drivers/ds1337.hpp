@@ -33,17 +33,17 @@ constexpr u16 YEAR_OFFSET           = 2000;
 constexpr u8  MONTH_MASK            = 0x1F;
 constexpr u8  CENTURY_MASK          = 0x80;
 
-constexpr auto clock_target = I2C::Target {
+constexpr auto clock_target = i2c::Target {
     DS1337_ADDRESS,
     REG_SECONDS,
     100_kHz,
 };
 
 class DS1337 {
-    I2C::Master i2c_bus;
+    i2c::Master i2c_bus;
 
 public:
-    DS1337(I2C::Master & bus);
+    DS1337(i2c::Master & bus);
 
     void
     getDateTime(DateTime & dt) const;

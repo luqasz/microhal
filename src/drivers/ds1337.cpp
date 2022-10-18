@@ -1,6 +1,6 @@
 #include <drivers/ds1337.hpp>
 
-DS1337::DS1337(I2C::Master & bus) :
+DS1337::DS1337(i2c::Master & bus) :
     i2c_bus(bus)
 {
 }

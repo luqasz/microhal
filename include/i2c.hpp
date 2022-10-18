@@ -5,7 +5,7 @@
 #include "types.hpp"
 #include "units.hpp"
 
-namespace I2C {
+namespace i2c {
 
     struct Target {
         /*

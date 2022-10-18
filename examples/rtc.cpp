@@ -21,7 +21,7 @@ main(void)
     IRQ::enable();
     usart.set(baud);
     usart.enable(USART::Channel::TX);
-    auto bus     = I2C::Master(fcpu);
+    auto bus     = i2c::Master(fcpu);
     auto rtc     = DS1337(bus);
     auto dt      = DateTime {};
     dt.year      = 2019;

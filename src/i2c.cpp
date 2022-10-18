@@ -7,7 +7,7 @@ constexpr static auto TWDR = SFR::RegisterRW<SFR::TWDR, u8>();
 constexpr static u8 ACK  = TWCR.TWEA;
 constexpr static u8 NACK = 0;
 
-namespace I2C {
+namespace i2c {
 
     /*
      * Calculate TWBR register value based on:
@@ -62,7 +62,7 @@ namespace I2C {
     }
 
     void
-    Master::write(const I2C::Target target, const buffer::Bytes buffer) const
+    Master::write(const i2c::Target target, const buffer::Bytes buffer) const
     {
         set_speed(cpu_freq, target.speed);
         start_signal();
@@ -75,7 +75,7 @@ namespace I2C {
     }
 
     void
-    Master::read(const I2C::Target target, const buffer::Bytes buffer) const
+    Master::read(const i2c::Target target, const buffer::Bytes buffer) const
     {
         set_speed(cpu_freq, target.speed);
         start_signal();
