@@ -2,7 +2,7 @@
 #include "../../gpio.hpp"
 #include "../../sfr.hpp"
 
-namespace SPI {
+namespace spi {
 
     struct SPI0 {
         constexpr static auto SPCR = SFR::RegisterRW<SFR::SPCR, uint8_t>();

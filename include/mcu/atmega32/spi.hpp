@@ -2,7 +2,7 @@
 #include "../../gpio.hpp"
 #include "../../sfr.hpp"
 
-namespace SPI {
+namespace spi {
 
     enum class Instance {
         SPI0,

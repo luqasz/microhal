@@ -17,7 +17,7 @@
 #    error "Unknown MCU."
 #endif
 
-namespace SPI {
+namespace spi {
     /*
     If SS is configured as an output, the pin is a general output pin which does not affect the SPI system.
     Typically, the pin will be driving the SS pin of the SPI Slave.

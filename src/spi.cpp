@@ -1,6 +1,6 @@
 #include <spi.hpp>
 
-namespace SPI {
+namespace spi {
 
     constexpr static auto SPCR = SFR::RegisterRW<SFR::SPCR, uint8_t>();
     constexpr static auto SPSR = SFR::RegisterRW<SFR::SPSR, uint8_t>();

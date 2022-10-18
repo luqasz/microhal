@@ -15,10 +15,10 @@ static_assert(baud.is_ok, "Calculated error rate too high");
 auto usart  = USART::Async<USART::USART0>();
 auto serial = Printer(usart, LineEnd::CRLF);
 
-auto constexpr target = SPI::Target {
-    SPI::Order::MSB,
-    SPI::Mode::m0,
-    SPI::MasterClock::_2,
+auto constexpr target = spi::Target {
+    spi::Order::MSB,
+    spi::Mode::m0,
+    spi::MasterClock::_2,
 };
 
 template <typename SENDER, typename DAC>
@@ -37,9 +37,9 @@ send(SENDER spi, DAC dac, uint16_t value, const gpio::Output cs)
 int
 main(void)
 {
-    auto spi = SPI::Master(SPI::Instance::SPI0, SPI::SPI0_MOSI, SPI::SPI0_MISO, SPI::SPI0_SCK);
+    auto spi = spi::Master(spi::Instance::SPI0, spi::SPI0_MOSI, spi::SPI0_MISO, spi::SPI0_SCK);
     spi.enable();
-    auto DAC_CS = gpio::Output(SPI::SPI0_SS, gpio::Low);
+    auto DAC_CS = gpio::Output(spi::SPI0_SS, gpio::Low);
     DAC_CS      = gpio::High;
     auto dac    = MCP49x2::MCP4922(MCP49x2::Channel::A);
     dac.set(MCP49x2::Gain::x1);
