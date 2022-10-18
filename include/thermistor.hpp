@@ -14,7 +14,7 @@ External links:
     https://www.thinksrs.com/downloads/programs/therm%20calc/ntccalibrator/ntccalculator.html
     https://www.thinksrs.com/downloads/pdfs/applicationnotes/LDC%20Note%204%20NTC%20Calculator.pdf
 */
-namespace Thermistor {
+namespace thermistor {
     // Steinhart Hart coefficients.
     struct Coefficients {
         const float a, b, c;
