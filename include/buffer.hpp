@@ -70,47 +70,6 @@ namespace buffer {
     };
 
     template <typename DATA_TYPE, usize BUFFER_SIZE, typename HT_TYPE = usize>
-    class Circular {
-        static_assert(BUFFER_SIZE > 1, "Size bust be > 1.");
-
-    private:
-        HT_TYPE   head              = 0;
-        HT_TYPE   tail              = 0;
-        DATA_TYPE data[BUFFER_SIZE] = { 0 };
-
-    public:
-        constexpr HT_TYPE
-        size() const
-        {
-            return BUFFER_SIZE;
-        }
-
-        constexpr HT_TYPE
-        len() const
-        {
-            return static_cast<HT_TYPE>(head - tail);
-        }
-
-        constexpr HT_TYPE
-        mask(const HT_TYPE val)
-        {
-            return val % size();
-        }
-
-        constexpr void
-        write(DATA_TYPE value)
-        {
-            data[mask(head++)] = value;
-        }
-
-        constexpr DATA_TYPE
-        read()
-        {
-            return data[mask(tail++)];
-        }
-    };
-
-    template <typename DATA_TYPE, usize BUFFER_SIZE, typename HT_TYPE = usize>
     class CircularPowerOf2 {
         static_assert(isPowerOfTwo(BUFFER_SIZE), "Size must be power of 2.");
         static_assert(BUFFER_SIZE > 1, "Buffer must be at least 2 in size.");
