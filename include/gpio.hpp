@@ -10,11 +10,6 @@ namespace gpio {
         High,
     };
 
-    enum Logic {
-        Off = State::Low,
-        On  = State::High,
-    };
-
 }
 
 #ifdef MCU

@@ -58,42 +58,29 @@ namespace gpio {
     };
 
     struct Output {
-        const State & on_state;
-        const Pin &   pin;
+        const Pin pin;
 
-        Output(const Pin & p, const State & s = High);
+        Output(const Pin & p);
 
         void
         operator=(const State state) const;
 
-        void
-        operator=(const Logic logic) const;
+        const Output &
+        set(const State state) const;
 
         void
         toggle() const;
-
-    private:
-        void
-        set_state(const State state) const;
     };
 
     struct Input {
-        const State on_state;
-        const Pin   pin;
+        const Pin pin;
 
-        Input(const Pin p, const State s = High);
+        Input(const Pin & p);
 
-        void
+        const Input &
         set(const PullMode mode) const;
 
         bool
-        operator==(const Logic logic) const;
-
-        bool
         operator==(const State state) const;
-
-    private:
-        bool
-        read_state() const;
     };
 }

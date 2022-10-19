@@ -1,3 +1,4 @@
+#include "gpio.hpp"
 #include <drivers/hd44780.hpp>
 
 namespace HD44780 {
@@ -36,30 +37,30 @@ namespace HD44780 {
     }
 
     void
-    LCD::enable(const gpio::Logic logic) const
+    LCD::enable(const gpio::State state) const
     {
-        e = logic;
+        e = state;
         _delay_us(1);
     }
 
     u8
     LCD::read() const
     {
-        rw = gpio::On;
-        enable(gpio::On);
+        rw = gpio::High;
+        enable(gpio::High);
         const u8 result = bus.read();
-        enable(gpio::Off);
+        enable(gpio::Low);
         return result;
     }
 
     void
-    LCD::sendByte(const u8 byte, const gpio::Logic reg) const
+    LCD::sendByte(const u8 byte, const gpio::State reg) const
     {
         rs = reg;
-        rw = gpio::Off;
-        enable(gpio::On);
+        rw = gpio::Low;
+        enable(gpio::High);
         bus.write(byte);
-        enable(gpio::Off);
+        enable(gpio::Low);
         waitUntillReady();
     }
 

@@ -32,20 +32,20 @@ namespace HD44780 {
         Low for command,
         High for data,
         */
-        auto static constexpr COMMAND = gpio::Off;
-        auto static constexpr DATA    = gpio::On;
+        auto static constexpr COMMAND = gpio::Low;
+        auto static constexpr DATA    = gpio::High;
 
         void
         waitUntillReady() const;
 
         void
-        enable(const gpio::Logic logic) const;
+        enable(const gpio::State state) const;
 
         u8
         read() const;
 
         void
-        sendByte(const u8 byte, const gpio::Logic reg) const;
+        sendByte(const u8 byte, const gpio::State reg) const;
 
     public:
         LCD(const gpio::Bus8Bit & b, const gpio::Output & _rs, const gpio::Output & _rw, const gpio::Output & _e);

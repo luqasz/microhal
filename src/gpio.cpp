@@ -2,8 +2,7 @@
 
 namespace gpio {
 
-    Output::Output(const Pin & p, const State & s) :
-        on_state(s),
+    Output::Output(const Pin & p) :
         pin(p)
     {
         SFR::setBit(pin.port.ddr_address, pin.number);
@@ -11,31 +10,6 @@ namespace gpio {
 
     void
     Output::operator=(const State state) const
-    {
-        set_state(state);
-    }
-
-    void
-    Output::operator=(const Logic logic) const
-    {
-        switch (logic) {
-            case Logic::On:
-                set_state(on_state);
-                break;
-            case Logic::Off:
-                set_state(static_cast<State>(!on_state));
-                break;
-        }
-    }
-
-    void
-    Output::toggle() const
-    {
-        SFR::iomem<u8>(pin.port.port_address) ^= pin.number;
-    }
-
-    void
-    Output::set_state(const State state) const
     {
         switch (state) {
             case State::High:
@@ -47,14 +21,26 @@ namespace gpio {
         }
     }
 
-    Input::Input(const Pin p, const State s) :
-        on_state(s),
+    const Output &
+    Output::set(const State state) const
+    {
+        *this = state;
+        return *this;
+    }
+
+    void
+    Output::toggle() const
+    {
+        SFR::iomem<u8>(pin.port.port_address) ^= pin.number;
+    }
+
+    Input::Input(const Pin & p) :
         pin(p)
     {
         SFR::clearBit(pin.port.ddr_address, pin.number);
     }
 
-    void
+    const Input &
     Input::set(const PullMode mode) const
     {
         switch (mode) {
@@ -65,33 +51,13 @@ namespace gpio {
                 SFR::clearBit(pin.port.ddr_address, pin.number);
                 break;
         }
-    }
-
-    bool
-    Input::operator==(const Logic logic) const
-    {
-        const auto state = read_state();
-        switch (logic) {
-            case Logic::On:
-                return state == on_state;
-                break;
-            case Logic::Off:
-                return state != on_state;
-                break;
-        }
-        return false;
+        return *this;
     }
 
     bool
     Input::operator==(const State state) const
     {
-        return read_state() == state;
+        return (SFR::iomem<u8>(pin.port.pin_address) & pin.number) == state;
     }
-
-    bool
-    Input::read_state() const
-    {
-        return SFR::iomem<u8>(pin.port.pin_address) & pin.number;
-    };
 
 }
