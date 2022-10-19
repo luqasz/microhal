@@ -106,7 +106,7 @@ namespace spi {
     }
 
     void
-    Master::communicate(u8 byte, const Target & target)
+    Master::communicate(u8 & byte, const Target & target)
     {
         set(target.mode);
         set(target.clock);
@@ -117,7 +117,7 @@ namespace spi {
     }
 
     void
-    Master::communicate(const buffer::Bytes & buffer, const Target & target)
+    Master::communicate(const buffer::Slice<u8> & buffer, const Target & target)
     {
         for (u8 & byte : buffer) {
             communicate(byte, target);

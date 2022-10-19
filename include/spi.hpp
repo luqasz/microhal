@@ -76,9 +76,9 @@ namespace spi {
         disable();
 
         void
-        communicate(u8, const Target &);
+        communicate(u8 &, const Target &);
 
         void
-        communicate(const buffer::Bytes &, const Target &);
+        communicate(const buffer::Slice<u8> &, const Target &);
     };
 }

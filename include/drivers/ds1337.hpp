@@ -40,14 +40,15 @@ constexpr auto clock_target = i2c::Target {
 };
 
 class DS1337 {
-    i2c::Master i2c_bus;
+    const i2c::Master                        i2c_bus;
+    buffer::Array<u8, DATE_TIME_BUFFER_SIZE> buffer;
 
 public:
     DS1337(i2c::Master & bus);
 
     void
-    getDateTime(DateTime & dt) const;
+    getDateTime(DateTime & dt);
 
     void
-    setDateTime(DateTime & dt) const;
+    setDateTime(DateTime & dt);
 };

@@ -62,7 +62,7 @@ namespace i2c {
     }
 
     void
-    Master::write(const i2c::Target target, const buffer::Bytes buffer) const
+    Master::write(const buffer::Slice<u8> & buffer, const i2c::Target & target) const
     {
         set_speed(cpu_freq, target.speed);
         start_signal();
@@ -75,17 +75,18 @@ namespace i2c {
     }
 
     void
-    Master::read(const i2c::Target target, const buffer::Bytes buffer) const
+    Master::read(const buffer::Slice<u8> & buffer, const i2c::Target & target) const
     {
+        usize elems = buffer.size();
+        auto  elem  = buffer.begin();
         set_speed(cpu_freq, target.speed);
         start_signal();
         write_blocking(static_cast<u8>(target.address << 1));
         write_blocking(target.start_address);
         start_signal();
         write_blocking(static_cast<u8>((target.address << 1) + 1));
-        for (u8 & byte : buffer) {
-            const u8 signal = &byte == buffer.lastElemPtr() ? ACK : NACK;
-            byte            = read_blocking(signal);
+        while (elems--) {
+            *elem++ = read_blocking(elems ? ACK : NACK);
         }
         stop_signal();
     }

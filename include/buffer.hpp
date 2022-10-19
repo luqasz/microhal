@@ -5,41 +5,31 @@
 
 namespace buffer {
 
-    class Bytes {
-    private:
-        u8 * const begin_ptr;
-        u8 * const end_ptr;
+    template <typename T>
+    class Slice {
+        T * const begin_ptr;
+        T * const end_ptr;
 
-    protected:
-        constexpr Bytes(u8 * const b, u8 * const e) :
+    public:
+        constexpr Slice(T * const b, T * const e) :
             begin_ptr(b),
             end_ptr(e)
         {
         }
 
-    public:
-        constexpr u8 *
+        constexpr T *
         begin() const
         {
             return begin_ptr;
         };
 
-        constexpr u8 *
+        constexpr T *
         end() const
         {
             return end_ptr;
         };
 
-        /*
-         * Return pointer to last element in array.
-         */
-        constexpr u8 *
-        lastElemPtr() const
-        {
-            return end() - 1;
-        }
-
-        constexpr u8 &
+        constexpr T &
         operator[](const usize idx) const
         {
             return begin_ptr[idx];
@@ -52,14 +42,31 @@ namespace buffer {
         };
     };
 
-    template <unsigned int SIZE>
-    class SizedBytesArray : public Bytes {
-        static_assert(SIZE > 0, "buffer size must be > 0");
-        u8 array[SIZE] = { 0 };
+    template <typename T, usize SIZE>
+    class Array {
+        static_assert(SIZE > 0, "size must be > 0");
+        T array[SIZE] = { 0 };
 
     public:
-        SizedBytesArray() :
-            Bytes(array, array + SIZE) { }
+        constexpr Array() { }
+
+        constexpr T &
+        operator[](const usize idx)
+        {
+            return array[idx];
+        };
+
+        constexpr Slice<T>
+        slice(const usize start, const usize num)
+        {
+            return Slice<T>(array + start, array + num);
+        }
+
+        constexpr Slice<T>
+        whole()
+        {
+            return Slice<T>(array, array + SIZE);
+        }
     };
 
     template <typename DATA_TYPE, usize BUFFER_SIZE, typename HT_TYPE = usize>

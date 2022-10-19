@@ -25,12 +25,12 @@ template <typename SENDER, typename DAC>
 void
 send(SENDER spi, DAC dac, uint16_t value, const gpio::Output cs)
 {
-    auto buffer = buffer::SizedBytesArray<2>();
+    auto buffer = buffer::Array<u8, 2>();
     dac         = value;
     buffer[0]   = static_cast<uint8_t>(dac.bits >> 8);
     buffer[1]   = static_cast<uint8_t>(dac.bits);
     cs          = gpio::Off;
-    spi.communicate(buffer, target);
+    spi.communicate(buffer.whole(), target);
     cs = gpio::On;
 }
 
