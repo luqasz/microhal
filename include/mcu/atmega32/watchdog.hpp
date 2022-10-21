@@ -10,9 +10,9 @@ namespace watchdog {
     constexpr u8 ENABLE  = WDT::WDE;
 
     enum class Clock : u8 {
-        ms16  = 0,
-        ms32  = WDT::WDP0,
-        ms64  = WDT::WDP1,
+        ms15  = 0,
+        ms30  = WDT::WDP0,
+        ms60  = WDT::WDP1,
         ms120 = WDT::WDP0 | WDT::WDP1,
         ms250 = WDT::WDP2,
         ms500 = WDT::WDP2 | WDT::WDP0,
