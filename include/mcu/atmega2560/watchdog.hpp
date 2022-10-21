@@ -1,30 +1,25 @@
 #pragma once
-#include "../../sfr.hpp"
+#include "sfr.hpp"
+#include "../../iomem.hpp"
 
 namespace watchdog {
 
-    constexpr auto    wdt     = SFR::RegisterRW<SFR::WDTCSR, uint8_t>();
-    constexpr auto    status  = SFR::RegisterRW<SFR::MCUSR, uint8_t>();
-    constexpr uint8_t DISABLE = wdt.WDCE | wdt.WDE;
-    constexpr uint8_t CHANGE  = wdt.WDCE;
+    using WDT            = SFR::WDTCSR;
+    using MCUS           = SFR::MCUSR;
+    constexpr u8 DISABLE = WDT::WDTCE | WDT::WDE;
+    constexpr u8 ENABLE  = WDT::WDTCE | WDT::WDE;
 
     enum Clock : uint8_t {
         ms16  = 0,
-        ms32  = wdt.WDP0,
-        ms64  = wdt.WDP1,
-        ms120 = wdt.WDP0 | wdt.WDP1,
-        ms250 = wdt.WDP2,
-        ms500 = wdt.WDP2 | wdt.WDP0,
-        s1    = wdt.WDP2 | wdt.WDP1,
-        s2    = wdt.WDP2 | wdt.WDP0 | wdt.WDP1,
-        s4    = wdt.WDP3,
-        s8    = wdt.WDP3 | wdt.WDP0,
-    };
-
-    enum Mode : uint8_t {
-        Reset             = wdt.WDE,
-        Interrupt         = wdt.WDIE,
-        InterruptAndReset = wdt.WDIE | wdt.WDE,
+        ms32  = WDT::WDP0,
+        ms64  = WDT::WDP1,
+        ms120 = WDT::WDP0 | WDT::WDP1,
+        ms250 = WDT::WDP2,
+        ms500 = WDT::WDP2 | WDT::WDP0,
+        s1    = WDT::WDP2 | WDT::WDP1,
+        s2    = WDT::WDP2 | WDT::WDP0 | WDT::WDP1,
+        s4    = WDT::WDP3,
+        s8    = WDT::WDP3 | WDT::WDP0,
     };
 
 }

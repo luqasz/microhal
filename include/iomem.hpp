@@ -1,5 +1,6 @@
 #pragma once
 #include "types.hpp"
+#include "utils.hpp"
 
 namespace iomem {
 
@@ -39,5 +40,39 @@ namespace iomem {
     {
         WIDTH reg_val = read<WIDTH>(address);
         write<WIDTH>(address, fptr(reg_val));
+    }
+
+    template <typename BIT_SIZE>
+    inline void
+    set_bit(const usize address, const BIT_SIZE bit)
+    {
+        modify<BIT_SIZE>(address, [bit](BIT_SIZE val) {
+            return static_cast<BIT_SIZE>(val | bit);
+        });
+    }
+
+    template <typename BIT_SIZE>
+    inline void
+    set_bit(const usize address, const BIT_SIZE bit, const BIT_SIZE set_mask)
+    {
+        modify<BIT_SIZE>(address, [bit, set_mask](BIT_SIZE val) {
+            return static_cast<BIT_SIZE>((val | inverted<BIT_SIZE>(set_mask)) | bit);
+        });
+    }
+
+    template <typename BIT_SIZE>
+    inline void
+    clear_bit(const usize address, const BIT_SIZE bit)
+    {
+        modify<BIT_SIZE>(address, [bit](BIT_SIZE val) {
+            return static_cast<BIT_SIZE>(val & inverted<BIT_SIZE>(bit));
+        });
+    }
+
+    template <typename BIT_SIZE>
+    inline bool
+    is_set_bit(const usize address, const BIT_SIZE bit)
+    {
+        return read<BIT_SIZE>(address) & bit;
     }
 }

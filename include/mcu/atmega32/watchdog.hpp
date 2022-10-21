@@ -1,52 +1,22 @@
 #pragma once
-#include "../../sfr.hpp"
+#include "sfr.hpp"
+#include "../../iomem.hpp"
 
 namespace watchdog {
 
-    constexpr auto    wdt     = SFR::RegisterRW<SFR::WDTCR, uint8_t>();
-    constexpr auto    status  = SFR::RegisterRW<SFR::MCUCSR, uint8_t>();
-    constexpr uint8_t DISABLE = wdt.WDTOE | wdt.WDE;
-    constexpr uint8_t CHANGE  = wdt.WDTOE;
+    using WDT            = SFR::WDTCR;
+    using MCUS           = SFR::MCUCSR;
+    constexpr u8 DISABLE = WDT::WDTOE | WDT::WDE;
+    constexpr u8 ENABLE  = WDT::WDE;
 
-    enum Clock : uint8_t {
+    enum class Clock : u8 {
         ms16  = 0,
-        ms32  = wdt.WDP0,
-        ms64  = wdt.WDP1,
-        ms120 = wdt.WDP0 | wdt.WDP1,
-        ms250 = wdt.WDP2,
-        ms500 = wdt.WDP2 | wdt.WDP0,
-        s1    = wdt.WDP2 | wdt.WDP1,
-        s2    = wdt.WDP2 | wdt.WDP0 | wdt.WDP1,
+        ms32  = WDT::WDP0,
+        ms64  = WDT::WDP1,
+        ms120 = WDT::WDP0 | WDT::WDP1,
+        ms250 = WDT::WDP2,
+        ms500 = WDT::WDP2 | WDT::WDP0,
+        s1    = WDT::WDP2 | WDT::WDP1,
+        s2    = WDT::WDP2 | WDT::WDP0 | WDT::WDP1,
     };
-
-    enum Mode : uint8_t {
-        Reset = wdt.WDE,
-    };
-
-    void inline reset()
-    {
-        asm("wdr");
-    }
-
-    inline void
-    disable()
-    {
-        reset();
-        status.clearBit(status.WDRF);
-        wdt.setBit(DISABLE);
-        wdt = 0x00;
-    }
-
-    inline void
-    enable(const Clock clock, const Mode mode)
-    {
-        status.clearBit(status.WDRF);
-        // Start proceduee.
-        wdt.setBit(CHANGE | wdt.WDE);
-        // Set prescaler and enable watchdog.
-        // This operation must be a write operation,
-        // since watchdog change bit can't be set.
-        wdt.write(mode | clock | wdt.WDE);
-    }
-
 }

@@ -8,16 +8,18 @@
 
 auto constexpr baud = USART::get_baud(11059200_Hz, 115200, 2);
 static_assert(baud.is_ok, "Calculated error rate too high");
-auto usart  = USART::Async<USART::USART0>();
-auto serial = Printer(usart, LineEnd::CRLF);
+
+using USART_0 = USART::Async<USART::usart0>;
 
 int
 main(void)
 {
-    IRQ::enable();
-    watchdog::enable(watchdog::Clock::s1, watchdog::Mode::Reset);
+    auto usart = USART_0();
     usart.set(baud);
-    usart.enable(USART::Channel::TX);
+    usart.enable_tx();
+    auto serial = Printer(usart, LineEnd::CRLF);
+    IRQ::enable();
+    watchdog::enable(watchdog::Clock::s1);
     serial.printLn("Starting.");
     uint8_t counter = 4;
     while (counter != 0) {
@@ -30,7 +32,7 @@ main(void)
     watchdog::disable();
     _delay_ms(10000);
     serial.printLn("Turning on watchdog.");
-    watchdog::enable(watchdog::Clock::s1, watchdog::Mode::Reset);
+    watchdog::enable(watchdog::Clock::s1);
     serial.printLn("After this string prints, watchdog will reset MCU.");
     _delay_ms(2000);
 }
