@@ -1,15 +1,18 @@
 #pragma once
 
-#include "../../sfr.hpp"
+#include "sfr.hpp"
+#include "../avr_usart_common.hpp"
 
 namespace USART {
 
-    struct USART0 {
-        static constexpr auto udr   = SFR::RegisterRW<SFR::UDR, uint8_t>();
-        static constexpr auto ucsra = SFR::RegisterRW<UCSRA<SFR::UCSRA>, uint8_t>();
-        static constexpr auto ucsrb = SFR::RegisterRW<UCSRB<SFR::UCSRB>, uint8_t>();
-        static constexpr auto ucsrc = SFR::RegisterRW<UCSRC<SFR::UCSRC>, uint8_t>();
-        static constexpr auto ubrr  = set_ubrr_split<SFR::UBRRH, SFR::UBRRL, SFR::UCSRC>;
+    struct usart0 {
+        static constexpr auto udr      = SFR::UDR::address;
+        static constexpr auto ucsra    = SFR::UCSRA::address;
+        static constexpr auto ucsrb    = SFR::UCSRB::address;
+        static constexpr auto ucsrc    = SFR::UCSRC::address;
+        static constexpr auto ubrrh    = SFR::UBRRH::address;
+        static constexpr auto ubrrl    = SFR::UBRRL::address;
+        static constexpr auto set_ubrr = set_ubrr_split;
     };
 
 }

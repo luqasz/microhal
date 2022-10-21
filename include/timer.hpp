@@ -89,7 +89,7 @@ getConfig(const Frequency fcpu, const Frequency desired)
  */
 enum TimerMode {
     CTC          = TCCRB::WGM2 | TCCRB::WGM3,
-    PWM          = TCCRA::WGM1 | TCCRB::WGM2 | TCCRB::WGM3,
+    PWM          = TCCRA::WGM1 | static_cast<u8>(TCCRB::WGM2) | static_cast<u8>(TCCRB::WGM3),
     CompareMatch = CTC,
 };
 

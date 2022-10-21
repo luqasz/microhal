@@ -9,15 +9,17 @@
 
 auto constexpr baud = USART::get_baud(11059200_Hz, 115200u, 2);
 static_assert(baud.is_ok, "Calculated error rate too high");
-auto usart  = USART::Async<USART::USART0>();
-auto serial = Printer(usart, LineEnd::CRLF);
+
+using USART_0 = USART::Async<USART::usart0>;
 
 int
 main(void)
 {
-    IRQ::enable();
+    auto usart = USART_0();
     usart.set(baud);
-    usart.enable(USART::Channel::TX);
+    usart.enable_tx();
+    auto serial = Printer(usart, LineEnd::CRLF);
+    IRQ::enable();
     while (true) {
         serial.printLn("This string will repeat every second.");
         _delay_ms(1000);

@@ -17,7 +17,7 @@ add_compile_options(
 foreach(file ${cpp_files})
     cmake_path(GET file STEM LAST_ONLY basename)
     add_executable(${basename} ${file})
-    set_target_properties(${basename} PROPERTIES CXX_STANDARD 17)
+    set_target_properties(${basename} PROPERTIES CXX_STANDARD 20)
     target_compile_definitions(${basename} PUBLIC F_CPU=16000000UL MCU=${MCU})
     target_compile_options(
         ${basename}
@@ -29,6 +29,7 @@ foreach(file ${cpp_files})
         -fno-rtti
         -fno-short-enums
         -mmcu=${MCU}
+        -Wno-volatile
     )
     target_link_options(
         ${basename}

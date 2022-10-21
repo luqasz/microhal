@@ -12,8 +12,8 @@
 
 auto constexpr baud = USART::get_baud(11059200_Hz, 115200, 2);
 static_assert(baud.is_ok, "Calculated error rate too high");
-auto usart  = USART::Async<USART::USART0>();
-auto serial = Printer(usart, LineEnd::CRLF);
+
+using USART_0 = USART::Async<USART::usart0>;
 
 auto constexpr target = spi::Target {
     spi::Order::MSB,
@@ -37,15 +37,17 @@ send(SENDER spi, DAC dac, uint16_t value, const gpio::Output cs)
 int
 main(void)
 {
-    auto spi = spi::Master(spi::Instance::SPI0, spi::SPI0_MOSI, spi::SPI0_MISO, spi::SPI0_SCK);
+    auto usart = USART_0();
+    usart.set(baud);
+    usart.enable_tx();
+    auto serial = Printer(usart, LineEnd::CRLF);
+    auto spi    = spi::Master(spi::Instance::SPI0, spi::SPI0_MOSI, spi::SPI0_MISO, spi::SPI0_SCK);
     spi.enable();
     auto DAC_CS = gpio::Output(spi::SPI0_SS).set(gpio::High);
     auto dac    = MCP49x2::MCP4922(MCP49x2::Channel::A);
     dac.set(MCP49x2::Gain::x1);
     dac.set(MCP49x2::BufferControl::Unbuffered);
     IRQ::enable();
-    usart.set(baud);
-    usart.enable(USART::Channel::TX);
     serial.printLn("Sending bytes over SPI");
     while (true) {
         send(spi, dac, 4095, DAC_CS);
