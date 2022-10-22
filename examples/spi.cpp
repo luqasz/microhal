@@ -41,9 +41,9 @@ main(void)
     usart.set(baud);
     usart.enable_tx();
     auto serial = Printer(usart, LineEnd::CRLF);
-    auto spi    = spi::Master(spi::Instance::SPI0, spi::SPI0_MOSI, spi::SPI0_MISO, spi::SPI0_SCK);
+    auto spi    = spi::Master<spi::spi0>(gpio::PB5, gpio::PB6, gpio::PB7);
     spi.enable();
-    auto DAC_CS = gpio::Output(spi::SPI0_SS).set(gpio::High);
+    auto DAC_CS = gpio::Output(gpio::PB4).set(gpio::High);
     auto dac    = MCP49x2::MCP4922(MCP49x2::Channel::A);
     dac.set(MCP49x2::Gain::x1);
     dac.set(MCP49x2::BufferControl::Unbuffered);

@@ -28,7 +28,6 @@ if(PROJECT_IS_TOP_LEVEL)
             src/eeprom.cpp
             src/gpio.cpp
             src/adc.cpp
-            src/spi.cpp
             src/drivers/ds1337.cpp
             src/drivers/mcp49xx.cpp
             src/drivers/hd44780.cpp
