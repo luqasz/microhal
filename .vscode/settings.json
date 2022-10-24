@@ -1,5 +1,8 @@
 {
   "cmake.configureOnOpen": true,
   "cmake.sourceDirectory": "${workspaceFolder}",
-  "cmake.useCMakePresets": "auto"
+  "cmake.useCMakePresets": "auto",
+  "clangd.arguments": [
+    "--header-insertion=never"
+  ],
 }

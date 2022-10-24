@@ -1,3 +1,7 @@
 Diagnostics:
   ClangTidy:
     Remove: misc-definitions-in-headers
+InlayHints:
+  Enabled: Yes
+  ParameterNames: Yes
+  DeducedTypes: Yes
