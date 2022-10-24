@@ -22,11 +22,11 @@ namespace eeprom {
     using REG_DATA = SFR::EEDR;
 
     constexpr u8 RE        = REG_CTRL::EERE;
-    constexpr u8 WE        = REG_CTRL::EEWE;
-    constexpr u8 MWE       = REG_CTRL::EEMWE;
+    constexpr u8 WE        = REG_CTRL::EEPE;
+    constexpr u8 MWE       = REG_CTRL::EEMPE;
     constexpr u8 IE        = REG_CTRL::EERIE;
-    constexpr u8 OP_ATOMIC = 0;
-    constexpr u8 OP_ERASE  = 0;
-    constexpr u8 OP_WRITE  = 0;
+    constexpr u8 OP_ATOMIC = REG_CTRL::EEPM0 | REG_CTRL::EEPM1;
+    constexpr u8 OP_ERASE  = REG_CTRL::EEPM0;
+    constexpr u8 OP_WRITE  = REG_CTRL::EEPM1;
 
 }

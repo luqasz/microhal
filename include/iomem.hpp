@@ -76,11 +76,19 @@ namespace iomem {
         return read<BIT_SIZE>(address) & bit;
     }
 
-    // Loop as long as bit is not set.
+    // Wait for bit to be set.
     template <typename BIT_SIZE>
     inline void
     set_bit_wait(const usize address, const BIT_SIZE bit)
     {
         while (!(read<BIT_SIZE>(address) & bit)) { };
+    }
+
+    // Wait for bit to be cleared.
+    template <typename BIT_SIZE>
+    inline void
+    clear_bit_wait(const usize address, const BIT_SIZE bit)
+    {
+        while ((read<BIT_SIZE>(address) & bit)) { };
     }
 }

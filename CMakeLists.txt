@@ -25,7 +25,6 @@ if(PROJECT_IS_TOP_LEVEL)
             INTERFACE
             src/i2c.cpp
             src/printer.cpp
-            src/eeprom.cpp
             src/gpio.cpp
             src/adc.cpp
             src/drivers/ds1337.cpp
