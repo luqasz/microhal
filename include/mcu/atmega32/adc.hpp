@@ -1,51 +1,40 @@
 #pragma once
 
+#include "sfr.hpp"
+#include "../../types.hpp"
+
 namespace adc {
 
-    using ADCSRA_REG    = SFR::ADCSRA;
-    using TRIGGER_REG   = SFR::SFIOR;
-    using ADMUX_REG     = SFR::ADMUX;
-    using VREF_REG      = SFR::ADMUX;
-    using CTL_REG       = SFR::ADCSRA;
-    using PRESCALER_REG = SFR::ADCSRA;
+    constexpr u8 PRESCALER_MASK = SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS1 | SFR::ADCSRA::ADPS2;
+    constexpr u8 MUX_MASK       = SFR::ADMUX::MUX0 | SFR::ADMUX::MUX1 | SFR::ADMUX::MUX2 | SFR::ADMUX::MUX3 | SFR::ADMUX::MUX4;
+    constexpr u8 VREF_MASK      = SFR::ADMUX::REFS0 | SFR::ADMUX::REFS1;
 
-    enum Vref {
-        Internal_2_56 = VREF_REG::REFS0 | VREF_REG::REFS1,
-        AVCC          = VREF_REG::REFS0,
+    enum class Vref {
+        Internal_2_56 = SFR::ADMUX::REFS0 | SFR::ADMUX::REFS1,
+        AVCC          = SFR::ADMUX::REFS0,
         AREF          = 0,
     };
 
-    enum TriggerSource {
-        FreeRunning                  = 0,
-        AnalogComparator             = TRIGGER_REG::ADTS0,
-        ExternalInterrupt0           = TRIGGER_REG::ADTS1,
-        TimerCounter0_CompareMatch_A = TRIGGER_REG::ADTS0 | TRIGGER_REG::ADTS1,
-        TimerCounter1_CompareMatch_B = TRIGGER_REG::ADTS0 | TRIGGER_REG::ADTS2,
-        TimerCounter0_Overflow       = TRIGGER_REG::ADTS2,
-        TimerCounter1_Overflow       = TRIGGER_REG::ADTS0 | TRIGGER_REG::ADTS2,
-        TimerCounter1_CaptureEvent   = TRIGGER_REG::ADTS0 | TRIGGER_REG::ADTS1 | TRIGGER_REG::ADTS2,
-    };
-
-    enum Channel {
+    enum class Channel {
         ADC0    = 0,
-        ADC1    = ADMUX_REG::MUX0,
-        ADC2    = ADMUX_REG::MUX1,
-        ADC3    = ADMUX_REG::MUX0 | ADMUX_REG::MUX1,
-        ADC4    = ADMUX_REG::MUX2,
-        ADC5    = ADMUX_REG::MUX0 | ADMUX_REG::MUX2,
-        ADC6    = ADMUX_REG::MUX1 | ADMUX_REG::MUX2,
-        ADC7    = ADMUX_REG::MUX0 | ADMUX_REG::MUX1 | ADMUX_REG::MUX2,
-        BandGap = ADMUX_REG::MUX1 | ADMUX_REG::MUX2 | ADMUX_REG::MUX3 | ADMUX_REG::MUX4,
-        GND     = ADMUX_REG::MUX0 | ADMUX_REG::MUX1 | ADMUX_REG::MUX2 | ADMUX_REG::MUX3 | ADMUX_REG::MUX4,
+        ADC1    = SFR::ADMUX::MUX0,
+        ADC2    = SFR::ADMUX::MUX1,
+        ADC3    = SFR::ADMUX::MUX0 | SFR::ADMUX::MUX1,
+        ADC4    = SFR::ADMUX::MUX2,
+        ADC5    = SFR::ADMUX::MUX0 | SFR::ADMUX::MUX2,
+        ADC6    = SFR::ADMUX::MUX1 | SFR::ADMUX::MUX2,
+        ADC7    = SFR::ADMUX::MUX0 | SFR::ADMUX::MUX1 | SFR::ADMUX::MUX2,
+        BandGap = SFR::ADMUX::MUX1 | SFR::ADMUX::MUX2 | SFR::ADMUX::MUX3 | SFR::ADMUX::MUX4,
+        GND     = SFR::ADMUX::MUX0 | SFR::ADMUX::MUX1 | SFR::ADMUX::MUX2 | SFR::ADMUX::MUX3 | SFR::ADMUX::MUX4,
     };
 
-    enum Clock {
-        _2   = PRESCALER_REG::ADPS0,
-        _4   = PRESCALER_REG::ADPS1,
-        _8   = PRESCALER_REG::ADPS0 | PRESCALER_REG::ADPS1,
-        _16  = PRESCALER_REG::ADPS2,
-        _32  = PRESCALER_REG::ADPS0 | PRESCALER_REG::ADPS2,
-        _64  = PRESCALER_REG::ADPS1 | PRESCALER_REG::ADPS2,
-        _128 = PRESCALER_REG::ADPS0 | PRESCALER_REG::ADPS1 | PRESCALER_REG::ADPS2,
+    enum class Clock {
+        _2   = SFR::ADCSRA::ADPS0,
+        _4   = SFR::ADCSRA::ADPS1,
+        _8   = SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS1,
+        _16  = SFR::ADCSRA::ADPS2,
+        _32  = SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS2,
+        _64  = SFR::ADCSRA::ADPS1 | SFR::ADCSRA::ADPS2,
+        _128 = SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS1 | SFR::ADCSRA::ADPS2,
     };
 }

@@ -2,6 +2,7 @@
 
 #include "types.hpp"
 #include "sfr.hpp"
+#include "iomem.hpp"
 
 #ifdef MCU
 #    if MCU == atmega32
@@ -17,22 +18,40 @@
 
 namespace adc {
 
-    void
-    enable();
+    inline void
+    enable()
+    {
+        iomem::set_bit<u8>(SFR::ADCSRA::address, SFR::ADCSRA::ADEN);
+    }
 
-    void
-    disable();
+    inline void
+    disable()
+    {
+        iomem::clear_bit<u8>(SFR::ADCSRA::address, SFR::ADCSRA::ADEN);
+    }
 
-    u16
-    read(const Channel ch);
+    inline u16
+    read(const Channel ch)
+    {
+        enable();
+        iomem::set_bit<u8>(SFR::ADCSRA::address, static_cast<u8>(ch), MUX_MASK);
+        // Start conversion
+        iomem::set_bit<u8>(SFR::ADCSRA::address, SFR::ADCSRA::ADSC);
+        // Wait untill conversion is ready
+        iomem::clear_bit_wait<u8>(SFR::ADCSRA::address, SFR::ADCSRA::ADSC);
+        return iomem::read<u16>(SFR::ADC::address);
+    }
 
-    void
-    set(const Clock value);
+    inline void
+    set(const Clock value)
+    {
+        iomem::set_bit(SFR::ADCSRA::address, static_cast<u8>(value), MUX_MASK);
+    }
 
-    void
-    set(const Vref ref);
-
-    void
-    set(const TriggerSource src);
+    inline void
+    set(const Vref ref)
+    {
+        iomem::set_bit(SFR::ADMUX::address, static_cast<u8>(ref), VREF_MASK);
+    }
 
 }
