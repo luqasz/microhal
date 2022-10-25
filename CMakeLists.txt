@@ -26,7 +26,6 @@ if(PROJECT_IS_TOP_LEVEL)
             src/i2c.cpp
             src/printer.cpp
             src/gpio.cpp
-            src/adc.cpp
             src/drivers/ds1337.cpp
             src/drivers/mcp49xx.cpp
             src/drivers/hd44780.cpp
