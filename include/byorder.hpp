@@ -52,4 +52,22 @@ namespace byorder {
             return swap(val);
         }
     }
+
+    template <typename T>
+    class [[gnu::packed]] NetworkOrdered {
+    public:
+        NetworkOrdered() { }
+        NetworkOrdered(const T & host_value) :
+            network_value(into<endian::network>(host_value))
+        {
+        }
+
+        operator T() const
+        {
+            return from<endian::network>(network_value);
+        }
+
+    private:
+        T network_value { 0 };
+    };
 }
