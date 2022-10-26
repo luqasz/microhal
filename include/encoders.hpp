@@ -1,24 +1,17 @@
 #pragma once
 #include "types.hpp"
 
-struct BCD {
-    const u8 value;
+namespace encoder {
 
-    static constexpr BCD
-    from_u8(const u8 & dec)
+    constexpr u8
+    dec_to_bcd(const u8 & dec)
     {
-        return BCD { static_cast<u8>(((dec / 10) << 4) | (dec % 10)) };
+        return static_cast<u8>(((dec / 10) << 4) | (dec % 10));
     }
 
-    static constexpr u8
-    into_u8(const BCD & bcd)
+    constexpr u8
+    bcd_to_dec(const u8 & bcd)
     {
-        return static_cast<u8>((((bcd.value & 0xF0) >> 4) * 10) + (bcd.value & 0x0F));
+        return static_cast<u8>((((bcd & 0xF0) >> 4) * 10) + (bcd & 0x0F));
     }
-
-    constexpr bool
-    operator==(const BCD & other) const
-    {
-        return value == other.value;
-    }
-};
+}

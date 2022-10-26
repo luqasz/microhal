@@ -2,7 +2,6 @@
 
 #include "../buffer.hpp"
 #include "../datetime.hpp"
-#include "../encoders.hpp"
 #include "../i2c.hpp"
 #include "../types.hpp"
 #include "../units.hpp"
