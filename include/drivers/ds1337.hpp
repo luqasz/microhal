@@ -2,52 +2,54 @@
 
 #include "../buffer.hpp"
 #include "../datetime.hpp"
-#include "../i2c.hpp"
 #include "../types.hpp"
-#include "../units.hpp"
+#include "../encoders.hpp"
 
-// Registers in ascending order.
-enum RTC_REGISTER {
-    REG_SECONDS,   // 0 - 59
-    REG_MINUTES,   // 0 - 59
-    REG_HOURS,     // Time 24h 0 - 23 or 12h AM/PM 1 - 12 format. Bit 6 of the hours register is defined as the 12 or 24-hour mode-select bit.
-    REG_WEEK_DAY,  // Day of week 1 - 7
-    REG_MONTH_DAY, // Day of month 1 - 31
-    REG_MONTH,     // Month 1 - 12 and century in 7th bit
-    REG_YEAR,      // 0 - 99
-    REG_A1_SECONDS,
-    REG_A1_MINUTES,
-    REG_A1_HOUR,
-    REG_A1_DAY_DATE,
-    REG_A2_MINUTES,
-    REG_A2_HOUR,
-    REG_A2_DAY_DATE,
-    REG_CONTROL,
-    REG_STATUS
-};
+namespace ds1337 {
+    enum class REGISTER {
+        SECONDS,     // 0 - 59
+        MINUTES,     // 0 - 59
+        HOURS,       // 0 - 23 or AM/PM 1 - 12 format.
+        WEEK_DAY,    // Day of week 1-7
+        MONTH_DAY,   // Day of month 1-31
+        MONTH,       // Month 1-12.
+        YEAR,        // 0-99.
+        A1_SECONDS,  // 0-59 seconds. Bit 7 A1M1.
+        A1_MINUTES,  // 0-59 minutes. Bit 7 A1M2.
+        A1_HOUR,     //
+        A1_DAY_DATE, //
+        A2_MINUTES,  //
+        A2_HOUR,     //
+        A2_DAY_DATE, //
+        CONTROL,     //
+        STATUS,      //
+    };
+    constexpr static usize DATE_TIME_BUFFER_SIZE = u8(REGISTER::YEAR) + 1;
+    constexpr static usize ALL_REGS_BUFFER_SIZE  = u8(REGISTER::STATUS) + 1;
+    constexpr static u8    I2C_ADDRESS           = 0x68;
+    constexpr static u8    MONTH_MASK            = 0x1F; // Ignore century bit.
+    constexpr static u8    HOUR_MASK             = 0x1F; // Ignore AM/PM bits.
 
-constexpr u8  DS1337_ADDRESS        = 0x68;
-constexpr u8  DATE_TIME_BUFFER_SIZE = REG_YEAR + 1;
-constexpr u16 YEAR_OFFSET           = 2000;
-constexpr u8  MONTH_MASK            = 0x1F;
-constexpr u8  CENTURY_MASK          = 0x80;
+    constexpr void
+    get(DateTime & dt, buffer::Span<u8> slice)
+    {
+        dt.second = encoder::bcd_to_dec(slice[u8(REGISTER::SECONDS)]);
+        dt.minute = encoder::bcd_to_dec(slice[u8(REGISTER::MINUTES)]);
+        dt.hour   = encoder::bcd_to_dec(slice[u8(REGISTER::HOURS)] & HOUR_MASK);
+        dt.day    = encoder::bcd_to_dec(slice[u8(REGISTER::MONTH_DAY)]);
+        dt.month  = encoder::bcd_to_dec(slice[u8(REGISTER::MONTH)] & MONTH_MASK);
+        dt.year   = encoder::bcd_to_dec(slice[u8(REGISTER::YEAR)]) + YEAR_START;
+    }
 
-constexpr auto clock_target = i2c::Target {
-    DS1337_ADDRESS,
-    REG_SECONDS,
-    100_kHz,
-};
+    constexpr void
+    set(DateTime & dt, buffer::Span<u8> slice)
+    {
+        slice[u8(REGISTER::SECONDS)]   = encoder::dec_to_bcd(dt.second);
+        slice[u8(REGISTER::MINUTES)]   = encoder::dec_to_bcd(dt.minute);
+        slice[u8(REGISTER::HOURS)]     = encoder::dec_to_bcd(dt.hour) & HOUR_MASK;
+        slice[u8(REGISTER::MONTH_DAY)] = encoder::dec_to_bcd(dt.day);
+        slice[u8(REGISTER::MONTH)]     = encoder::dec_to_bcd(dt.month) & MONTH_MASK;
+        slice[u8(REGISTER::YEAR)]      = encoder::dec_to_bcd(u8(dt.year - YEAR_START));
+    }
 
-class DS1337 {
-    const i2c::Master                        i2c_bus;
-    buffer::Array<u8, DATE_TIME_BUFFER_SIZE> buffer;
-
-public:
-    DS1337(i2c::Master & bus);
-
-    void
-    getDateTime(DateTime & dt);
-
-    void
-    setDateTime(DateTime & dt);
-};
+}

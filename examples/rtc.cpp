@@ -8,37 +8,46 @@
 #include <units.hpp>
 #include <usart.hpp>
 #include <util/delay.h>
+#include <units.hpp>
 
 auto constexpr fcpu = 11059200_Hz;
 auto constexpr baud = USART::get_baud(fcpu, 115200, 2);
 static_assert(baud.is_ok, "Calculated error rate too high");
 
-using USART_0 = USART::Async<USART::usart0>;
+using USART_0             = USART::Async<USART::usart0>;
+constexpr auto rtc_target = i2c::Target {
+    .address       = ds1337::I2C_ADDRESS,
+    .start_address = u8(ds1337::REGISTER::SECONDS),
+    .speed         = 400_kHz,
+};
 
 int
-main(void)
+main()
 {
-    auto usart = USART_0();
+    u8   rtc_buffer[ds1337::DATE_TIME_BUFFER_SIZE] = { 0 };
+    auto usart                                     = USART_0();
     usart.set(baud);
     usart.enable_tx();
     auto serial = Printer(usart, LineEnd::CRLF);
-    IRQ::enable();
-    auto bus     = i2c::Master(fcpu);
-    auto rtc     = DS1337(bus);
-    auto dt      = DateTime {};
-    dt.year      = 2019;
-    dt.month     = 11;
-    dt.month_day = 30;
-    dt.hour      = 23;
-    dt.minute    = 59;
-    dt.second    = 50;
+    auto bus    = i2c::Master(fcpu);
+    auto dt     = DateTime {
+            .second = 50,
+            .minute = 59,
+            .hour   = 23,
+            .day    = 30,
+            .month  = 11,
+            .year   = 2019,
+    };
+
     serial.printLn("Setting date and time.");
-    rtc.setDateTime(dt);
-    char buf[30];
+    ds1337::set(dt, rtc_buffer);
+    bus.write(rtc_buffer, rtc_target);
+    char strbuf[30];
     while (true) {
-        rtc.getDateTime(dt);
-        sprintf(buf, "%d.%d.%d %d:%d:%d", dt.year, dt.month, dt.month_day, dt.hour, dt.minute, dt.second);
-        serial.printLn(buf);
+        bus.read(rtc_buffer, rtc_target);
+        ds1337::get(dt, rtc_buffer);
+        sprintf(strbuf, "%d.%d.%d %d:%d", dt.year, dt.month, dt.hour, dt.minute, dt.second);
+        serial.printLn(strbuf);
         _delay_ms(1000);
     }
 }

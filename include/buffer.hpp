@@ -6,66 +6,71 @@
 namespace buffer {
 
     template <typename T>
-    class Slice {
-        T * const begin_ptr;
-        T * const end_ptr;
+    struct Span {
+    private:
+        T *   ptr;
+        usize len;
 
-    public:
-        constexpr Slice(T * const b, T * const e) :
-            begin_ptr(b),
-            end_ptr(e)
+        constexpr Span(T * p, const usize N) noexcept :
+            ptr(p),
+            len(N)
         {
         }
 
+    public:
+        template <usize N>
+        constexpr Span(T (&begin_)[N]) noexcept :
+            ptr(begin_),
+            len(N)
+        {
+        }
+
+        constexpr const Span<const T>
+        slice(const usize b, const usize e) const
+        {
+            return Span<const T>(ptr + b, e);
+        }
+
+        constexpr Span<T>
+        slice(const usize b, const usize e)
+        {
+            return Span<T>(ptr + b, e);
+        }
+
         constexpr T *
+        begin()
+        {
+            return ptr;
+        }
+
+        constexpr T *
+        end()
+        {
+            return ptr + len;
+        }
+
+        constexpr const T *
         begin() const
         {
-            return begin_ptr;
-        };
+            return ptr;
+        }
 
-        constexpr T *
+        constexpr const T *
         end() const
         {
-            return end_ptr;
-        };
-
-        constexpr T &
-        operator[](const usize idx) const
-        {
-            return begin_ptr[idx];
-        };
+            return ptr + len;
+        }
 
         constexpr usize
-        size() const
+        size()
         {
-            return static_cast<usize>(end() - begin());
-        };
-    };
-
-    template <typename T, usize SIZE>
-    class Array {
-        static_assert(SIZE > 0, "size must be > 0");
-        T array[SIZE] = { 0 };
-
-    public:
-        constexpr Array() { }
+            return len;
+        }
 
         constexpr T &
         operator[](const usize idx)
         {
-            return array[idx];
-        };
-
-        constexpr Slice<T>
-        slice(const usize start, const usize num)
-        {
-            return Slice<T>(array + start, array + num);
-        }
-
-        constexpr Slice<T>
-        whole()
-        {
-            return Slice<T>(array, array + SIZE);
+            return ptr[idx];
         }
     };
 

@@ -135,7 +135,7 @@ namespace spi {
         }
 
         void
-        communicate(const buffer::Slice<u8> & buffer, const Target & target) const
+        communicate(buffer::Span<u8> buffer, const Target & target) const
         {
             for (u8 & byte : buffer) {
                 communicate(byte, target);

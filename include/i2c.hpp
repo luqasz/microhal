@@ -27,9 +27,9 @@ namespace i2c {
         Master(const Frequency fcpu);
 
         void
-        write(const buffer::Slice<u8> & buffer, const Target & target) const;
+        write(buffer::Span<const u8> buffer, const Target & target) const;
 
         void
-        read(const buffer::Slice<u8> & buffer, const Target & target) const;
+        read(buffer::Span<u8> buffer, const Target & target) const;
     };
 }

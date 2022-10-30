@@ -3,6 +3,7 @@
   "cmake.sourceDirectory": "${workspaceFolder}",
   "cmake.useCMakePresets": "auto",
   "clangd.arguments": [
-    "--header-insertion=never"
+    "--header-insertion=never",
+    "--inlay-hints=true"
   ],
 }

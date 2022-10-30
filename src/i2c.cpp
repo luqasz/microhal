@@ -62,7 +62,7 @@ namespace i2c {
     }
 
     void
-    Master::write(const buffer::Slice<u8> & buffer, const i2c::Target & target) const
+    Master::write(buffer::Span<const u8> buffer, const i2c::Target & target) const
     {
         set_speed(cpu_freq, target.speed);
         start_signal();
@@ -75,7 +75,7 @@ namespace i2c {
     }
 
     void
-    Master::read(const buffer::Slice<u8> & buffer, const i2c::Target & target) const
+    Master::read(buffer::Span<u8> buffer, const i2c::Target & target) const
     {
         usize elems = buffer.size();
         auto  elem  = buffer.begin();
