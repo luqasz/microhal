@@ -26,27 +26,69 @@ namespace USART {
     template <typename REGS>
     class Async : public Writer {
 
-    public:
-        Async()
+        void
+        ucsrc_set(const u8 bit, const u8 mask)
         {
-            iomem::set_bit(REGS::ucsrc, UCSRC::UMSEL0);
+            // Handle case when UCSRC and UBRRH addresses are same.
+            if constexpr (REGS::ucsrc == REGS::ubrrh) {
+                // First read returns UBRRH value, second UCSRC.
+                iomem::read<u8>(USART::usart0::ucsrc);
+                const u8 value = iomem::read<u8>(USART::usart0::ucsrc);
+                // When writing, URSEL bit must be set.
+                iomem::write<u8>(REGS::ucsrc, (value & inverted<u8>(mask)) | UCSRC::URSEL | bit);
+            }
+            else {
+                iomem::set_bit<u8>(REGS::ucsrc, bit, mask);
+            }
         }
 
         void
-        set(const BaudRate & baud) const
+        ucsrc_clear(const u8 bit)
         {
-            REGS::set_ubrr(baud.ubrr, REGS::ubrrh, REGS::ubrrl, REGS::ucsrc);
-            if (baud.u2x) {
-                iomem::set_bit(REGS::ucsra, UCSRA::U2X);
+            // Handle case when UCSRC and UBRRH addresses are same.
+            if constexpr (REGS::ucsrc == REGS::ubrrh) {
+                // First read returns UBRRH value, second UCSRC.
+                iomem::read<u8>(USART::usart0::ucsrc);
+                const u8 value = iomem::read<u8>(USART::usart0::ucsrc);
+                // When writing, URSEL bit must be set.
+                iomem::write<u8>(REGS::ucsrc, (value & inverted<u8>(bit)) | UCSRC::URSEL);
             }
-            iomem::clear_bit(REGS::ucsra, UCSRA::U2X);
+            else {
+                iomem::clear_bit<u8>(REGS::ucsrc, bit);
+            }
+        }
+
+    public:
+        Async()
+        {
+            ucsrc_clear(UCSRC::UMSEL0);
+        }
+
+        void
+        set(const BaudRate baud) const
+        {
+            if constexpr (REGS::ucsrc == REGS::ubrrh) {
+                // The URSEL must be zero when writing to UBRRH.
+                // To be extra safe, bitwise & speed with register max allowed value.
+                constexpr u16 reg_max = 4095;
+                const u16     value   = static_cast<u16>(baud.ubrr & reg_max);
+                iomem::write<u8>(REGS::ubrrh, static_cast<u8>(value >> 8));
+                iomem::write<u8>(REGS::ubrrl, static_cast<u8>(value));
+            }
+            else {
+                iomem::write<u16>(REGS::ubrrl, baud.ubrr);
+            }
+            if (baud.u2x) {
+                iomem::set_bit<u8>(REGS::ucsra, UCSRA::U2X);
+            }
+            iomem::clear_bit<u8>(REGS::ucsra, UCSRA::U2X);
         }
 
         void
         set(const Parity parity)
         {
             constexpr static u8 PARITY_MASK = UCSRC::UPM1 | UCSRC::UPM0;
-            iomem::set_bit(REGS::ucsrc, parity, PARITY_MASK);
+            ucsrc_set(static_cast<u8>(parity), PARITY_MASK);
         }
 
         void
@@ -55,10 +97,10 @@ namespace USART {
             switch (stb) {
                 using enum StopBits;
                 case One:
-                    iomem::clear_bit(REGS::ucsrc, UCSRC::USBS);
+                    ucsrc_clear(UCSRC::USBS);
                     break;
                 case Two:
-                    iomem::set_bit(REGS::ucsrc, UCSRC::USBS);
+                    ucsrc_set(UCSRC::USBS, 0);
                     break;
             }
         }
@@ -67,37 +109,37 @@ namespace USART {
         set(const CharacterSize chr_size)
         {
             constexpr static u8 CHAR_SIZE_MASK = UCSRC::UCSZ0 | UCSRC::UCSZ1;
-            iomem::set_bit(REGS::ucsrc, chr_size, CHAR_SIZE_MASK);
+            ucsrc_set(static_cast<u8>(chr_size), CHAR_SIZE_MASK);
         }
 
         void
         enable_rx() const
         {
-            iomem::set_bit(REGS::ucsrb, UCSRB::RXEN);
+            iomem::set_bit<u8>(REGS::ucsrb, UCSRB::RXEN);
         }
 
         void
         enable_tx() const
         {
-            iomem::set_bit(REGS::ucsrb, UCSRB::TXEN);
+            iomem::set_bit<u8>(REGS::ucsrb, UCSRB::TXEN);
         }
 
         void
         disable_rx() const
         {
-            iomem::clear_bit(REGS::ucsrb, UCSRB::RXEN);
+            iomem::clear_bit<u8>(REGS::ucsrb, UCSRB::RXEN);
         }
 
         void
         disable_tx() const
         {
-            iomem::clear_bit(REGS::ucsrb, UCSRB::TXEN);
+            iomem::clear_bit<u8>(REGS::ucsrb, UCSRB::TXEN);
         }
 
         bool
         rx_ready() const
         {
-            return iomem::is_set_bit(REGS::ucsra, UCSRA::RXC);
+            return iomem::is_set_bit<u8>(REGS::ucsra, UCSRA::RXC);
         }
 
         u8
@@ -105,13 +147,13 @@ namespace USART {
         {
             while (!rx_ready()) {
             }
-            return iomem::read(REGS::udr);
+            return iomem::read<u8>(REGS::udr);
         }
 
         bool
         tx_ready() const
         {
-            return iomem::is_set_bit(REGS::ucsra, UCSRA::UDRE);
+            return iomem::is_set_bit<u8>(REGS::ucsra, UCSRA::UDRE);
         }
 
         virtual void
@@ -119,7 +161,7 @@ namespace USART {
         {
             while (!tx_ready()) {
             }
-            iomem::write(REGS::udr, byte);
+            iomem::write<u8>(REGS::udr, byte);
         }
     };
 }

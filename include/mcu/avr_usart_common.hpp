@@ -39,24 +39,6 @@ namespace USART {
         constexpr static u8 URSEL  = 128; // Register access bit
     };
 
-    static inline void
-    set_ubrr_split(const u16 speed, const usize ubrrh, const usize ubrrl, const usize ucsrc)
-    {
-        /* URSEL bit selects between accessing the UCSRC or the UBRRH Register.
-        It is read as one when reading UCSRC.
-        The URSEL must be zero when writing to UBRRH. */
-        iomem::clear_bit<u8>(ucsrc, UCSRC::URSEL);
-        iomem::write<u8>(ubrrh, static_cast<u8>(speed >> 8));
-        iomem::write<u8>(ubrrl, static_cast<u8>(speed));
-        iomem::set_bit<u8>(ucsrc, UCSRC::URSEL);
-    }
-
-    static inline void
-    set_ubrr_single(const u16 speed, const usize, const usize ubrrl, const usize)
-    {
-        iomem::write<u16>(ubrrl, speed);
-    }
-
     enum class Parity : u8 {
         None = 0,
         Even = UCSRC::UPM1,
