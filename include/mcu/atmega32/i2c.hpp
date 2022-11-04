@@ -10,5 +10,5 @@ namespace i2c {
 
         constexpr static u8 ACK  = twcr::TWEA;
         constexpr static u8 NACK = 0;
-    }
+    };
 }

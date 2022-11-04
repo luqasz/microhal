@@ -23,7 +23,6 @@ if(PROJECT_IS_TOP_LEVEL)
         target_sources(
             ${PROJECT_NAME}
             INTERFACE
-            src/i2c.cpp
             src/printer.cpp
             src/gpio.cpp
             src/drivers/mcp49xx.cpp

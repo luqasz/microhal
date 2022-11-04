@@ -29,7 +29,7 @@ main()
     usart.set(baud);
     usart.enable_tx();
     auto serial = Printer(usart, LineEnd::CRLF);
-    auto bus    = i2c::Master(fcpu);
+    auto bus    = i2c::Master<i2c::i2c0>(fcpu);
     auto dt     = DateTime {
             .second = 50,
             .minute = 59,

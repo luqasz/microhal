@@ -10,6 +10,7 @@ namespace USART {
         static constexpr auto ucsrb = SFR::UCSR0B::address;
         static constexpr auto ucsrc = SFR::UCSR0C::address;
         static constexpr auto ubrrl = SFR::UBRR0::address;
+        static constexpr auto ubrrh = SFR::UBRR0::address + 1;
     };
 
 }

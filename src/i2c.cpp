@@ -1,12 +1,5 @@
 #include <i2c.hpp>
 
-constexpr static auto TWCR = SFR::RegisterRW<SFR::TWCR, u8>();
-constexpr static auto TWBR = SFR::RegisterRW<SFR::TWBR, u8>();
-constexpr static auto TWDR = SFR::RegisterRW<SFR::TWDR, u8>();
-
-constexpr static u8 ACK  = TWCR.TWEA;
-constexpr static u8 NACK = 0;
-
 namespace i2c {
 
     /*
