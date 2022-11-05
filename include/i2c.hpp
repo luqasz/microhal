@@ -94,7 +94,7 @@ namespace i2c {
         }
 
         void
-        set_speed(const Frequency cpu_freq, const Frequency freq) const
+        set_speed(const Frequency freq) const
         {
             iomem::write<u8>(INSTANCE::twbr::address, calculate_twbr(cpu_freq, freq));
         }
@@ -102,7 +102,7 @@ namespace i2c {
         void
         write(buffer::Span<const u8> buffer, const i2c::Target target) const
         {
-            set_speed(cpu_freq, target.speed);
+            set_speed(target.speed);
             start_signal();
             write_blocking(static_cast<u8>(target.address << 1));
             write_blocking(target.start_address);
@@ -117,7 +117,7 @@ namespace i2c {
         {
             usize elems = buffer.size();
             auto  elem  = buffer.begin();
-            set_speed(cpu_freq, target.speed);
+            set_speed(target.speed);
             start_signal();
             write_blocking(static_cast<u8>(target.address << 1));
             write_blocking(target.start_address);
