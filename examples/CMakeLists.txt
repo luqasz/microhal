@@ -38,6 +38,16 @@ foreach(file ${cpp_files})
         -mmcu=${MCU}
         -Wl,--print-memory-usage
     )
+    add_custom_command(
+        OUTPUT ${basename}.bin 
+        COMMAND
+            ${CMAKE_OBJCOPY}
+            -O binary ${basename} ${basename}.bin
+            DEPENDS ${basename}
+    )
+    add_custom_target(${basename}_bin ALL
+        DEPENDS ${basename}.bin
+    )
     target_link_libraries(${basename} PUBLIC microhal)
 endforeach()
 
