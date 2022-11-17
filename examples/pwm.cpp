@@ -4,8 +4,8 @@
 #include <timer.hpp>
 #include <units.hpp>
 
-constexpr auto FCPU   = 11059200_Hz;
-constexpr auto config = getConfig(25_Hz, FCPU);
+constexpr auto FCPU   = units::Hz * 11059200;
+constexpr auto config = getConfig(units::Hz * 25, FCPU);
 
 int
 main(void)
@@ -17,7 +17,7 @@ main(void)
     timer.set(PWM);
     timer.inverting(timer.PinA);
     timer.inverting(timer.PinB);
-    timer.set(25_Hz, FCPU);
+    timer.set(units::Hz * 25, FCPU);
     timer.compareMatch.A = timer.top.read() / 2;
     timer.compareMatch.B = timer.top.read() / 4;
     timer.start();

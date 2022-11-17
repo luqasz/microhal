@@ -65,7 +65,7 @@ namespace USART {
         }
 
         void
-        set(const BaudRate baud) const
+        set(const BaudRateAsync & baud) const
         {
             if constexpr (REGS::ucsrc == REGS::ubrrh) {
                 // The URSEL must be zero when writing to UBRRH.
@@ -78,7 +78,7 @@ namespace USART {
             else {
                 iomem::write<u16>(REGS::ubrrl, baud.ubrr);
             }
-            if (baud.u2x) {
+            if (baud.u2x == U2X::on) {
                 iomem::set_bit<u8>(REGS::ucsra, UCSRA::U2X);
             }
             iomem::clear_bit<u8>(REGS::ucsra, UCSRA::U2X);

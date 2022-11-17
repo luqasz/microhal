@@ -10,15 +10,14 @@
 #include <util/delay.h>
 #include <units.hpp>
 
-auto constexpr fcpu = 11059200_Hz;
-auto constexpr baud = USART::get_baud(fcpu, 115200, 2);
-static_assert(baud.is_ok, "Calculated error rate too high");
+constexpr units::Frequency fcpu = units::Hz * 11059200;
+constexpr auto             baud = USART::baud_rate_async<fcpu, 115200, 2>();
 
 using USART_0             = USART::Async<USART::usart0>;
 constexpr auto rtc_target = i2c::Target {
     .address       = ds1337::I2C_ADDRESS,
     .start_address = u8(ds1337::REGISTER::SECONDS),
-    .speed         = 400_kHz,
+    .speed         = units::kHz * 400,
 };
 
 int
@@ -46,7 +45,7 @@ main()
     while (true) {
         bus.read(rtc_buffer, rtc_target);
         ds1337::get(dt, rtc_buffer);
-        sprintf(strbuf, "%d.%d.%d %d:%d", dt.year, dt.month, dt.hour, dt.minute, dt.second);
+        snprintf(strbuf, 30, "%d.%d.%d %d:%d", dt.year, dt.month, dt.hour, dt.minute, dt.second);
         serial.printLn(strbuf);
         _delay_ms(1000);
     }

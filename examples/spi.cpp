@@ -10,8 +10,8 @@
 #include <usart.hpp>
 #include <util/delay.h>
 
-auto constexpr baud = USART::get_baud(11059200_Hz, 115200, 2);
-static_assert(baud.is_ok, "Calculated error rate too high");
+constexpr units::Frequency fcpu = units::Hz * 11059200;
+constexpr auto             baud = USART::baud_rate_async<fcpu, 115200, 2>();
 
 using USART_0 = USART::Async<USART::usart0>;
 

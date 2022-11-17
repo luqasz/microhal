@@ -29,9 +29,9 @@ namespace i2c {
         For writing into device, address will be converted into 0x90 10010000 (last bit 0 means writing)
         For reading from device, address will be converted into 0x91 10010001 (last bit 1 means reading)
         */
-        const u8        address;
-        const u8        start_address;
-        const Frequency speed;
+        const u8               address;
+        const u8               start_address;
+        const units::Frequency speed;
     };
 
     /*
@@ -40,17 +40,17 @@ namespace i2c {
      * desired frequency
      * */
     constexpr u8
-    calculate_twbr(const Frequency cpu_freq, const Frequency freq)
+    calculate_twbr(const units::Frequency cpu_freq, const units::Frequency bus_freq)
     {
-        return static_cast<u8>(((cpu_freq.value / freq.value) - 16) / 2);
+        return static_cast<u8>((((cpu_freq / bus_freq) - 16) / 2).value);
     }
 
     template <typename INSTANCE>
     class Master {
     public:
-        const Frequency cpu_freq;
+        const units::Frequency cpu_freq;
 
-        Master(const Frequency fcpu) :
+        Master(const units::Frequency fcpu) :
             cpu_freq(fcpu)
         {
         }
@@ -94,7 +94,7 @@ namespace i2c {
         }
 
         void
-        set_speed(const Frequency freq) const
+        set_speed(const units::Frequency freq) const
         {
             iomem::write<u8>(INSTANCE::twbr::address, calculate_twbr(cpu_freq, freq));
         }

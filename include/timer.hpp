@@ -66,11 +66,11 @@ constexpr Prescaler prescalers[] = {
 };
 
 constexpr TimerConfig
-getConfig(const Frequency fcpu, const Frequency desired)
+getConfig(const units::Frequency & fcpu, const units::Frequency & desired)
 {
     for (Prescaler p : prescalers) {
-        const Frequency ftimer = (fcpu / p.value);
-        const u32       top    = ((ftimer / desired).value - 1);
+        const units::Frequency ftimer = (fcpu / p.value);
+        const u32              top    = ((ftimer / desired).value - 1);
         if (top < 65536) {
             return TimerConfig {
                 p.clock,
@@ -116,7 +116,7 @@ public:
     }
 
     void
-    set(const Frequency desired, const Frequency fcpu)
+    set(const units::Frequency & desired, const units::Frequency & fcpu)
     {
         auto config = getConfig(fcpu, desired);
         clock       = config.clock;
