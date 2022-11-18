@@ -25,7 +25,6 @@ if(PROJECT_IS_TOP_LEVEL)
             INTERFACE
             src/printer.cpp
             src/gpio.cpp
-            src/drivers/mcp49xx.cpp
             src/drivers/hd44780.cpp
         )
         add_subdirectory(examples)

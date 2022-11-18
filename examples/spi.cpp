@@ -1,7 +1,7 @@
 #include <buffer.hpp>
 #include <gpio.hpp>
 #include <irq.hpp>
-#include <drivers/mcp49xx.hpp>
+#include <drivers/mcp4xxx.hpp>
 #include <printer.hpp>
 #include <sfr.hpp>
 #include <spi.hpp>
@@ -21,15 +21,24 @@ auto constexpr target = spi::Target {
     spi::MasterClock::_2,
 };
 
-template <typename SENDER, typename DAC>
+constexpr auto ctrl_bits = mcp4xxx::CtrllBits {
+    .ch    = mcp4xxx::A,
+    .buf   = mcp4xxx::Buffered,
+    .gain  = mcp4xxx::x1,
+    .state = mcp4xxx::On,
+};
+
+template <typename SENDER>
 void
-send(SENDER spi, DAC dac, uint16_t value, const gpio::Output cs)
+send(SENDER spi, u16 value, const gpio::Output cs)
 {
-    u8 buffer[2] = { 0 };
-    dac          = value;
-    buffer[0]    = static_cast<uint8_t>(dac.bits >> 8);
-    buffer[1]    = static_cast<uint8_t>(dac.bits);
-    cs           = gpio::Low;
+
+    const u16 data      = mcp4xxx::cmd<12>(ctrl_bits, value);
+    u8        buffer[2] = {
+        static_cast<u8>(data >> 8),
+        static_cast<u8>(data),
+    };
+    cs = gpio::Low;
     spi.communicate(buffer, target);
     cs = gpio::High;
 }
@@ -44,13 +53,10 @@ main(void)
     auto spi    = spi::Master<spi::spi0>(gpio::PB5, gpio::PB6, gpio::PB7);
     spi.enable();
     auto DAC_CS = gpio::Output(gpio::PB4).set(gpio::High);
-    auto dac    = MCP49x2::MCP4922(MCP49x2::Channel::A);
-    dac.set(MCP49x2::Gain::x1);
-    dac.set(MCP49x2::BufferControl::Unbuffered);
     IRQ::enable();
     serial.printLn("Sending bytes over SPI");
     while (true) {
-        send(spi, dac, 4095, DAC_CS);
-        send(spi, dac, 1, DAC_CS);
+        send(spi, 4095, DAC_CS);
+        send(spi, 1, DAC_CS);
     }
 }
