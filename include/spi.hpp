@@ -29,9 +29,9 @@ namespace spi {
     /*
     In which order bits will be shifted first.
     */
-    enum class Order {
-        LSB,
-        MSB,
+    enum class Order : u8 {
+        LSB = SFR::SPCR::DORD,
+        MSB = 0,
     };
 
     /*
@@ -48,7 +48,8 @@ namespace spi {
         pol1_pha1 = m3,
     };
 
-    constexpr u8 SPI2X = 0x04;
+    // Dummy SPI2X bit. Doesn't point to any bit in order, clock, mode bits.
+    constexpr u8 SPI2X = SFR::SPCR::SPIE;
 
     enum class MasterClock : u8 {
         _2   = SPI2X,
@@ -90,11 +91,17 @@ namespace spi {
         }
 
         void
-        set(const MasterClock clock) const
+        set(const Target & target) const
         {
-            constexpr u8 MASK = REGS::spcr::SPR0 | REGS::spcr::SPR1;
-            iomem::set_bit(REGS::spcr::address, static_cast<u8>(clock), MASK);
-            if (static_cast<u8>(clock) & SPI2X) {
+            constexpr u8 CLOCK_MASK      = REGS::spcr::SPR0 | REGS::spcr::SPR1;
+            constexpr u8 MODE_MASK       = REGS::spcr::CPHA | REGS::spcr::CPOL;
+            constexpr u8 DATA_ORDER_MASK = REGS::spcr::DORD;
+            constexpr u8 MASK            = CLOCK_MASK | MODE_MASK | DATA_ORDER_MASK;
+            static_assert(!(MASK & SPI2X), "SPI2X bit can't be inside MASK");
+            const u8 reg_value = static_cast<u8>(target.clock) | static_cast<u8>(target.mode) | static_cast<u8>(target.order);
+            iomem::set_bit<u8>(REGS::spcr::address, reg_value, MASK);
+
+            if (static_cast<u8>(target.clock) & SPI2X) {
                 iomem::set_bit<u8>(REGS::spsr::address, REGS::spsr::SPI2X);
             }
             else {
@@ -103,43 +110,28 @@ namespace spi {
         }
 
         void
-        set(const Order order) const
+        send(u8 & byte, const Target & target) const
         {
-            switch (order) {
-                using enum Order;
-                case LSB:
-                    iomem::set_bit<u8>(REGS::spcr::address, REGS::spcr::DORD);
-                    break;
-                case MSB:
-                    iomem::clear_bit<u8>(REGS::spcr::address, REGS::spcr::DORD);
-                    break;
-            }
+            set(target);
+            rx_tx(byte);
         }
 
         void
-        set(const Mode mode) const
+        send(buffer::Span<u8> buffer, const Target & target) const
         {
-            constexpr u8 MASK = REGS::spcr::CPHA | REGS::spcr::CPOL;
-            iomem::set_bit<u8>(REGS::spcr::address, static_cast<u8>(mode), MASK);
-        }
-
-        void
-        communicate(u8 & byte, const Target & target) const
-        {
-            set(target.mode);
-            set(target.clock);
-            set(target.order);
-            iomem::write<u8>(REGS::spdr::address, byte);
-            iomem::set_bit_wait<u8>(REGS::spsr::address, REGS::spsr::SPIF); // Wait for transmission complete
-            byte = iomem::read<u8>(REGS::spdr::address);
-        }
-
-        void
-        communicate(buffer::Span<u8> buffer, const Target & target) const
-        {
+            set(target);
             for (u8 & byte : buffer) {
-                communicate(byte, target);
+                rx_tx(byte);
             }
+        }
+
+    private:
+        void
+        rx_tx(u8 & byte) const
+        {
+            iomem::write<u8>(REGS::spdr::address, byte);
+            iomem::set_bit_wait<u8>(REGS::spsr::address, REGS::spsr::SPIF); // Wait for transmission complete.
+            byte = iomem::read<u8>(REGS::spdr::address);                    // After reading SPDR, SPIF is cleared bu hardware.
         }
     };
 }

@@ -39,7 +39,7 @@ send(SENDER spi, u16 value, const gpio::Output cs)
         static_cast<u8>(data),
     };
     cs = gpio::Low;
-    spi.communicate(buffer, target);
+    spi.send(buffer, target);
     cs = gpio::High;
 }
 
