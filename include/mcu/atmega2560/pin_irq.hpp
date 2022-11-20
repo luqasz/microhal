@@ -1,62 +1,59 @@
 #pragma once
 
+#include "sfr.hpp"
 #include "../../types.hpp"
+#include "../../pin_irq.hpp"
 
 namespace PinIRQ {
 
-    struct INT0 {
-        static constexpr auto    EDGE_REG       = SFR::RegisterRW<SFR::EICRA, uint8_t>();
-        static constexpr uint8_t EDGE_REG_BIT   = EDGE_REG.ISC00;
-        static constexpr auto    ENABLE_REG     = SFR::RegisterRW<SFR::EIMSK, uint8_t>();
-        static constexpr uint8_t ENABLE_REG_BIT = ENABLE_REG.INT0;
+    using IRQ_ENABLE_REG = SFR::EIMSK;
+
+    constexpr INT INT0 = INT {
+        .reg     = SFR::EICRA::address,
+        .bit_pos = SFR::EICRA::ISC00,
+        .irq_bit = IRQ_ENABLE_REG::INT0,
     };
 
-    struct INT1 {
-        static constexpr auto    EDGE_REG       = SFR::RegisterRW<SFR::EICRA, uint8_t>();
-        static constexpr uint8_t EDGE_REG_BIT   = EDGE_REG.ISC10;
-        static constexpr auto    ENABLE_REG     = SFR::RegisterRW<SFR::EIMSK, uint8_t>();
-        static constexpr uint8_t ENABLE_REG_BIT = ENABLE_REG.INT1;
+    constexpr INT INT1 = INT {
+        .reg     = SFR::EICRA::address,
+        .bit_pos = SFR::EICRA::ISC10,
+        .irq_bit = IRQ_ENABLE_REG::INT1,
     };
 
-    struct INT2 {
-        static constexpr auto    EDGE_REG       = SFR::RegisterRW<SFR::EICRA, uint8_t>();
-        static constexpr uint8_t EDGE_REG_BIT   = EDGE_REG.ISC20;
-        static constexpr auto    ENABLE_REG     = SFR::RegisterRW<SFR::EIMSK, uint8_t>();
-        static constexpr uint8_t ENABLE_REG_BIT = ENABLE_REG.INT2;
+    constexpr INT INT2 = INT {
+        .reg     = SFR::EICRA::address,
+        .bit_pos = SFR::EICRA::ISC20,
+        .irq_bit = IRQ_ENABLE_REG::INT2,
     };
 
-    struct INT3 {
-        static constexpr auto    EDGE_REG       = SFR::RegisterRW<SFR::EICRA, uint8_t>();
-        static constexpr uint8_t EDGE_REG_BIT   = EDGE_REG.ISC30;
-        static constexpr auto    ENABLE_REG     = SFR::RegisterRW<SFR::EIMSK, uint8_t>();
-        static constexpr uint8_t ENABLE_REG_BIT = ENABLE_REG.INT3;
+    constexpr INT INT3 = INT {
+        .reg     = SFR::EICRA::address,
+        .bit_pos = SFR::EICRA::ISC30,
+        .irq_bit = IRQ_ENABLE_REG::INT3,
     };
 
-    struct INT4 {
-        static constexpr auto    EDGE_REG       = SFR::RegisterRW<SFR::EICRB, uint8_t>();
-        static constexpr uint8_t EDGE_REG_BIT   = EDGE_REG.ISC40;
-        static constexpr auto    ENABLE_REG     = SFR::RegisterRW<SFR::EIMSK, uint8_t>();
-        static constexpr uint8_t ENABLE_REG_BIT = ENABLE_REG.INT4;
+    constexpr INT INT4 = INT {
+        .reg     = SFR::EICRA::address,
+        .bit_pos = SFR::EICRA::ISC40,
+        .irq_bit = IRQ_ENABLE_REG::INT4,
     };
 
-    struct INT5 {
-        static constexpr auto    EDGE_REG       = SFR::RegisterRW<SFR::EICRB, uint8_t>();
-        static constexpr uint8_t EDGE_REG_BIT   = EDGE_REG.ISC50;
-        static constexpr auto    ENABLE_REG     = SFR::RegisterRW<SFR::EIMSK, uint8_t>();
-        static constexpr uint8_t ENABLE_REG_BIT = ENABLE_REG.INT5;
+    constexpr INT INT5 = INT {
+        .reg     = SFR::EICRB::address,
+        .bit_pos = SFR::EICRB::ISC50,
+        .irq_bit = IRQ_ENABLE_REG::INT1,
     };
 
-    struct INT6 {
-        static constexpr auto    EDGE_REG       = SFR::RegisterRW<SFR::EICRB, uint8_t>();
-        static constexpr uint8_t EDGE_REG_BIT   = EDGE_REG.ISC60;
-        static constexpr auto    ENABLE_REG     = SFR::RegisterRW<SFR::EIMSK, uint8_t>();
-        static constexpr uint8_t ENABLE_REG_BIT = ENABLE_REG.INT6;
+    constexpr INT INT6 = INT {
+        .reg     = SFR::EICRB::address,
+        .bit_pos = SFR::EICRB::ISC60,
+        .irq_bit = IRQ_ENABLE_REG::INT1,
     };
 
-    struct INT7 {
-        static constexpr auto    EDGE_REG       = SFR::RegisterRW<SFR::EICRB, uint8_t>();
-        static constexpr uint8_t EDGE_REG_BIT   = EDGE_REG.ISC70;
-        static constexpr auto    ENABLE_REG     = SFR::RegisterRW<SFR::EIMSK, uint8_t>();
-        static constexpr uint8_t ENABLE_REG_BIT = ENABLE_REG.INT7;
+    constexpr INT INT7 = INT {
+        .reg     = SFR::EICRB::address,
+        .bit_pos = SFR::EICRB::ISC70,
+        .irq_bit = IRQ_ENABLE_REG::INT1,
     };
+
 }

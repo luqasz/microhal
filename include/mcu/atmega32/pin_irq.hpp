@@ -1,20 +1,23 @@
 #pragma once
 
+#include "sfr.hpp"
 #include "../../types.hpp"
+#include "../../pin_irq.hpp"
 
 namespace PinIRQ {
 
-    struct INT0 {
-        static constexpr auto    EDGE_REG       = SFR::RegisterRW<SFR::MCUCR, uint8_t>();
-        static constexpr uint8_t EDGE_REG_BIT   = EDGE_REG.ISC00;
-        static constexpr auto    ENABLE_REG     = SFR::RegisterRW<SFR::GICR, uint8_t>();
-        static constexpr uint8_t ENABLE_REG_BIT = ENABLE_REG.INT0;
+    using IRQ_ENABLE_REG = SFR::GICR;
+
+    constexpr INT INT0 = INT {
+        .reg     = SFR::MCUCR::address,
+        .bit_pos = SFR::MCUCR::ISC00,
+        .irq_bit = IRQ_ENABLE_REG::INT0,
     };
 
-    struct INT1 {
-        static constexpr auto    EDGE_REG       = SFR::RegisterRW<SFR::MCUCR, uint8_t>();
-        static constexpr uint8_t EDGE_REG_BIT   = EDGE_REG.ISC10;
-        static constexpr auto    ENABLE_REG     = SFR::RegisterRW<SFR::GICR, uint8_t>();
-        static constexpr uint8_t ENABLE_REG_BIT = ENABLE_REG.INT1;
+    constexpr INT INT1 = INT {
+        .reg     = SFR::MCUCR::address,
+        .bit_pos = SFR::MCUCR::ISC10,
+        .irq_bit = IRQ_ENABLE_REG::INT1,
     };
+
 }

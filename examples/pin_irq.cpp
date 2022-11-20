@@ -2,15 +2,14 @@
 #include <irq.hpp>
 #include <pin_irq.hpp>
 
-const auto TOGGLE_PIN = gpio::Output(gpio::PA0);
+const auto TOGGLE_PIN = gpio::PA0;
 
 int
 main(void)
 {
-
-    auto pinInterrupt = PinIRQ::INT<PinIRQ::INT0>();
-    pinInterrupt.set(PinIRQ::Trigger::Rising);
-    pinInterrupt.enable();
+    gpio::Input(gpio::PD2);
+    PinIRQ::set(PinIRQ::INT0, PinIRQ::Rising);
+    PinIRQ::enable(PinIRQ::INT0);
 
     IRQ::enable();
     while (true) {
@@ -20,5 +19,6 @@ main(void)
 void
 IRQ::INT0()
 {
-    TOGGLE_PIN.toggle();
+    static const auto pin = gpio::Output(TOGGLE_PIN);
+    pin.toggle();
 }

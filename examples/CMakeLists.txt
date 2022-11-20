@@ -30,6 +30,7 @@ foreach(file ${cpp_files})
         -fno-short-enums
         -mmcu=${MCU}
         -Wno-volatile
+        -fno-threadsafe-statics # Ignore Error: undefined reference to __cxa_guard_acquire and __cxa_guard_release
     )
     target_link_options(
         ${basename}
