@@ -23,7 +23,6 @@ if(PROJECT_IS_TOP_LEVEL)
         target_sources(
             ${PROJECT_NAME}
             INTERFACE
-            src/gpio.cpp
             src/drivers/hd44780.cpp
         )
         add_subdirectory(examples)

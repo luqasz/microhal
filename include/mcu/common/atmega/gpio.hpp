@@ -57,27 +57,50 @@ namespace gpio {
     struct Output {
         const Pin pin;
 
-        Output(const Pin p);
+        Output(const Pin p) :
+            pin(p)
+        {
+            iomem::set_bit<u8>(pin.port.ddr_address, pin.number);
+        }
 
         void
-        operator=(const State state) const;
+        set(const State state) const
+        {
+            iomem::set_bit<u8>(pin.port.port_address, static_cast<u8>(state), pin.number);
+        }
 
         void
-        set(const State state) const;
+        toggle() const
+        {
+            iomem::xor_bit<u8>(pin.port.port_address, pin.number);
+        }
 
         void
-        toggle() const;
+        operator=(const State state) const
+        {
+            set(state);
+        }
     };
 
     struct Input {
         const Pin pin;
 
-        Input(const Pin p);
+        Input(const Pin p) :
+            pin(p)
+        {
+            iomem::clear_bit<u8>(pin.port.ddr_address, pin.number);
+        }
 
         void
-        set(const PullMode mode) const;
+        set(const PullMode mode) const
+        {
+            iomem::set_bit<u8>(pin.port.ddr_address, static_cast<u8>(mode), pin.number);
+        }
 
         bool
-        operator==(const State state) const;
+        operator==(const State state) const
+        {
+            return (iomem::read<u8>(pin.port.pin_address) & pin.number) == state;
+        }
     };
 }
