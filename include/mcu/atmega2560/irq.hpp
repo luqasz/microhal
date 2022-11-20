@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../common/atmega/irq.hpp"
 #include "../../irq.hpp"
 
 class IRQ : public IRQ_Base {

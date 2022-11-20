@@ -70,6 +70,15 @@ namespace iomem {
     }
 
     template <typename BIT_SIZE>
+    inline void
+    xor_bit(const usize address, const BIT_SIZE bit)
+    {
+        modify<BIT_SIZE>(address, [bit](BIT_SIZE val) {
+            return static_cast<BIT_SIZE>(val ^ bit);
+        });
+    }
+
+    template <typename BIT_SIZE>
     inline bool
     is_set_bit(const usize address, const BIT_SIZE bit)
     {

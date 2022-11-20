@@ -40,3 +40,5 @@ namespace USART {
         static constexpr auto ubrrh = ubrrl + 1;
     };
 }
+
+#include "../common/atmega/usart.hpp"

@@ -1,11 +1,12 @@
 #include <gpio.hpp>
+#include <iomem.hpp>
 
 namespace gpio {
 
-    Output::Output(const Pin & p) :
+    Output::Output(const Pin p) :
         pin(p)
     {
-        SFR::setBit(pin.port.ddr_address, pin.number);
+        iomem::set_bit<u8>(pin.port.ddr_address, pin.number);
     }
 
     void
@@ -13,51 +14,42 @@ namespace gpio {
     {
         switch (state) {
             case State::High:
-                SFR::setBit(pin.port.port_address, pin.number);
+                iomem::set_bit<u8>(pin.port.port_address, pin.number);
                 break;
             case State::Low:
-                SFR::clearBit(pin.port.port_address, pin.number);
+                iomem::clear_bit<u8>(pin.port.port_address, pin.number);
                 break;
         }
     }
 
-    const Output &
+    void
     Output::set(const State state) const
     {
         *this = state;
-        return *this;
     }
 
     void
     Output::toggle() const
     {
-        SFR::iomem<u8>(pin.port.port_address) ^= pin.number;
+        iomem::xor_bit<u8>(pin.port.port_address, pin.number);
     }
 
-    Input::Input(const Pin & p) :
+    Input::Input(const Pin p) :
         pin(p)
     {
-        SFR::clearBit(pin.port.ddr_address, pin.number);
+        iomem::clear_bit<u8>(pin.port.ddr_address, pin.number);
     }
 
-    const Input &
+    void
     Input::set(const PullMode mode) const
     {
-        switch (mode) {
-            case PullMode::PullUp:
-                SFR::setBit(pin.port.ddr_address, pin.number);
-                break;
-            case PullMode::HiZ:
-                SFR::clearBit(pin.port.ddr_address, pin.number);
-                break;
-        }
-        return *this;
+        iomem::set_bit<u8>(pin.port.ddr_address, static_cast<u8>(mode), pin.number);
     }
 
     bool
     Input::operator==(const State state) const
     {
-        return (SFR::iomem<u8>(pin.port.pin_address) & pin.number) == state;
+        return (iomem::read<u8>(pin.port.pin_address) & pin.number) == state;
     }
 
 }

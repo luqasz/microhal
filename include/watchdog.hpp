@@ -6,13 +6,10 @@
 #ifdef MCU
 #    if MCU == atmega32
 #        include "mcu/atmega32/watchdog.hpp"
-#        include "mcu/avr_watchdog_common.hpp"
 #    elif MCU == atmega328
 #        include "mcu/atmega328/watchdog.hpp"
-#        include "mcu/avr_watchdog_common.hpp"
 #    elif MCU == atmega2560
 #        include "mcu/atmega2560/watchdog.hpp"
-#        include "mcu/avr_watchdog_common.hpp"
 #    endif
 #else
 #    error "Unknown MCU."

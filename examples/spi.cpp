@@ -52,7 +52,8 @@ main(void)
     auto serial = Printer(usart, LineEnd::CRLF);
     auto spi    = spi::Master<spi::spi0>(gpio::PB5, gpio::PB6, gpio::PB7);
     spi.enable();
-    auto DAC_CS = gpio::Output(gpio::PB4).set(gpio::High);
+    auto DAC_CS = gpio::Output(gpio::PB4);
+    DAC_CS.set(gpio::High);
     IRQ::enable();
     serial.printLn("Sending bytes over SPI");
     while (true) {

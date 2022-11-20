@@ -14,3 +14,5 @@ namespace USART {
     };
 
 }
+
+#include "../common/atmega/usart.hpp"

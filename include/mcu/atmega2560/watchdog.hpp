@@ -23,3 +23,5 @@ namespace watchdog {
     };
 
 }
+
+#include "../common/atmega/watchdog.hpp"

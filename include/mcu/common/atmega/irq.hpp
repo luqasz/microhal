@@ -1,5 +1,8 @@
 #pragma once
 
+#include "../../../types.hpp"
+#include "../../../sfr.hpp"
+
 #define VECTOR(vector) __asm__(vector) __attribute__((signal, used, externally_visible))
 
 class RestoreIrq {

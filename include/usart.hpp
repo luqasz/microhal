@@ -8,13 +8,10 @@
 
 #ifdef MCU
 #    if MCU == atmega32
-#        include "mcu/avr_usart_common.hpp"
 #        include "mcu/atmega32/usart.hpp"
 #    elif MCU == atmega328
-#        include "mcu/avr_usart_common.hpp"
 #        include "mcu/atmega328/usart.hpp"
 #    elif MCU == atmega2560
-#        include "mcu/avr_usart_common.hpp"
 #        include "mcu/atmega2560/usart.hpp"
 #    endif
 #else

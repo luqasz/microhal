@@ -8,13 +8,10 @@
 
 #ifdef MCU
 #    if MCU == atmega32
-#        include "mcu/avr_pin_irq_common.hpp"
 #        include "mcu/atmega32/pin_irq.hpp"
 #    elif MCU == atmega328
-#        include "mcu/avr_pin_irq_common.hpp"
 #        include "mcu/atmega328/pin_irq.hpp"
 #    elif MCU == atmega2560
-#        include "mcu/avr_pin_irq_common.hpp"
 #        include "mcu/atmega2560/pin_irq.hpp"
 #    endif
 #else

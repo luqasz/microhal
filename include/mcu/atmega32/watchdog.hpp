@@ -1,4 +1,5 @@
 #pragma once
+
 #include "sfr.hpp"
 #include "../../iomem.hpp"
 
@@ -20,3 +21,5 @@ namespace watchdog {
         s2    = WDT::WDP2 | WDT::WDP0 | WDT::WDP1,
     };
 }
+
+#include "../common/atmega/watchdog.hpp"

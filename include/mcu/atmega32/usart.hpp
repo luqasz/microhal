@@ -1,7 +1,6 @@
 #pragma once
 
 #include "sfr.hpp"
-#include "../avr_usart_common.hpp"
 
 namespace USART {
 
@@ -15,3 +14,5 @@ namespace USART {
     };
 
 }
+
+#include "../common/atmega/usart.hpp"

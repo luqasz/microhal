@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../common/atmega/pin_irq.hpp"
 #include "sfr.hpp"
 #include "../../types.hpp"
 #include "../../pin_irq.hpp"

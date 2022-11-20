@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../types.hpp"
-#include "../iomem.hpp"
+#include "../../../types.hpp"
+#include "../../../iomem.hpp"
 
 namespace watchdog {
 

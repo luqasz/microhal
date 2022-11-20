@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../common/atmega/gpio.hpp"
 #include "../../gpio.hpp"
 #include "sfr.hpp"
 

@@ -1,6 +1,7 @@
 #pragma once
-#include "../types.hpp"
-#include "../gpio.hpp"
+#include "../../../types.hpp"
+#include "../../../gpio.hpp"
+#include "../../../iomem.hpp"
 
 namespace gpio {
 
@@ -16,8 +17,9 @@ namespace gpio {
     };
 
     enum PullMode {
-        HiZ,
-        PullUp,
+        HiZ    = 0,
+        None   = HiZ,
+        PullUp = 1,
     };
 
     struct Port {
@@ -39,33 +41,33 @@ namespace gpio {
     struct PortBus : public Bus8Bit {
         const Port port;
 
-        constexpr PortBus(const Port & p) :
+        constexpr PortBus(const Port p) :
             port(p) { }
 
         virtual void
         write(const u8 byte) const final
         {
-            SFR::iomem<u8>(port.ddr_address)  = 255;
-            SFR::iomem<u8>(port.port_address) = byte;
+            iomem::write<u8>(port.ddr_address, 255);
+            iomem::write<u8>(port.port_address, byte);
         }
 
         virtual u8
         read() const final
         {
-            SFR::iomem<u8>(port.ddr_address) = 0;
-            return SFR::iomem<u8>(port.pin_address);
+            iomem::write<u8>(port.ddr_address, 0);
+            return iomem::read<u8>(port.pin_address);
         }
     };
 
     struct Output {
         const Pin pin;
 
-        Output(const Pin & p);
+        Output(const Pin p);
 
         void
         operator=(const State state) const;
 
-        const Output &
+        void
         set(const State state) const;
 
         void
@@ -75,9 +77,9 @@ namespace gpio {
     struct Input {
         const Pin pin;
 
-        Input(const Pin & p);
+        Input(const Pin p);
 
-        const Input &
+        void
         set(const PullMode mode) const;
 
         bool
