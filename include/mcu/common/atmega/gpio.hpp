@@ -34,25 +34,20 @@ namespace gpio {
     };
 
     struct Bus8Bit {
-        void virtual write(const u8 byte) const = 0;
-        u8 virtual read() const                 = 0;
-    };
-
-    struct PortBus : public Bus8Bit {
         const Port port;
 
-        constexpr PortBus(const Port p) :
+        constexpr Bus8Bit(const Port p) :
             port(p) { }
 
-        virtual void
-        write(const u8 byte) const final
+        void
+        write(const u8 byte) const
         {
             iomem::write<u8>(port.ddr_address, 255);
             iomem::write<u8>(port.port_address, byte);
         }
 
-        virtual u8
-        read() const final
+        u8
+        read() const
         {
             iomem::write<u8>(port.ddr_address, 0);
             return iomem::read<u8>(port.pin_address);
