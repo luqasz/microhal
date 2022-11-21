@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../gpio.hpp"
-#include "../interface.hpp"
 #include "../types.hpp"
 
 #include <stdint.h>
@@ -22,7 +21,7 @@ namespace HD44780 {
         const u8 row;
     };
 
-    class LCD : public Writer {
+    class LCD {
         const gpio::Bus8Bit & bus;
         const gpio::Output &  rs;
         const gpio::Output &  rw;
@@ -51,7 +50,10 @@ namespace HD44780 {
         LCD(const gpio::Bus8Bit & b, const gpio::Output & _rs, const gpio::Output & _rw, const gpio::Output & _e);
 
         void
-        write(const u8 byte) final;
+        write(const u8 byte) const;
+
+        void
+        print(const char * string) const;
 
         void
         set(const HD44780::Cmd c) const;

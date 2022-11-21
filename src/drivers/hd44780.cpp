@@ -86,9 +86,18 @@ namespace HD44780 {
     }
 
     void
-    LCD::write(const u8 byte)
+    LCD::write(const u8 byte) const
     {
         sendByte(byte, DATA);
+    }
+
+    void
+    LCD::print(const char * string) const
+    {
+        u8 c;
+        while ((c = static_cast<u8>(*string++))) {
+            write(c);
+        }
     }
 
     void

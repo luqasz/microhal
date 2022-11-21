@@ -1,6 +1,5 @@
 #pragma once
 
-#include "interface.hpp"
 #include "sfr.hpp"
 #include "ubrr.hpp"
 #include "types.hpp"
@@ -21,10 +20,10 @@
 namespace USART {
 
     template <typename REGS>
-    class Async : public Writer {
+    class Async {
 
         void
-        ucsrc_set(const u8 bit, const u8 mask)
+        ucsrc_set(const u8 bit, const u8 mask) const
         {
             // Handle case when UCSRC and UBRRH addresses are same.
             if constexpr (REGS::ucsrc == REGS::ubrrh) {
@@ -40,7 +39,7 @@ namespace USART {
         }
 
         void
-        ucsrc_clear(const u8 bit)
+        ucsrc_clear(const u8 bit) const
         {
             // Handle case when UCSRC and UBRRH addresses are same.
             if constexpr (REGS::ucsrc == REGS::ubrrh) {
@@ -82,14 +81,14 @@ namespace USART {
         }
 
         void
-        set(const Parity parity)
+        set(const Parity parity) const
         {
             constexpr static u8 PARITY_MASK = UCSRC::UPM1 | UCSRC::UPM0;
             ucsrc_set(static_cast<u8>(parity), PARITY_MASK);
         }
 
         void
-        set(const StopBits stb)
+        set(const StopBits stb) const
         {
             switch (stb) {
                 using enum StopBits;
@@ -103,7 +102,7 @@ namespace USART {
         }
 
         void
-        set(const CharacterSize chr_size)
+        set(const CharacterSize chr_size) const
         {
             constexpr static u8 CHAR_SIZE_MASK = UCSRC::UCSZ0 | UCSRC::UCSZ1;
             ucsrc_set(static_cast<u8>(chr_size), CHAR_SIZE_MASK);
@@ -140,7 +139,7 @@ namespace USART {
         }
 
         u8
-        read()
+        read() const
         {
             while (!rx_ready()) {
             }
@@ -153,12 +152,21 @@ namespace USART {
             return iomem::is_set_bit<u8>(REGS::ucsra, UCSRA::UDRE);
         }
 
-        virtual void
-        write(const u8 byte)
+        void
+        write(const u8 byte) const
         {
             while (!tx_ready()) {
             }
             iomem::write<u8>(REGS::udr, byte);
+        }
+
+        void
+        print(const char * string) const
+        {
+            u8 c;
+            while ((c = static_cast<u8>(*string++))) {
+                write(c);
+            }
         }
     };
 }
