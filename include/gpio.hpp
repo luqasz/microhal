@@ -6,8 +6,8 @@
 namespace gpio {
 
     enum State {
-        Low,
-        High,
+        Low  = 0,
+        High = 1,
     };
 
 }
