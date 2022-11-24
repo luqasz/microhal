@@ -13,12 +13,16 @@
 constexpr units::Frequency fcpu = units::Hz * 11059200;
 constexpr auto             baud = USART::baud_rate_async<fcpu, 115200, 2>();
 
-using USART_0 = USART::Async<USART::usart0>;
-
 auto constexpr target = spi::Target {
     spi::Order::MSB,
     spi::Mode::m0,
     spi::MasterClock::_2,
+};
+
+constexpr auto config = USART::Config {
+    .char_size = USART::CharacterSize::Bit8,
+    .parity    = USART::Parity::None,
+    .stop_bits = USART::StopBits::One,
 };
 
 constexpr auto ctrl_bits = mcp4xxx::CtrllBits {
@@ -27,6 +31,8 @@ constexpr auto ctrl_bits = mcp4xxx::CtrllBits {
     .gain  = mcp4xxx::x1,
     .state = mcp4xxx::On,
 };
+
+using USART_0 = USART::Async<USART::usart0>;
 
 template <typename SENDER>
 void
@@ -46,7 +52,7 @@ send(SENDER spi, u16 value, const gpio::Output cs)
 int
 main(void)
 {
-    auto usart = USART_0();
+    auto usart = USART_0().set(config);
     usart.set(baud);
     usart.enable_tx();
     auto serial = Printer(usart, LineEnd::CRLF);

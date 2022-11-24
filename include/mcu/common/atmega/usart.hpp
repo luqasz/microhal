@@ -39,18 +39,18 @@ namespace USART {
         constexpr static u8 URSEL  = 128; // Register access bit
     };
 
-    enum class Parity : u8 {
+    enum class Parity {
         None = 0,
         Even = UCSRC::UPM1,
         Odd  = UCSRC::UPM1 | UCSRC::UPM0,
     };
 
     enum class StopBits {
-        One,
-        Two,
+        One = 0,
+        Two = UCSRC::USBS,
     };
 
-    enum class CharacterSize : u8 {
+    enum class CharacterSize {
         Bit5 = 0,
         Bit6 = UCSRC::UCSZ0,
         Bit7 = UCSRC::UCSZ1,

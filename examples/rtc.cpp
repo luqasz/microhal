@@ -13,18 +13,25 @@
 constexpr units::Frequency fcpu = units::Hz * 11059200;
 constexpr auto             baud = USART::baud_rate_async<fcpu, 115200, 2>();
 
-using USART_0             = USART::Async<USART::usart0>;
+constexpr auto config = USART::Config {
+    .char_size = USART::CharacterSize::Bit8,
+    .parity    = USART::Parity::None,
+    .stop_bits = USART::StopBits::One,
+};
+
 constexpr auto rtc_target = i2c::Target {
     .address       = ds1337::I2C_ADDRESS,
     .start_address = u8(ds1337::REGISTER::SECONDS),
     .speed         = units::kHz * 400,
 };
 
+using USART_0 = USART::Async<USART::usart0>;
+
 int
 main()
 {
     u8   rtc_buffer[ds1337::DATE_TIME_BUFFER_SIZE] = { 0 };
-    auto usart                                     = USART_0();
+    auto usart                                     = USART_0().set(config);
     usart.set(baud);
     usart.enable_tx();
     auto serial = Printer(usart, LineEnd::CRLF);

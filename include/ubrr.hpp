@@ -11,6 +11,7 @@ namespace USART {
         off = 1, // U2X bit = 0
     };
 
+    // TODO Embed U2X bit into 13th bit position.
     struct BaudRateAsync {
         const u16 ubrr;
         const U2X u2x;

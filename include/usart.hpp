@@ -19,6 +19,12 @@
 
 namespace USART {
 
+    struct Config {
+        const CharacterSize char_size;
+        const Parity        parity;
+        const StopBits      stop_bits;
+    };
+
     template <typename REGS>
     class Async {
 
@@ -80,32 +86,16 @@ namespace USART {
             iomem::clear_bit<u8>(REGS::ucsra, UCSRA::U2X);
         }
 
-        void
-        set(const Parity parity) const
-        {
-            constexpr static u8 PARITY_MASK = UCSRC::UPM1 | UCSRC::UPM0;
-            ucsrc_set(static_cast<u8>(parity), PARITY_MASK);
-        }
-
-        void
-        set(const StopBits stb) const
-        {
-            switch (stb) {
-                using enum StopBits;
-                case One:
-                    ucsrc_clear(UCSRC::USBS);
-                    break;
-                case Two:
-                    ucsrc_set(UCSRC::USBS, 0);
-                    break;
-            }
-        }
-
-        void
-        set(const CharacterSize chr_size) const
+        const Async &
+        set(const Config cfg)
         {
             constexpr static u8 CHAR_SIZE_MASK = UCSRC::UCSZ0 | UCSRC::UCSZ1;
-            ucsrc_set(static_cast<u8>(chr_size), CHAR_SIZE_MASK);
+            constexpr static u8 PARITY_MASK    = UCSRC::UPM1 | UCSRC::UPM0;
+            constexpr static u8 STOP_BIT_MASK  = UCSRC::USBS;
+            constexpr static u8 MASK           = CHAR_SIZE_MASK | PARITY_MASK | STOP_BIT_MASK;
+            const u8            bits           = u8(cfg.char_size) | u8(cfg.stop_bits) | u8(cfg.parity);
+            ucsrc_set(bits, MASK);
+            return *this;
         }
 
         void
