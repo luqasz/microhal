@@ -11,7 +11,6 @@
 #include <util/delay.h>
 
 constexpr units::Frequency fcpu = units::Hz * 11059200;
-constexpr auto             baud = USART::baud_rate_async<fcpu, 115200, 2>();
 
 auto constexpr target = spi::Target {
     spi::Order::MSB,
@@ -23,6 +22,7 @@ constexpr auto config = USART::Config {
     .char_size = USART::CharacterSize::Bit8,
     .parity    = USART::Parity::None,
     .stop_bits = USART::StopBits::One,
+    .ubrr      = USART::ubrr<fcpu, 115200, 2>(),
 };
 
 constexpr auto ctrl_bits = mcp4xxx::CtrllBits {
@@ -52,9 +52,7 @@ send(SENDER spi, u16 value, const gpio::Output cs)
 int
 main(void)
 {
-    auto usart = USART_0().set(config);
-    usart.set(baud);
-    usart.enable_tx();
+    auto usart  = USART_0().set(config).enable(USART::Channel::TX);
     auto serial = Printer(usart, LineEnd::CRLF);
     auto spi    = spi::Master<spi::spi0>(gpio::PB5, gpio::PB6, gpio::PB7);
     spi.enable();

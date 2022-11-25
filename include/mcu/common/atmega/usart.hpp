@@ -56,4 +56,10 @@ namespace USART {
         Bit7 = UCSRC::UCSZ1,
         Bit8 = UCSRC::UCSZ0 | UCSRC::UCSZ1,
     };
+
+    enum class Channel {
+        RX    = UCSRB::RXEN,
+        TX    = UCSRB::TXEN,
+        RX_TX = RX | TX,
+    };
 }

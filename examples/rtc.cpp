@@ -11,12 +11,12 @@
 #include <units.hpp>
 
 constexpr units::Frequency fcpu = units::Hz * 11059200;
-constexpr auto             baud = USART::baud_rate_async<fcpu, 115200, 2>();
 
 constexpr auto config = USART::Config {
     .char_size = USART::CharacterSize::Bit8,
     .parity    = USART::Parity::None,
     .stop_bits = USART::StopBits::One,
+    .ubrr      = USART::ubrr<fcpu, 115200, 2>(),
 };
 
 constexpr auto rtc_target = i2c::Target {
@@ -30,10 +30,9 @@ using USART_0 = USART::Async<USART::usart0>;
 int
 main()
 {
-    u8   rtc_buffer[ds1337::DATE_TIME_BUFFER_SIZE] = { 0 };
-    auto usart                                     = USART_0().set(config);
-    usart.set(baud);
-    usart.enable_tx();
+    u8 rtc_buffer[ds1337::DATE_TIME_BUFFER_SIZE] = { 0 };
+
+    auto usart  = USART_0().set(config).enable(USART::Channel::TX);
     auto serial = Printer(usart, LineEnd::CRLF);
     auto bus    = i2c::Master<i2c::i2c0>(fcpu);
     auto dt     = DateTime {

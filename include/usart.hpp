@@ -23,6 +23,7 @@ namespace USART {
         const CharacterSize char_size;
         const Parity        parity;
         const StopBits      stop_bits;
+        const UBRR          ubrr;
     };
 
     template <typename REGS>
@@ -66,29 +67,24 @@ namespace USART {
             ucsrc_clear(UCSRC::UMSEL0);
         }
 
-        void
-        set(const BaudRateAsync & baud) const
+        const Async &
+        set(const Config cfg) const
         {
             if constexpr (REGS::ucsrc == REGS::ubrrh) {
                 // The URSEL must be zero when writing to UBRRH.
                 // To be extra safe, bitwise & speed with register max allowed value.
                 constexpr u16 reg_max = 4095;
-                const u16     value   = static_cast<u16>(baud.ubrr & reg_max);
+                const u16     value   = static_cast<u16>(cfg.ubrr.value & reg_max);
                 iomem::write<u8>(REGS::ubrrh, static_cast<u8>(value >> 8));
                 iomem::write<u8>(REGS::ubrrl, static_cast<u8>(value));
             }
             else {
-                iomem::write<u16>(REGS::ubrrl, baud.ubrr);
+                iomem::write<u16>(REGS::ubrrl, cfg.ubrr);
             }
-            if (baud.u2x == U2X::on) {
+            if (cfg.ubrr.u2x == U2X::on) {
                 iomem::set_bit<u8>(REGS::ucsra, UCSRA::U2X);
             }
             iomem::clear_bit<u8>(REGS::ucsra, UCSRA::U2X);
-        }
-
-        const Async &
-        set(const Config cfg)
-        {
             constexpr static u8 CHAR_SIZE_MASK = UCSRC::UCSZ0 | UCSRC::UCSZ1;
             constexpr static u8 PARITY_MASK    = UCSRC::UPM1 | UCSRC::UPM0;
             constexpr static u8 STOP_BIT_MASK  = UCSRC::USBS;
@@ -98,28 +94,18 @@ namespace USART {
             return *this;
         }
 
-        void
-        enable_rx() const
+        const Async &
+        enable(const Channel & ch) const
         {
-            iomem::set_bit<u8>(REGS::ucsrb, UCSRB::RXEN);
+            iomem::set_bit<u8>(REGS::ucsrb, static_cast<u8>(ch));
+            return *this;
         }
 
-        void
-        enable_tx() const
+        const Async &
+        disable(const Channel & ch) const
         {
-            iomem::set_bit<u8>(REGS::ucsrb, UCSRB::TXEN);
-        }
-
-        void
-        disable_rx() const
-        {
-            iomem::clear_bit<u8>(REGS::ucsrb, UCSRB::RXEN);
-        }
-
-        void
-        disable_tx() const
-        {
-            iomem::clear_bit<u8>(REGS::ucsrb, UCSRB::TXEN);
+            iomem::clear_bit<u8>(REGS::ucsrb, static_cast<u8>(ch));
+            return *this;
         }
 
         bool
