@@ -58,7 +58,7 @@ namespace units {
         }
     };
 
-    constexpr Frequency kHz = Frequency(400'000);
+    constexpr Frequency kHz = Frequency(100'000);
     constexpr Frequency Hz  = Frequency(1);
     constexpr Frequency MHz = Frequency(100'000'000);
 }
