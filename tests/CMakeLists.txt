@@ -15,7 +15,7 @@ target_link_libraries(${LIBTESTS_TARGET} PUBLIC ${PROJECT_NAME})
 set_target_properties(
     ${LIBTESTS_TARGET}
     PROPERTIES
-    CXX_STANDARD 17
+    CXX_STANDARD 20
 )
 
 target_compile_definitions(
