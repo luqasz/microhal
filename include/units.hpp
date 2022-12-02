@@ -6,55 +6,55 @@ namespace units {
     struct Frequency {
         const u32 value;
 
-        constexpr Frequency(const u32 _value) :
+        explicit constexpr Frequency(const u32 _value) :
             value(_value) { }
 
         constexpr Frequency
         operator/(const Frequency & other) const
         {
-            return { value / other.value };
+            return Frequency(value / other.value);
         }
 
         constexpr Frequency
         operator/(const u32 & other) const
         {
-            return { value / other };
+            return Frequency(value / other);
         }
 
         constexpr Frequency
         operator*(const u32 & other) const
         {
-            return { value * other };
+            return Frequency(value * other);
         }
 
         constexpr Frequency
         operator*(const Frequency & other) const
         {
-            return { value * other.value };
+            return Frequency(value * other.value);
         }
 
         constexpr Frequency
-        operator-(const u32 & other) const
+        operator-(const Frequency & other) const
         {
-            return { value - other };
+            return Frequency(value - other.value);
         }
 
         constexpr Frequency
-        operator+(const u32 & other) const
+        operator+(const Frequency & other) const
         {
-            return Frequency { value + other };
+            return Frequency(value + other.value);
         }
 
         constexpr bool
-        operator>(const u32 & other) const
+        operator>(const Frequency & other) const
         {
-            return value > other;
+            return value > other.value;
         }
 
         constexpr bool
-        operator<(const u32 & other) const
+        operator<(const Frequency & other) const
         {
-            return value < other;
+            return value < other.value;
         }
     };
 
