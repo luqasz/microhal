@@ -8,6 +8,7 @@ add_executable(
     vdiv.cpp
     byte_swap.cpp
     encoders.cpp
+    core.cpp
 )
 
 target_link_libraries(${LIBTESTS_TARGET} PUBLIC ${PROJECT_NAME})
