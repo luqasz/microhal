@@ -45,7 +45,7 @@ namespace USART {
     constexpr UBRR
     calc_ubrr(const units::Frequency freq, const u32 baud, const U2X u2x)
     {
-        const u32 value = ((freq + units::Frequency(8u / u2x) * units::Frequency(baud)).value) / ((16u / u2x) * baud);
+        const u32 value = (freq + units::Frequency(8u / u2x) * baud).value / ((16u / u2x) * baud);
         return UBRR {
             .value = static_cast<u16>(value - 1),
             .u2x   = u2x,

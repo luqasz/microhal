@@ -42,7 +42,7 @@ namespace i2c {
     constexpr u8
     calculate_twbr(const units::Frequency cpu_freq, const units::Frequency bus_freq)
     {
-        return static_cast<u8>(((cpu_freq / bus_freq).value - 16) / 2);
+        return static_cast<u8>((cpu_freq / bus_freq - 16) / 2);
     }
 
     template <typename INSTANCE>

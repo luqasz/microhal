@@ -9,10 +9,10 @@ namespace units {
         explicit constexpr Frequency(const u32 _value) :
             value(_value) { }
 
-        constexpr Frequency
+        constexpr u32
         operator/(const Frequency & other) const
         {
-            return Frequency(value / other.value);
+            return value / other.value;
         }
 
         constexpr Frequency
@@ -25,12 +25,6 @@ namespace units {
         operator*(const u32 & other) const
         {
             return Frequency(value * other);
-        }
-
-        constexpr Frequency
-        operator*(const Frequency & other) const
-        {
-            return Frequency(value * other.value);
         }
 
         constexpr Frequency

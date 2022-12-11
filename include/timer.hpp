@@ -70,7 +70,7 @@ getConfig(const units::Frequency & fcpu, const units::Frequency & desired)
 {
     for (Prescaler p : prescalers) {
         const units::Frequency ftimer = (fcpu / p.value);
-        const u32              top    = ((ftimer / desired).value - 1);
+        const u32              top    = ((ftimer / desired) - 1);
         if (top < 65536) {
             return TimerConfig {
                 p.clock,
