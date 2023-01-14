@@ -23,18 +23,28 @@ struct limits<const T> : public limits<T> {
 
 template <>
 struct limits<u8> {
-    static constexpr u8 max = UINT8_MAX;
-    static constexpr u8 min = 0;
+    static constexpr usize max  = UINT8_MAX;
+    static constexpr usize min  = 0;
+    static constexpr usize bits = 8;
 };
 
 template <>
 struct limits<u16> {
-    static constexpr u16 max = UINT16_MAX;
-    static constexpr u16 min = 0;
+    static constexpr usize max  = UINT16_MAX;
+    static constexpr usize min  = 0;
+    static constexpr usize bits = 16;
 };
 
 template <>
 struct limits<u32> {
-    static constexpr u32 max = UINT32_MAX;
-    static constexpr u32 min = 0;
+    static constexpr usize max  = UINT32_MAX;
+    static constexpr usize min  = 0;
+    static constexpr usize bits = 32;
+};
+
+template <>
+struct limits<u64> {
+    static constexpr usize max  = UINT64_MAX;
+    static constexpr usize min  = 0;
+    static constexpr usize bits = 64;
 };
