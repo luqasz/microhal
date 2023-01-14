@@ -72,7 +72,7 @@ namespace timer {
         {
             // COM0,COM1 bits.
             constexpr static u8 COM_BITS = 0b11;
-            const usize         POS      = first_lsbit(out);
+            const usize         POS      = first_lsbit(static_cast<u8>(out));
             const u8            MASK     = static_cast<u8>(COM_BITS << POS);
             iomem::set_bit<u8>(REGS::tccra, static_cast<u8>(mode << POS), MASK);
             return *this;
@@ -126,7 +126,7 @@ namespace timer {
         {
             // COM0,COM1 bits.
             constexpr static u8 COM_BITS = 0b11;
-            const usize         POS      = first_lsbit(out);
+            const usize         POS      = first_lsbit(static_cast<u8>(out));
             const u8            MASK     = static_cast<u8>(COM_BITS << POS);
             iomem::set_bit<u8>(REGS::tccra, static_cast<u8>(mode << POS), MASK);
             return *this;
