@@ -1,16 +1,19 @@
 #pragma once
 
 #include "types.hpp"
+#include "defs.hpp"
 
 template <typename T>
-bool constexpr isPowerOfTwo(T number)
+bool constexpr PUREFN
+isPowerOfTwo(T number)
 {
     return (number != 0) && (number & (number - 1)) == 0;
 }
 
 // Return first bit position starting from LSB and counting from 0.
 template <typename T>
-usize constexpr first_lsbit(T n)
+usize constexpr PUREFN
+first_lsbit(T n)
 {
     usize i = 1, pos = 0;
     // Iterate through bits of n till we find a set bit
@@ -26,7 +29,7 @@ usize constexpr first_lsbit(T n)
 }
 
 template <typename T>
-constexpr T
+constexpr T PUREFN
 countSetBits(T number)
 {
     T count = 0;
@@ -48,14 +51,14 @@ struct is_same<T, T> {
 };
 
 template <typename T, typename U>
-constexpr bool
+constexpr bool PUREFN
 eqTypes()
 {
     return is_same<T, U>::value;
 }
 
 template <typename T>
-constexpr T
+constexpr T PUREFN
 inverted(T value)
 {
     return static_cast<T>(~value);

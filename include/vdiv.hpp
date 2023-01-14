@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.hpp"
+#include "defs.hpp"
 
 #include <math.h>
 #include <stdint.h>
@@ -31,7 +32,7 @@ namespace vdiv {
       ADV bits
       resistance in Ω
     */
-    constexpr float
+    constexpr float PUREFN
     calc_sink_r(const float adc_val, const float adc_bits, const float r1)
     {
         return r1 / ((static_cast<float>(pow(2, adc_bits)) / adc_val) - 1);
@@ -43,7 +44,7 @@ namespace vdiv {
       ADV bits
       resistance in Ω
     */
-    constexpr float
+    constexpr float PUREFN
     calc_source_r(const float adc_val, const float adc_bits, const float r2)
     {
         return r2 * ((static_cast<float>(pow(2, adc_bits)) / adc_val) - 1);

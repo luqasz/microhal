@@ -2,6 +2,7 @@
 
 #include "units.hpp"
 #include "types.hpp"
+#include "defs.hpp"
 
 namespace USART {
 
@@ -20,7 +21,7 @@ namespace USART {
     /*
      * Check if calculated UBRR value produces tolerable error rate.
      */
-    constexpr bool
+    constexpr bool PUREFN
     err_check(
         const units::Frequency freq,
         const UBRR             ubrr,
@@ -42,7 +43,7 @@ namespace USART {
     /*
      * Calculate UBRR value based on cpu frequency and desired baud rate.
      */
-    constexpr UBRR
+    constexpr UBRR PUREFN
     calc_ubrr(const units::Frequency freq, const u32 baud, const U2X u2x)
     {
         const u32 value = (freq + units::Frequency(8u / u2x) * baud).value / ((16u / u2x) * baud);
@@ -53,7 +54,7 @@ namespace USART {
     }
 
     template <const units::Frequency cpu_freq, const u32 baud, const u8 tol = 2, const U2X u2x = off>
-    consteval UBRR
+    consteval UBRR PUREFN
     ubrr()
     {
         constexpr UBRR ubrr   = calc_ubrr(cpu_freq, baud, u2x);

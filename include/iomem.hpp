@@ -100,4 +100,23 @@ namespace iomem {
     {
         while ((read<BIT_SIZE>(address) & bit)) { };
     }
+
+    template <typename WIDTH>
+    struct RegRW {
+        const usize address;
+        const WIDTH mask;
+        explicit RegRW(const usize address_, const WIDTH mask_ = limits<WIDTH>::max) :
+            address(address_), mask(mask_) { }
+
+        operator WIDTH() const
+        {
+            return read<WIDTH>(address);
+        }
+
+        void
+        operator=(const WIDTH val) const
+        {
+            write(address, val);
+        }
+    };
 }

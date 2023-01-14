@@ -2,6 +2,7 @@
 
 #include "../../../types.hpp"
 #include "../../../units.hpp"
+#include "../../../defs.hpp"
 
 namespace timer {
 
@@ -77,14 +78,14 @@ namespace timer {
     Given timer frequency and desired frequency,
     return value of overflow register.
     */
-    constexpr u32
+    PUREFN constexpr u32
     calc_top(const units::Frequency & ftimer, const units::Frequency & desired)
     {
         return ((ftimer / desired) - 1);
     }
 
     template <typename TOP_REG>
-    constexpr TimerConfig
+    PUREFN constexpr TimerConfig
     calc_prescaled_top(const units::Frequency & fcpu, const units::Frequency & desired)
     {
         for (Prescaler p : prescalers) {

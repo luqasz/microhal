@@ -1,5 +1,6 @@
 #pragma once
 
+#include "defs.hpp"
 #include "types.hpp"
 
 enum class endian : usize {
@@ -11,7 +12,7 @@ enum class endian : usize {
 
 namespace byorder {
 
-    [[gnu::const]] constexpr u16
+    constexpr u16 PUREFN
     swap(const u16 & val)
     {
         return                                    //
@@ -19,7 +20,7 @@ namespace byorder {
             static_cast<u16>((val & 0xff00) >> 8);
     }
 
-    [[gnu::const]] constexpr u32
+    constexpr u32 PUREFN
     swap(const u32 & val)
     {
         return                                        //
@@ -30,7 +31,7 @@ namespace byorder {
     }
 
     template <endian INTO, typename SRC>
-    [[gnu::const]] constexpr SRC
+    constexpr SRC PUREFN
     into(const SRC & val)
     {
         if constexpr (endian::native == INTO) {
@@ -42,7 +43,7 @@ namespace byorder {
     }
 
     template <endian INTO, typename SRC>
-    [[gnu::const]] constexpr SRC
+    constexpr SRC PUREFN
     from(const SRC & val)
     {
         if constexpr (endian::native == INTO) {
