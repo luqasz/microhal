@@ -1,97 +1,49 @@
 #pragma once
 
-#include "../../types.hpp"
 #include "sfr.hpp"
+#include "../common/atmega/timer.hpp"
 
-enum TCCRA : uint8_t {
-    WGM0  = 1,
-    WGM1  = 2,
-    COMC0 = 4,
-    COMC1 = 8,
-    COMB0 = 16,
-    COMB1 = 32,
-    COMA0 = 64,
-    COMA1 = 128,
-};
+namespace timer {
 
-enum TCCRB : uint8_t {
-    CS0  = 1,
-    CS1  = 2,
-    CS2  = 4,
-    WGM2 = 8,
-    WGM3 = 16,
-    ICES = 64,
-    ICNC = 128,
-};
-
-enum TIMSK : uint8_t {
-    TOIE  = 1,
-    OCIEA = 2,
-    OCIEB = 4,
-    OCIEC = 8,
-};
-
-struct T16_IRQ {
-    enum IRQ {
-        Overflow = TIMSK::TOIE,
-        CompareA = TIMSK::OCIEA,
-        CompareB = TIMSK::OCIEB,
-        CompareC = TIMSK::OCIEC,
+    struct Timer1 {
+        constexpr static u16  tccra = SFR::TCCR1A::address;
+        constexpr static u16  tccrb = SFR::TCCR1B::address;
+        constexpr static u16  ocra  = SFR::OCR1A::address;
+        constexpr static u16  ocrb  = SFR::OCR1B::address;
+        constexpr static u16  icr   = SFR::ICR1::address;
+        constexpr static auto timsk = SFR::TIMSK1::address;
     };
-};
 
-struct T16_PIN {
-    enum Pin {
-        PinA = TCCRA::COMA0,
-        PinB = TCCRA::COMB0,
-        PinC = TCCRA::COMC0,
+    struct Timer3 {
+        constexpr static u16  tccra = SFR::TCCR3A::address;
+        constexpr static u16  tccrb = SFR::TCCR3B::address;
+        constexpr static u16  ocra  = SFR::OCR3A::address;
+        constexpr static u16  ocrb  = SFR::OCR3B::address;
+        constexpr static u16  icr   = SFR::ICR3::address;
+        constexpr static auto timsk = SFR::TIMSK3::address;
     };
-};
 
-struct Timer1 : T16_IRQ, T16_PIN {
-    constexpr static auto tccra = SFR::RegisterRW<SFR::TCCR1A, uint8_t>();
-    constexpr static auto tccrb = SFR::RegisterRW<SFR::TCCR1B, uint8_t>();
-    constexpr static auto timsk = SFR::RegisterRW<SFR::TIMSK1, uint8_t>();
-    constexpr static auto top   = SFR::RegisterRW<SFR::ICR1, uint16_t>();
-    const static struct _ {
-        constexpr static auto A = SFR::RegisterRW<SFR::OCR1A, uint16_t>();
-        constexpr static auto B = SFR::RegisterRW<SFR::OCR1B, uint16_t>();
-        constexpr static auto C = SFR::RegisterRW<SFR::OCR1C, uint16_t>();
-    } compareMatch;
-};
+    struct Timer4 {
+        constexpr static u16  tccra = SFR::TCCR4A::address;
+        constexpr static u16  tccrb = SFR::TCCR4B::address;
+        constexpr static u16  ocra  = SFR::OCR4A::address;
+        constexpr static u16  ocrb  = SFR::OCR4B::address;
+        constexpr static u16  icr   = SFR::ICR4::address;
+        constexpr static auto timsk = SFR::TIMSK4::address;
+    };
 
-struct Timer3 : T16_IRQ, T16_PIN {
-    constexpr static auto tccra = SFR::RegisterRW<SFR::TCCR3A, uint8_t>();
-    constexpr static auto tccrb = SFR::RegisterRW<SFR::TCCR3B, uint8_t>();
-    constexpr static auto timsk = SFR::RegisterRW<SFR::TIMSK3, uint8_t>();
-    constexpr static auto top   = SFR::RegisterRW<SFR::ICR3, uint16_t>();
-    const struct _ {
-        constexpr static auto A = SFR::RegisterRW<SFR::OCR3A, uint16_t>();
-        constexpr static auto B = SFR::RegisterRW<SFR::OCR3B, uint16_t>();
-        constexpr static auto C = SFR::RegisterRW<SFR::OCR3C, uint16_t>();
-    } compareMatch;
-};
+    struct Timer5 {
+        constexpr static u16  tccra = SFR::TCCR5A::address;
+        constexpr static u16  tccrb = SFR::TCCR5B::address;
+        constexpr static u16  ocra  = SFR::OCR5A::address;
+        constexpr static u16  ocrb  = SFR::OCR5B::address;
+        constexpr static u16  icr   = SFR::ICR5::address;
+        constexpr static auto timsk = SFR::TIMSK5::address;
+    };
 
-struct Timer4 : T16_IRQ, T16_PIN {
-    constexpr static auto tccra = SFR::RegisterRW<SFR::TCCR4A, uint8_t>();
-    constexpr static auto tccrb = SFR::RegisterRW<SFR::TCCR4B, uint8_t>();
-    constexpr static auto timsk = SFR::RegisterRW<SFR::TIMSK4, uint8_t>();
-    constexpr static auto top   = SFR::RegisterRW<SFR::ICR4, uint16_t>();
-    const struct _ {
-        constexpr static auto A = SFR::RegisterRW<SFR::OCR4A, uint16_t>();
-        constexpr static auto B = SFR::RegisterRW<SFR::OCR4B, uint16_t>();
-        constexpr static auto C = SFR::RegisterRW<SFR::OCR4C, uint16_t>();
-    } compareMatch;
-};
-
-struct Timer5 : T16_IRQ, T16_PIN {
-    constexpr static auto tccra = SFR::RegisterRW<SFR::TCCR5A, uint8_t>();
-    constexpr static auto tccrb = SFR::RegisterRW<SFR::TCCR5B, uint8_t>();
-    constexpr static auto timsk = SFR::RegisterRW<SFR::TIMSK5, uint8_t>();
-    constexpr static auto top   = SFR::RegisterRW<SFR::ICR5, uint16_t>();
-    const struct _ {
-        constexpr static auto A = SFR::RegisterRW<SFR::OCR5A, uint16_t>();
-        constexpr static auto B = SFR::RegisterRW<SFR::OCR5B, uint16_t>();
-        constexpr static auto C = SFR::RegisterRW<SFR::OCR5C, uint16_t>();
-    } compareMatch;
-};
+    enum Output {
+        A = TCCRA::COMA0,
+        B = TCCRA::COMB0,
+        C = TCCRA::COMC0,
+    };
+}

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "types.hpp"
+
 template <typename T>
 bool constexpr isPowerOfTwo(T number)
 {
@@ -8,9 +10,9 @@ bool constexpr isPowerOfTwo(T number)
 
 // Return first bit position starting from LSB and counting from 0.
 template <typename T>
-T constexpr firstLSBBitPos(T n)
+usize constexpr first_lsbit(T n)
 {
-    T i = 1, pos = 0;
+    usize i = 1, pos = 0;
     // Iterate through bits of n till we find a set bit
     // i&n will be non-zero only when 'i' and 'n' have a set bit
     // at same position

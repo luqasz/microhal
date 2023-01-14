@@ -1,26 +1,21 @@
+#include "mcu/atmega32/timer.hpp"
 #include <gpio.hpp>
 #include <irq.hpp>
 #include <stdio.h>
 #include <timer.hpp>
 #include <units.hpp>
 
-constexpr auto FCPU   = units::Hz * 11059200;
-constexpr auto config = getConfig(units::Hz * 25, FCPU);
-
 int
 main(void)
 {
-    gpio::Output(gpio::PB1);
-    gpio::Output(gpio::PB2);
+    constexpr auto FCPU      = units::Hz * 11059200;
+    constexpr auto timer_cfg = timer::calc_prescaled_top<u16>(units::Hz * 25, FCPU);
 
-    auto timer = Timer<Timer1>();
-    timer.set(PWM);
-    timer.inverting(timer.PinA);
-    timer.inverting(timer.PinB);
-    timer.set(units::Hz * 25, FCPU);
-    timer.compareMatch.A = timer.top.read() / 2;
-    timer.compareMatch.B = timer.top.read() / 4;
-    timer.start();
+    (gpio::Output(gpio::PB1));
+    (gpio::Output(gpio::PB2));
+
+    const auto timer = timer::PWM<timer::Timer1>();
+    timer.set(timer::Output::A, timer.High).set(timer_cfg);
     while (true) {
     }
 }

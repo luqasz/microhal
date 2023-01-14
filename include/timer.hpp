@@ -2,6 +2,8 @@
 
 #include "units.hpp"
 #include "types.hpp"
+#include "iomem.hpp"
+#include "utils.hpp"
 
 #ifdef MCU
 #    if MCU == atmega32
@@ -15,163 +17,120 @@
 #    error "Unknown MCU."
 #endif
 
-enum Clock {
-    Stopped = 0,
-    _1      = TCCRB::CS0,
-    _8      = TCCRB::CS1,
-    _64     = TCCRB::CS0 | TCCRB::CS1,
-    _256    = TCCRB::CS2,
-    _1024   = TCCRB::CS0 | TCCRB::CS1 | TCCRB::CS2,
-};
+// !!
+// OCR = 0 results in narrow spike
+// top = ICR when top < current counter value, timer has to count to MAX, then overflows. This results in missed events.
+// start/counter value can be set in IRQ
 
-constexpr u8 CLOCK_MASK = TCCRB::CS0 | TCCRB::CS1 | TCCRB::CS2;
+namespace timer {
 
-struct Prescaler {
-    const u16   value;
-    const Clock clock;
-};
+    // Capture/ICF irq fired when counter = TOP.
+    // Overflow/TOIE irq  fired when counter = MAX.
+    template <typename REGS>
+    struct CompareMatch {
 
-struct TimerConfig {
-    const Clock clock;
-    const u16   top;
-};
+        const iomem::RegRW<u16> counter = iomem::RegRW<u16>(REGS::tcnt);
+        // Not double buffered.
+        const iomem::RegRW<u16> top = iomem::RegRW<u16>(REGS::icr);
 
-constexpr auto prescaler_1 = Prescaler {
-    1,
-    Clock::_1,
-};
-constexpr auto prescaler_8 = Prescaler {
-    8,
-    Clock::_8,
-};
-constexpr auto prescaler_64 = Prescaler {
-    64,
-    Clock::_64,
-};
-constexpr auto prescaler_256 = Prescaler {
-    256,
-    Clock::_256,
-};
-constexpr auto prescaler_1024 = Prescaler {
-    1024,
-    Clock::_1024,
-};
+        enum Mode {
+            Disconnect = 0,
+            Toggle     = 0b1,
+            Low        = 0b10,
+            High       = 0b11,
+        };
 
-constexpr Prescaler prescalers[] = {
-    prescaler_1,
-    prescaler_8,
-    prescaler_64,
-    prescaler_256,
-    prescaler_1024,
-};
-
-constexpr TimerConfig
-getConfig(const units::Frequency & fcpu, const units::Frequency & desired)
-{
-    for (Prescaler p : prescalers) {
-        const units::Frequency ftimer = (fcpu / p.value);
-        const u32              top    = ((ftimer / desired) - 1);
-        if (top < 65536) {
-            return TimerConfig {
-                p.clock,
-                static_cast<u16>(top),
-            };
+        CompareMatch()
+        {
+            iomem::clear_bit<u8>(REGS::tccra, WGM01_MASK);
+            iomem::set_bit<u8>(REGS::tccrb, TCCRB::WGM2 | TCCRB::WGM3, WGM23_MASK);
+            top = 0;
         }
-    }
-    return TimerConfig {
-        Clock::Stopped,
-        0,
+
+        ~CompareMatch()
+        {
+            set(Clock::Stopped);
+        }
+
+        const CompareMatch &
+        set(const Clock clk) const
+        {
+            iomem::set_bit(REGS::tccrb, clk, CLOCK_MASK);
+            return *this;
+        }
+
+        const CompareMatch &
+        set(const TimerConfig & cfg)
+        {
+            set(cfg.clock);
+            top = cfg.top;
+            return *this;
+        }
+
+        const CompareMatch &
+        set(const Output out, const Mode mode) const
+        {
+            // COM0,COM1 bits.
+            constexpr static u8 COM_BITS = 0b11;
+            const usize         POS      = first_lsbit(out);
+            const u8            MASK     = static_cast<u8>(COM_BITS << POS);
+            iomem::set_bit<u8>(REGS::tccra, static_cast<u8>(mode << POS), MASK);
+            return *this;
+        }
     };
+
+    // Capture/ICF irq fired when counter = TOP.
+    // Overflow/TOIE irq fired when counter = TOP.
+    template <typename REGS>
+    struct PWM {
+
+        const iomem::RegRW<u16> counter = iomem::RegRW<u16>(REGS::tcnt);
+        // Not double buffered.
+        const iomem::RegRW<u16> top = iomem::RegRW<u16>(REGS::icr);
+
+        enum Mode {
+            Disconnect = 0b00,
+            Low        = 0b10,
+            High       = 0b11,
+        };
+
+        PWM()
+        {
+            iomem::set_bit<u8>(REGS::tccra, TCCRA::WGM1, WGM01_MASK);
+            iomem::set_bit<u8>(REGS::tccrb, TCCRB::WGM2 | TCCRB::WGM3, WGM23_MASK);
+            top = 0;
+        }
+
+        ~PWM()
+        {
+            set(Clock::Stopped);
+        }
+
+        const PWM &
+        set(const Clock clk) const
+        {
+            iomem::set_bit(REGS::tccrb, u8 { clk }, CLOCK_MASK);
+            return *this;
+        }
+
+        const PWM &
+        set(const TimerConfig & cfg) const
+        {
+            set(cfg.clock);
+            top = cfg.top;
+            return *this;
+        }
+
+        const PWM &
+        set(const Output out, const Mode mode) const
+        {
+            // COM0,COM1 bits.
+            constexpr static u8 COM_BITS = 0b11;
+            const usize         POS      = first_lsbit(out);
+            const u8            MASK     = static_cast<u8>(COM_BITS << POS);
+            iomem::set_bit<u8>(REGS::tccra, static_cast<u8>(mode << POS), MASK);
+            return *this;
+        }
+    };
+
 }
-
-/*
- * Each mode TOP = ICR register.
- */
-enum TimerMode {
-    CTC          = TCCRB::WGM2 | TCCRB::WGM3,
-    PWM          = TCCRA::WGM1 | static_cast<u8>(TCCRB::WGM2) | static_cast<u8>(TCCRB::WGM3),
-    CompareMatch = CTC,
-};
-
-template <typename REGS>
-class Timer : public REGS {
-
-    Clock clock = Stopped;
-    using REGS::tccra;
-    using REGS::tccrb;
-    using REGS::timsk;
-
-public:
-    using REGS::compareMatch;
-    using REGS::IRQ;
-    using REGS::top;
-
-    void
-    set(const TimerMode mode) const
-    {
-        constexpr u8 TCCRA_MASK = (TCCRA::WGM0 | TCCRA::WGM1);
-        constexpr u8 TCCRB_MASK = (TCCRB::WGM2 | TCCRB::WGM3);
-        tccra.setBit(mode & TCCRA_MASK, TCCRA_MASK);
-        tccrb.setBit(mode & TCCRB_MASK, TCCRB_MASK);
-    }
-
-    void
-    set(const units::Frequency & desired, const units::Frequency & fcpu)
-    {
-        auto config = getConfig(fcpu, desired);
-        clock       = config.clock;
-        top         = config.top;
-    }
-
-    void
-    set(const TimerConfig config)
-    {
-        clock = config.clock;
-        top   = config.top;
-    }
-
-    void
-    reset()
-    {
-        top = 0;
-    }
-
-    void
-    start()
-    {
-        tccrb.setBit(clock, CLOCK_MASK);
-    }
-
-    void
-    stop()
-    {
-        tccrb.setBit(Stopped, CLOCK_MASK);
-    }
-
-    void
-    inverting(const typename REGS::Pin pin)
-    {
-        const u8 mode = static_cast<u8>(pin | pin << 1);
-        tccra.setBit(mode);
-    }
-
-    void
-    nonInverting(const typename REGS::Pin pin)
-    {
-        const u8 mode = static_cast<u8>(pin << 1);
-        const u8 mask = static_cast<u8>(pin | pin >> 1);
-        tccra.setBit(mode, mask);
-    }
-
-    void
-    enable(const typename REGS::IRQ irq) const
-    {
-        timsk.setBit(irq);
-    }
-
-    void
-    disable(const typename REGS::IRQ irq) const
-    {
-        timsk.clearBit(irq);
-    }
-};
