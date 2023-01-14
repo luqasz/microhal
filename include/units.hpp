@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.hpp"
+#include "defs.hpp"
 
 namespace units {
     struct Frequency {

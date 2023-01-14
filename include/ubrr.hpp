@@ -7,7 +7,7 @@
 namespace USART {
 
     // Values represent divisor required for UBRR and error check functions.
-    enum U2X {
+    enum U2X : u8 {
         on  = 2, // U2X bit = 1
         off = 1, // U2X bit = 0
     };
@@ -28,9 +28,10 @@ namespace USART {
         const u32              baud,
         const u8               tol = 2)
     {
-        const units::Frequency calc  = units::Frequency((16u / ubrr.u2x) * (ubrr.value + 1u));
-        const units::Frequency plus  = calc * (100u * baud + baud * tol);
-        const units::Frequency minus = calc * (100u * baud - baud * tol);
+        const u32              equation = static_cast<u16>(16u / ubrr.u2x) * static_cast<u16>(ubrr.value + 1u);
+        const units::Frequency calc     = units::Frequency(equation);
+        const units::Frequency plus     = calc * (100u * baud + baud * tol);
+        const units::Frequency minus    = calc * (100u * baud - baud * tol);
         if ((freq * 100) > plus) {
             return true;
         }
