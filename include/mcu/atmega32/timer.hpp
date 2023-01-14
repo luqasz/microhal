@@ -15,7 +15,7 @@ namespace timer {
         constexpr static auto tcnt  = SFR::TCNT1::address;
     };
 
-    enum Output {
+    enum Output : u8 {
         A = TCCRA::COMA0,
         B = TCCRA::COMB0,
     };
