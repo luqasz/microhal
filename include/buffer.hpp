@@ -75,9 +75,8 @@ namespace buffer {
     };
 
     template <typename DATA_TYPE, usize BUFFER_SIZE>
+        requires(is_power_of_two(BUFFER_SIZE) && BUFFER_SIZE > 1)
     class Circular {
-        static_assert(isPowerOfTwo(BUFFER_SIZE), "Size must be power of 2.");
-        static_assert(BUFFER_SIZE > 1, "Buffer must be at least 2 in size.");
 
     private:
         usize                  head              = 0;

@@ -2,16 +2,19 @@
 
 #include "types.hpp"
 #include "defs.hpp"
+#include "traits.hpp"
 
 template <typename T>
-bool constexpr PUREFN
-isPowerOfTwo(T number)
+    requires is_unsigned<T> bool
+constexpr PUREFN
+is_power_of_two(T number)
 {
     return (number != 0) && (number & (number - 1)) == 0;
 }
 
 // Return first bit position starting from LSB and counting from 0.
 template <typename T>
+    requires is_unsigned<T>
 usize constexpr PUREFN
 first_lsbit(T n)
 {
@@ -29,6 +32,7 @@ first_lsbit(T n)
 }
 
 template <typename T>
+    requires is_unsigned<T>
 constexpr T PUREFN
 countSetBits(T number)
 {
@@ -40,24 +44,8 @@ countSetBits(T number)
     return count;
 }
 
-template <typename T, typename U>
-struct is_same {
-    static const bool value = false;
-};
-
 template <typename T>
-struct is_same<T, T> {
-    static const bool value = true;
-};
-
-template <typename T, typename U>
-constexpr bool PUREFN
-eqTypes()
-{
-    return is_same<T, U>::value;
-}
-
-template <typename T>
+    requires is_unsigned<T>
 constexpr T PUREFN
 inverted(T value)
 {
