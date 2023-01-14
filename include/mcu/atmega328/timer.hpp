@@ -14,4 +14,8 @@ namespace timer {
         constexpr static auto timsk = SFR::TIMSK1::address;
     };
 
+    enum Output : u8 {
+        A = TCCRA::COMA0,
+        B = TCCRA::COMB0,
+    };
 }
