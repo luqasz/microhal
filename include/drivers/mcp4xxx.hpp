@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../types.hpp"
+#include "../defs.hpp"
 
 namespace mcp4xxx {
 
@@ -42,7 +43,8 @@ namespace mcp4xxx {
 
     // Return bits ready to be sent over SPI bus.
     template <const usize bits>
-    requires(bits == 10 || bits == 12 || bits == 8) [[gnu::const]] constexpr u16
+        requires(bits == 10 or bits == 12 or bits == 8)
+    CONSTFN constexpr u16
         cmd(const CtrllBits & ctrl, u16 value)
     {
         if constexpr (bits == 10) {

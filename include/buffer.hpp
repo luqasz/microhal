@@ -75,7 +75,7 @@ namespace buffer {
     };
 
     template <typename DATA_TYPE, usize BUFFER_SIZE>
-        requires(is_power_of_two(BUFFER_SIZE) && BUFFER_SIZE > 1)
+        requires(is_power_of_two(BUFFER_SIZE) and BUFFER_SIZE > 1)
     class Circular {
 
     private:

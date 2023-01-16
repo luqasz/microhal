@@ -9,7 +9,7 @@ template <typename T>
 constexpr PUREFN
 is_power_of_two(T number)
 {
-    return (number != 0) && (number & (number - 1)) == 0;
+    return (number != 0) and (number & (number - 1)) == 0;
 }
 
 // Return first bit position starting from LSB and counting from 0.
