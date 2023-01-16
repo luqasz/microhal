@@ -28,7 +28,7 @@ namespace buffer {
         constexpr const Span<const T>
         slice(const usize b, const usize e) const
         {
-            return Span<const T>(ptr + b, e);
+            return Span<T>(ptr + b, e);
         }
 
         constexpr Span<T>
@@ -42,17 +42,17 @@ namespace buffer {
         {
             return ptr;
         }
+        constexpr const T *
+
+        begin() const
+        {
+            return ptr;
+        }
 
         constexpr T *
         end()
         {
             return ptr + len;
-        }
-
-        constexpr const T *
-        begin() const
-        {
-            return ptr;
         }
 
         constexpr const T *
@@ -62,13 +62,19 @@ namespace buffer {
         }
 
         constexpr usize
-        size()
+        size() const
         {
             return len;
         }
 
         constexpr T &
         operator[](const usize idx)
+        {
+            return ptr[idx];
+        }
+
+        constexpr const T &
+        operator[](const usize idx) const
         {
             return ptr[idx];
         }
@@ -118,6 +124,30 @@ namespace buffer {
         end() const
         {
             return elems + Size;
+        }
+
+        constexpr
+        operator Span<Contained>()
+        {
+            return Span(elems);
+        }
+
+        constexpr
+        operator Span<Contained>() const
+        {
+            return Span(elems);
+        }
+
+        constexpr Span<Contained>
+        span()
+        {
+            return Span(elems);
+        }
+
+        constexpr const Span<Contained>
+        span() const
+        {
+            return Span(elems);
         }
     };
 

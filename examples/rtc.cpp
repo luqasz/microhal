@@ -21,7 +21,7 @@ constexpr auto config = USART::Config {
 
 constexpr auto rtc_target = i2c::Target {
     .address       = ds1337::I2C_ADDRESS,
-    .start_address = u8(ds1337::REGISTER::SECONDS),
+    .start_address = u8(ds1337::Register::Seconds),
     .speed         = units::kHz * 400,
 };
 
@@ -30,7 +30,7 @@ using USART_0 = USART::Async<USART::usart0>;
 int
 main()
 {
-    u8 rtc_buffer[ds1337::DATE_TIME_BUFFER_SIZE] = { 0 };
+    ds1337::DateTime_Array rtc_buffer { 0 };
 
     auto usart  = USART_0().set(config).enable(USART::Channel::TX);
     auto serial = Printer(usart, LineEnd::CRLF);
