@@ -74,6 +74,53 @@ namespace buffer {
         }
     };
 
+    template <typename Contained, usize Size>
+    struct Array {
+        Contained elems[Size];
+
+        constexpr usize
+        size() const
+        {
+            return size;
+        }
+
+        constexpr Contained &
+        operator[](const usize idx)
+        {
+            return elems[idx];
+        }
+
+        constexpr const Contained &
+        operator[](const usize idx) const
+        {
+            return elems[idx];
+        }
+
+        constexpr Contained *
+        begin()
+        {
+            return elems;
+        }
+
+        constexpr const Contained *
+        begin() const
+        {
+            return elems;
+        }
+
+        constexpr Contained *
+        end()
+        {
+            return elems + Size;
+        }
+
+        constexpr const Contained *
+        end() const
+        {
+            return elems + Size;
+        }
+    };
+
     template <typename DATA_TYPE, usize BUFFER_SIZE>
         requires(is_power_of_two(BUFFER_SIZE) and BUFFER_SIZE > 1)
     class Circular {
