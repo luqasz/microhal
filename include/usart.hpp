@@ -5,14 +5,12 @@
 #include "types.hpp"
 #include "iomem.hpp"
 
-#ifdef MCU
-#    if MCU == atmega32
-#        include "mcu/atmega32/usart.hpp"
-#    elif MCU == atmega328
-#        include "mcu/atmega328/usart.hpp"
-#    elif MCU == atmega2560
-#        include "mcu/atmega2560/usart.hpp"
-#    endif
+#if MCU_ATMEGA32
+#    include "mcu/atmega32/usart.hpp"
+#elif MCU_ATMEGA328
+#    include "mcu/atmega328/usart.hpp"
+#elif MCU_ATMEGA2560
+#    include "mcu/atmega2560/usart.hpp"
 #else
 #    error "Unknown MCU."
 #endif

@@ -1,4 +1,4 @@
-#include "mcu/atmega32/timer.hpp"
+#include <timer.hpp>
 #include <gpio.hpp>
 #include <irq.hpp>
 #include <stdio.h>

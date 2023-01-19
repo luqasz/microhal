@@ -35,8 +35,17 @@
       ],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "MCU": "atmega32",
-        "PRESET_NAME": "${presetName}"
+        "MCU": "atmega32"
+      }
+    },
+    {
+      "name": "examples-atmega2560",
+      "inherits": [
+        "avr-gcc"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "MCU": "atmega2560"
       }
     },
     {
