@@ -77,7 +77,7 @@ namespace USART {
                 iomem::write<u8>(REGS::ubrrl, static_cast<u8>(value));
             }
             else {
-                iomem::write<u16>(REGS::ubrrl, cfg.ubrr);
+                iomem::write<u16>(REGS::ubrrl, cfg.ubrr.value);
             }
             if (cfg.ubrr.u2x == U2X::on) {
                 iomem::set_bit<u8>(REGS::ucsra, UCSRA::U2X);
