@@ -6,12 +6,13 @@
 namespace timer {
 
     struct Timer1 {
-        constexpr static u16  tccra = SFR::TCCR1A::address;
-        constexpr static u16  tccrb = SFR::TCCR1B::address;
-        constexpr static u16  ocra  = SFR::OCR1A::address;
-        constexpr static u16  ocrb  = SFR::OCR1B::address;
-        constexpr static u16  icr   = SFR::ICR1::address;
-        constexpr static auto timsk = SFR::TIMSK1::address;
+        constexpr static usize tccra = SFR::TCCR1A::address;
+        constexpr static usize tccrb = SFR::TCCR1B::address;
+        constexpr static usize ocra  = SFR::OCR1A::address;
+        constexpr static usize ocrb  = SFR::OCR1B::address;
+        constexpr static usize icr   = SFR::ICR1::address;
+        constexpr static usize timsk = SFR::TIMSK1::address;
+        constexpr static usize tcnt  = SFR::TCNT1::address;
     };
 
     enum Output : u8 {
