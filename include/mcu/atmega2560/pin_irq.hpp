@@ -34,8 +34,8 @@ namespace PinIRQ {
     };
 
     constexpr INT INT4 = INT {
-        .reg     = SFR::EICRA::address,
-        .bit_pos = SFR::EICRA::ISC40,
+        .reg     = SFR::EICRB::address,
+        .bit_pos = SFR::EICRB::ISC40,
         .irq_bit = IRQ_ENABLE_REG::INT4,
     };
 
