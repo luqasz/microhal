@@ -90,7 +90,7 @@ namespace timer {
     {
         for (Prescaler p : prescalers) {
             const u32 top = calc_top((fcpu / p.value), desired);
-            if (top < (limits<TOP_REG>::max + 1)) {
+            if (top < u32 { limits<TOP_REG>::max } + 1) {
                 return TimerConfig {
                     .clock = p.clock,
                     .top   = static_cast<TOP_REG>(top),
