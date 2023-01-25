@@ -26,7 +26,7 @@ namespace PinIRQ {
         Rising  = 0x03, // Rising edge will trigger irq.
     };
 
-    void
+    inline void
     set(const INT & pin, const Trigger & trigger)
     {
         constexpr u8 TRIGGER_BITS = 0b11;
@@ -35,13 +35,13 @@ namespace PinIRQ {
         iomem::set_bit<u8>(pin.reg, bits, MASK);
     }
 
-    void
+    inline void
     enable(const INT & pin)
     {
         iomem::set_bit<u8>(IRQ_ENABLE_REG::address, pin.irq_bit);
     }
 
-    void
+    inline void
     disable(const INT & pin)
     {
         iomem::clear_bit<u8>(IRQ_ENABLE_REG::address, pin.irq_bit);
