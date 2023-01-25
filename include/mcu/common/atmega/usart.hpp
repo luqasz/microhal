@@ -62,4 +62,14 @@ namespace USART {
         TX    = UCSRB::TXEN,
         RX_TX = RX | TX,
     };
+
+    enum class Irq : u8 {
+        RX         = UCSRB::RXCIE,
+        TX         = UCSRB::TXCIE,
+        UDRE       = UCSRB::UDRIE,
+        RX_TX      = RX | TX,
+        RX_UDRE    = RX | UDRE,
+        TX_UDRE    = TX | UDRE,
+        RX_TX_UDRE = RX | TX | UDRE,
+    };
 }

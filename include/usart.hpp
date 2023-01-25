@@ -108,6 +108,20 @@ namespace USART {
             return *this;
         }
 
+        const Async &
+        enable(const Irq irq) const
+        {
+            iomem::set_bit(REGS::ucsrb, static_cast<u8>(irq));
+            return *this;
+        }
+
+        const Async &
+        disable(const Irq irq) const
+        {
+            iomem::clear_bit(REGS::ucsrb, static_cast<u8>(irq));
+            return *this;
+        }
+
         bool
         rx_ready() const
         {
