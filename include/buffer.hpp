@@ -9,11 +9,11 @@ namespace buffer {
     struct Span {
     private:
         T *   ptr;
-        usize len;
+        usize length;
 
         constexpr Span(T * p, const usize N) noexcept :
             ptr(p),
-            len(N)
+            length(N)
         {
         }
 
@@ -21,7 +21,7 @@ namespace buffer {
         template <usize N>
         constexpr Span(T (&begin_)[N]) noexcept :
             ptr(begin_),
-            len(N)
+            length(N)
         {
         }
 
@@ -42,8 +42,8 @@ namespace buffer {
         {
             return ptr;
         }
-        constexpr const T *
 
+        constexpr const T *
         begin() const
         {
             return ptr;
@@ -52,19 +52,25 @@ namespace buffer {
         constexpr T *
         end()
         {
-            return ptr + len;
+            return ptr + length;
         }
 
         constexpr const T *
         end() const
         {
-            return ptr + len;
+            return ptr + length;
         }
 
         constexpr usize
         size() const
         {
-            return len;
+            return length;
+        }
+
+        constexpr usize
+        len() const
+        {
+            return length;
         }
 
         constexpr T &
@@ -86,6 +92,12 @@ namespace buffer {
 
         constexpr usize
         size() const
+        {
+            return size;
+        }
+
+        constexpr usize
+        len() const
         {
             return size;
         }
