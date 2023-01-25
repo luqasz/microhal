@@ -25,7 +25,7 @@ namespace buffer {
         {
         }
 
-        constexpr const Span<const T>
+        constexpr const Span<T>
         slice(const usize b, const usize e) const
         {
             return Span<T>(ptr + b, e);
