@@ -3,15 +3,6 @@
 #include "sfr.hpp"
 #include "types.hpp"
 
-namespace gpio {
-
-    enum State {
-        Low  = 0,
-        High = 1,
-    };
-
-}
-
 #if MCU_ATMEGA32
 #    include "mcu/atmega32/gpio.hpp"
 #elif MCU_ATMEGA328

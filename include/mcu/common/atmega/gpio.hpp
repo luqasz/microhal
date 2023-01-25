@@ -1,9 +1,13 @@
 #pragma once
 #include "../../../types.hpp"
-#include "../../../gpio.hpp"
 #include "../../../iomem.hpp"
 
 namespace gpio {
+
+    enum State {
+        Low  = 0,
+        High = 1,
+    };
 
     enum PinNumber : u8 {
         Pin0 = 0x01,
