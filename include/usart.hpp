@@ -129,11 +129,17 @@ namespace USART {
         }
 
         u8
+        read_nb() const
+        {
+            return iomem::read<u8>(REGS::udr);
+        }
+
+        u8
         read() const
         {
             while (!rx_ready()) {
             }
-            return iomem::read<u8>(REGS::udr);
+            return read_nb();
         }
 
         bool
@@ -143,11 +149,17 @@ namespace USART {
         }
 
         void
+        write_nb(const u8 byte) const
+        {
+            iomem::write<u8>(REGS::udr, byte);
+        }
+
+        void
         write(const u8 byte) const
         {
             while (!tx_ready()) {
             }
-            iomem::write<u8>(REGS::udr, byte);
+            write_nb(byte);
         }
 
         void
