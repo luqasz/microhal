@@ -82,7 +82,9 @@ namespace USART {
             if (cfg.ubrr.u2x == U2X::on) {
                 iomem::set_bit<u8>(REGS::ucsra, UCSRA::U2X);
             }
-            iomem::clear_bit<u8>(REGS::ucsra, UCSRA::U2X);
+            else {
+                iomem::clear_bit<u8>(REGS::ucsra, UCSRA::U2X);
+            }
             constexpr static u8 CHAR_SIZE_MASK = UCSRC::UCSZ0 | UCSRC::UCSZ1;
             constexpr static u8 PARITY_MASK    = UCSRC::UPM1 | UCSRC::UPM0;
             constexpr static u8 STOP_BIT_MASK  = UCSRC::USBS;
