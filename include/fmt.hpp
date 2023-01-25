@@ -17,10 +17,10 @@ namespace fmt {
     numlen10(auto num)
     {
         usize len = 0;
-        while (num != 0) {
+        do {
             len += 1;
             num /= 10;
-        }
+        } while (num != 0);
         return len;
     }
 
@@ -31,9 +31,9 @@ namespace fmt {
         constexpr char map[] = "0123456789";
         usize          idx   = numlen10(num);
         buf[idx--]           = '\0';
-        while (num != 0) {
+        do {
             buf[idx--] = map[num % 10];
             num /= 10;
-        }
+        } while (num != 0);
     }
 }
