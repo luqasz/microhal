@@ -3,6 +3,7 @@
 #include "../../../types.hpp"
 #include "../../../units.hpp"
 #include "../../../defs.hpp"
+#include <timer_equations.hpp>
 
 namespace timer {
 
@@ -74,15 +75,6 @@ namespace timer {
             1024,
         },
     };
-    /*
-    Given timer frequency and desired frequency,
-    return value of overflow register.
-    */
-    PUREFN constexpr u32
-    calc_top(const units::Frequency & ftimer, const units::Frequency & desired)
-    {
-        return ((ftimer / desired) - 1);
-    }
 
     template <typename TOP_REG>
     PUREFN constexpr TimerConfig

@@ -4,6 +4,7 @@
 #include "types.hpp"
 #include "iomem.hpp"
 #include "utils.hpp"
+#include <timer_equations.hpp>
 
 #if MCU_ATMEGA32
 #    include "mcu/atmega32/timer.hpp"
