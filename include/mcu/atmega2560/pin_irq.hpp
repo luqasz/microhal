@@ -42,19 +42,19 @@ namespace PinIRQ {
     constexpr INT INT5 = INT {
         .reg     = SFR::EICRB::address,
         .bit_pos = SFR::EICRB::ISC50,
-        .irq_bit = IRQ_ENABLE_REG::INT1,
+        .irq_bit = IRQ_ENABLE_REG::INT5,
     };
 
     constexpr INT INT6 = INT {
         .reg     = SFR::EICRB::address,
         .bit_pos = SFR::EICRB::ISC60,
-        .irq_bit = IRQ_ENABLE_REG::INT1,
+        .irq_bit = IRQ_ENABLE_REG::INT6,
     };
 
     constexpr INT INT7 = INT {
         .reg     = SFR::EICRB::address,
         .bit_pos = SFR::EICRB::ISC70,
-        .irq_bit = IRQ_ENABLE_REG::INT1,
+        .irq_bit = IRQ_ENABLE_REG::INT7,
     };
 
 }
