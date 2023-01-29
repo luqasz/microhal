@@ -10,6 +10,12 @@ namespace units {
         explicit constexpr Frequency(const u32 _value) :
             value(_value) { }
 
+        constexpr explicit
+        operator u32()
+        {
+            return value;
+        }
+
         constexpr u32
         operator/(const Frequency & other) const
         {
@@ -50,6 +56,12 @@ namespace units {
         operator<(const Frequency & other) const
         {
             return value < other.value;
+        }
+
+        constexpr bool
+        operator==(const Frequency & other) const
+        {
+            return value == other.value;
         }
     };
 
