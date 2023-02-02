@@ -25,7 +25,7 @@ namespace USART {
     };
 
     template <typename REGS>
-    class Async {
+    class Async : public REGS {
 
         void
         ucsrc_set(const u8 bit, const u8 mask) const
@@ -60,6 +60,7 @@ namespace USART {
         }
 
     public:
+        using regs = REGS;
         Async()
         {
             ucsrc_clear(UCSRC::UMSEL0);
@@ -113,6 +114,12 @@ namespace USART {
         {
             iomem::set_bit(REGS::ucsrb, static_cast<u8>(irq));
             return *this;
+        }
+
+        bool
+        is_enabled(const Irq irq) const
+        {
+            return iomem::is_set_bit(REGS::ucsrb, static_cast<u8>(irq));
         }
 
         const Async &
@@ -169,6 +176,26 @@ namespace USART {
             while ((c = static_cast<u8>(*string++))) {
                 write(c);
             }
+        }
+
+        struct RestoreIrq {
+            const u8 val;
+            RestoreIrq(const u8 val_) :
+                val(val_)
+            {
+            }
+
+            ~RestoreIrq()
+            {
+                iomem::set_bit<u8>(REGS::ucsrb, val);
+            }
+        };
+
+        RestoreIrq
+        restore_irq(const Irq irq) const
+        {
+            const u8 val = iomem::read<u8>(REGS::ucsrb) & static_cast<u8>(irq);
+            return RestoreIrq(val);
         }
     };
 }
