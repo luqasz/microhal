@@ -28,5 +28,10 @@ struct is_unsigned_struct<u32> {
     static constexpr bool value = true;
 };
 
+template <>
+struct is_unsigned_struct<u64> {
+    static constexpr bool value = true;
+};
+
 template <typename T>
 constexpr bool is_unsigned = is_unsigned_struct<T>::value;
