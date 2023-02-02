@@ -44,11 +44,6 @@ struct IRQ_Base {
         __asm__ __volatile__ ("cli" ::: "memory");
         // clang-format on
     }
-    static inline void
-    atomicRestore(void)
-    {
-        RestoreIrq();
-    }
 
     /* Vector executed when an IRQ fires with no accompanying handler. This
     may be used to create a catch-all for undefined but used IRQs for debugging purposes.
