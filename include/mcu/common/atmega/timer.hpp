@@ -28,6 +28,11 @@ namespace timer {
         ICNC = 128,
     };
 
+    enum TIMKS : u8 {
+        TOIE = 0,
+        ICIE = 32,
+    };
+
     enum Clock : u8 {
         Stopped         = 0,
         ClockDiv_1      = TCCRB::CS0,
@@ -37,6 +42,11 @@ namespace timer {
         ClockDiv_1024   = TCCRB::CS0 | TCCRB::CS2,
         ExternalFalling = TCCRB::CS1 | TCCRB::CS2,
         ExternalRising  = TCCRB::CS0 | TCCRB::CS1 | TCCRB::CS2,
+    };
+
+    enum Irq : u8 {
+        OnOverflow = TIMKS::TOIE,
+        OnTop      = TIMKS::ICIE,
     };
 
     constexpr u8 CLOCK_MASK = TCCRB::CS0 | TCCRB::CS1 | TCCRB::CS2;

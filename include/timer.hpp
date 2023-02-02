@@ -106,6 +106,20 @@ namespace timer {
         }
 
         const PWM &
+        enable(const Irq irq) const
+        {
+            iomem::set_bit(REGS::timsk, u8 { irq });
+            return *this;
+        }
+
+        const PWM &
+        disable(const Irq irq) const
+        {
+            iomem::clear_bit(REGS::timsk, u8 { irq });
+            return *this;
+        }
+
+        const PWM &
         set(const Clock clk) const
         {
             iomem::set_bit(REGS::tccrb, u8 { clk }, CLOCK_MASK);
