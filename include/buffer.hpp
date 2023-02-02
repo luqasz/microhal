@@ -73,6 +73,12 @@ namespace buffer {
             return length;
         }
 
+        constexpr usize
+        free() const
+        {
+            return length;
+        }
+
         constexpr T &
         operator[](const usize idx)
         {
@@ -93,13 +99,19 @@ namespace buffer {
         constexpr usize
         size() const
         {
-            return size;
+            return Size;
         }
 
         constexpr usize
         len() const
         {
-            return size;
+            return Size;
+        }
+
+        constexpr usize
+        free() const
+        {
+            return Size;
         }
 
         constexpr Contained &
@@ -187,6 +199,12 @@ namespace buffer {
         len() const
         {
             return static_cast<usize>(head - tail);
+        }
+
+        constexpr usize
+        free() const
+        {
+            return size() - len();
         }
 
         constexpr void
