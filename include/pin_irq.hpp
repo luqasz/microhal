@@ -29,6 +29,9 @@ namespace PinIRQ {
     inline void
     set(const INT & pin, const Trigger & trigger)
     {
+        // TODO
+        // When changing the ISCn1/ISCn0 bits, the interrupt must be disabled by clearing its Interrupt Enable bit in the EIMSK Register.
+        // Otherwise an interrupt can occur when the bits are changed.
         constexpr u8 TRIGGER_BITS = 0b11;
         const u8     bits         = static_cast<u8>(trigger << pin.bit_pos);
         const u8     MASK         = static_cast<u8>(TRIGGER_BITS << pin.bit_pos);
