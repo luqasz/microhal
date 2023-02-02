@@ -61,22 +61,25 @@ namespace gpio {
     struct Output {
         const Pin pin;
 
+        // TODO add mandatory state param
         Output(const Pin p) :
             pin(p)
         {
             iomem::set_bit<u8>(pin.port.ddr_address, pin.number);
         }
 
-        void
+        const Output &
         set(const State state) const
         {
             iomem::set_bit<u8>(pin.port.port_address, static_cast<u8>(state), pin.number);
+            return *this;
         }
 
-        void
+        const Output &
         toggle() const
         {
             iomem::xor_bit<u8>(pin.port.port_address, pin.number);
+            return *this;
         }
 
         void
@@ -89,16 +92,18 @@ namespace gpio {
     struct Input {
         const Pin pin;
 
+        // TODO add mandatory state param
         Input(const Pin p) :
             pin(p)
         {
             iomem::clear_bit<u8>(pin.port.ddr_address, pin.number);
         }
 
-        void
+        const Input &
         set(const PullMode mode) const
         {
             iomem::set_bit<u8>(pin.port.ddr_address, static_cast<u8>(mode), pin.number);
+            return *this;
         }
 
         bool
