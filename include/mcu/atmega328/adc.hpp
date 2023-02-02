@@ -7,6 +7,7 @@ namespace adc {
 
     constexpr u8 PRESCALER_MASK = SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS1 | SFR::ADCSRA::ADPS2;
     constexpr u8 MUX_MASK       = SFR::ADMUX::MUX0 | SFR::ADMUX::MUX1 | SFR::ADMUX::MUX2 | SFR::ADMUX::MUX3;
+    constexpr u8 MUX5           = 1 << 5;
     constexpr u8 VREF_MASK      = SFR::ADMUX::REFS0 | SFR::ADMUX::REFS1;
 
     enum class Vref {
@@ -27,16 +28,6 @@ namespace adc {
         Temp    = SFR::ADMUX::MUX3,
         BandGap = SFR::ADMUX::MUX1 | SFR::ADMUX::MUX2 | SFR::ADMUX::MUX3,
         GND     = SFR::ADMUX::MUX0 | SFR::ADMUX::MUX1 | SFR::ADMUX::MUX2 | SFR::ADMUX::MUX3,
-    };
-
-    enum class Clock {
-        _2   = SFR::ADCSRA::ADPS0,
-        _4   = SFR::ADCSRA::ADPS1,
-        _8   = SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS1,
-        _16  = SFR::ADCSRA::ADPS2,
-        _32  = SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS2,
-        _64  = SFR::ADCSRA::ADPS1 | SFR::ADCSRA::ADPS2,
-        _128 = SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS1 | SFR::ADCSRA::ADPS2,
     };
 
 }

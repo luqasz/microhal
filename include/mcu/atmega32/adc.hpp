@@ -27,14 +27,4 @@ namespace adc {
         BandGap = SFR::ADMUX::MUX1 | SFR::ADMUX::MUX2 | SFR::ADMUX::MUX3 | SFR::ADMUX::MUX4,
         GND     = SFR::ADMUX::MUX0 | SFR::ADMUX::MUX1 | SFR::ADMUX::MUX2 | SFR::ADMUX::MUX3 | SFR::ADMUX::MUX4,
     };
-
-    enum class Clock {
-        _2   = SFR::ADCSRA::ADPS0,
-        _4   = SFR::ADCSRA::ADPS1,
-        _8   = SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS1,
-        _16  = SFR::ADCSRA::ADPS2,
-        _32  = SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS2,
-        _64  = SFR::ADCSRA::ADPS1 | SFR::ADCSRA::ADPS2,
-        _128 = SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS1 | SFR::ADCSRA::ADPS2,
-    };
 }
