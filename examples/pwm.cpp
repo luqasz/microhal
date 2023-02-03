@@ -5,6 +5,8 @@
 #include <timer.hpp>
 #include <units.hpp>
 
+using TIMER1 = timer::PWM<timer::Timer1>;
+
 int
 main(void)
 {
@@ -14,8 +16,8 @@ main(void)
     (gpio::Output(gpio::PB1));
     (gpio::Output(gpio::PB2));
 
-    const auto timer = timer::PWM<timer::Timer1>();
-    timer.set(timer::Output::A, timer.High).set(timer_cfg);
+    const auto timer = TIMER1();
+    timer.set(TIMER1::Output::A, TIMER1::Mode::High).set(timer_cfg);
     while (true) {
     }
 }

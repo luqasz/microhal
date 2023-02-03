@@ -28,11 +28,14 @@ namespace timer {
     template <typename REGS>
     struct CompareMatch {
 
+        using REGS::Compare;
+        using Irq                       = typename REGS::Irq;
+        using Output                    = typename REGS::Output;
         const iomem::RegRW<u16> counter = iomem::RegRW<u16>(REGS::tcnt);
         // Not double buffered.
         const iomem::RegRW<u16> top = iomem::RegRW<u16>(REGS::icr);
 
-        enum Mode {
+        enum class Mode {
             Disconnect = 0,
             Toggle     = 0b1,
             Low        = 0b10,
@@ -83,11 +86,14 @@ namespace timer {
     template <typename REGS>
     struct PWM {
 
-        const iomem::RegRW<u16> counter = iomem::RegRW<u16>(REGS::tcnt);
+        using Irq    = typename REGS::Irq;
+        using Output = typename REGS::Output;
+        const typename REGS::CMP compare {};
+        const iomem::RegRW<u16>  counter = iomem::RegRW<u16>(REGS::tcnt);
         // Not double buffered.
         const iomem::RegRW<u16> top = iomem::RegRW<u16>(REGS::icr);
 
-        enum Mode {
+        enum class Mode {
             Disconnect = 0b00,
             Low        = 0b10,
             High       = 0b11,
@@ -108,14 +114,14 @@ namespace timer {
         const PWM &
         enable(const Irq irq) const
         {
-            iomem::set_bit(REGS::timsk, u8 { irq });
+            iomem::set_bit(REGS::timsk, static_cast<u8>(irq));
             return *this;
         }
 
         const PWM &
         disable(const Irq irq) const
         {
-            iomem::clear_bit(REGS::timsk, u8 { irq });
+            iomem::clear_bit(REGS::timsk, static_cast<u8>(irq));
             return *this;
         }
 
@@ -141,7 +147,7 @@ namespace timer {
             constexpr static u8 COM_BITS = 0b11;
             const usize         POS      = first_lsbit(static_cast<u8>(out));
             const u8            MASK     = static_cast<u8>(COM_BITS << POS);
-            iomem::set_bit<u8>(REGS::tccra, static_cast<u8>(mode << POS), MASK);
+            iomem::set_bit<u8>(REGS::tccra, static_cast<u8>(static_cast<u8>(mode) << POS), MASK);
             return *this;
         }
     };
