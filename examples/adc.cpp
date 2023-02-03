@@ -21,11 +21,15 @@ main(void)
 {
     auto usart  = USART_0().set(config).enable(USART::Channel::TX);
     auto serial = Printer(usart, LineEnd::CRLF);
-    adc::set(adc::Clock::_2);
+    adc::set(adc::Clock::ClockDiv_2);
     adc::set(adc::Vref::AVCC);
     while (true) {
         serial.printLn("Reading ADC");
-        serial.printLn(adc::read(adc::Channel::ADC0));
+        adc::set(adc::Channel::ADC0);
+        adc::start();
+        while (adc::pending()) { };
+        const u16 value = adc::read();
+        serial.printLn(value);
         _delay_ms(1000);
     }
 }

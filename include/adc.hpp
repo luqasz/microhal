@@ -16,17 +16,6 @@
 
 namespace adc {
 
-    enum class Trigger {
-        FreeRunning      = 0,
-        AnalogComparator = SFR::ADCSRB::ADTS0,
-        ExternalIRQ0     = SFR::ADCSRB::ADTS1,
-        Timer0CompareA   = SFR::ADCSRB::ADTS1 | SFR::ADCSRB::ADTS1,
-        Timer0Overflow   = SFR::ADCSRB::ADTS2,
-        Timer1CompareB   = SFR::ADCSRB::ADTS0 | SFR::ADCSRB::ADTS2,
-        Timer1Overflow   = SFR::ADCSRB::ADTS1 | SFR::ADCSRB::ADTS2,
-        Timer1Capture    = SFR::ADCSRB::ADTS0 | SFR::ADCSRB::ADTS1 | SFR::ADCSRB::ADTS2,
-    };
-
     enum class Setting {
         // When Auto Triggering is used, the prescaler is reset when the trigger event occurs.
         AutoTrigger = SFR::ADCSRA::ADATE,
@@ -63,6 +52,12 @@ namespace adc {
         return iomem::read<u16>(SFR::ADC::address);
     }
 
+    bool
+    pending()
+    {
+        return iomem::is_set_bit<u8>(SFR::ADCSRA::address, SFR::ADCSRA::ADSC);
+    }
+
     inline void
     set(const Clock value)
     {
@@ -80,12 +75,12 @@ namespace adc {
     {
         const u8 mux = static_cast<u8>(ch);
         iomem::set_bit<u8>(SFR::ADMUX::address, mux & MUX_MASK, MUX_MASK);
-        if constexpr (SFR::ADCSRB::MUX5 != 0) {
+        if constexpr (MUX5 != 0) {
             if (mux & MUX5) {
-                iomem::set_bit<u8>(SFR::ADCSRB::address, SFR::ADCSRB::MUX5);
+                iomem::set_bit<u8>(MUX5_REG, MUX5);
             }
             else {
-                iomem::clear_bit<u8>(SFR::ADCSRB::address, SFR::ADCSRB::MUX5);
+                iomem::clear_bit<u8>(MUX5_REG, MUX5);
             }
         }
     }
@@ -100,8 +95,7 @@ namespace adc {
     inline void
     set(const Trigger trig)
     {
-        constexpr static u8 TRIG_MASK = SFR::ADCSRB::ADTS0 | SFR::ADCSRB::ADTS1 | SFR::ADCSRB::ADTS2;
-        iomem::set_bit<u8>(SFR::ADCSRB::address, static_cast<u8>(trig), TRIG_MASK);
+        iomem::set_bit<u8>(TRIGGER_REG, static_cast<u8>(trig), TRIGGER_MASK);
     }
 
 }

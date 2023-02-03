@@ -44,11 +44,11 @@ namespace timer {
         ExternalRising  = TCCRB::CS0 | TCCRB::CS1 | TCCRB::CS2,
     };
 
+
     enum Irq : u8 {
         OnOverflow = TIMKS::TOIE,
         OnTop      = TIMKS::ICIE,
     };
-
     constexpr u8 CLOCK_MASK = TCCRB::CS0 | TCCRB::CS1 | TCCRB::CS2;
     constexpr u8 WGM01_MASK = TCCRA::WGM0 | TCCRA::WGM1;
     constexpr u8 WGM23_MASK = TCCRB::WGM2 | TCCRB::WGM3;
