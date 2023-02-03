@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sfr.hpp"
+#include "../common/atmega/usart.hpp"
 
 namespace USART {
 
@@ -40,5 +41,3 @@ namespace USART {
         static constexpr auto ubrrh = ubrrl + 1;
     };
 }
-
-#include "../common/atmega/usart.hpp"
