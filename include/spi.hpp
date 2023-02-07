@@ -46,9 +46,6 @@ namespace spi {
         pol1_pha1 = m3,
     };
 
-    // Dummy SPI2X bit. Doesn't point to any bit in order, clock, mode bits.
-    constexpr u8 SPI2X = SFR::SPCR::SPIE;
-
     enum class MasterClock : u8 {
         _2   = SPI2X,
         _4   = 0,
@@ -94,10 +91,10 @@ namespace spi {
             constexpr u8 CLOCK_MASK      = REGS::spcr::SPR0 | REGS::spcr::SPR1;
             constexpr u8 MODE_MASK       = REGS::spcr::CPHA | REGS::spcr::CPOL;
             constexpr u8 DATA_ORDER_MASK = REGS::spcr::DORD;
-            constexpr u8 MASK            = CLOCK_MASK | MODE_MASK | DATA_ORDER_MASK;
-            static_assert(!(MASK & SPI2X), "SPI2X bit can't be inside MASK");
+            constexpr u8 SPCR_MASK       = CLOCK_MASK | MODE_MASK | DATA_ORDER_MASK;
+            static_assert(!(SPCR_MASK & SPI2X), "SPI2X bit can't be inside SPR0,SPR1 bits");
             const u8 reg_value = static_cast<u8>(target.clock) | static_cast<u8>(target.mode) | static_cast<u8>(target.order);
-            iomem::set_bit<u8>(REGS::spcr::address, reg_value, MASK);
+            iomem::set_bit<u8>(REGS::spcr::address, reg_value, SPCR_MASK);
 
             if (static_cast<u8>(target.clock) & SPI2X) {
                 iomem::set_bit<u8>(REGS::spsr::address, REGS::spsr::SPI2X);

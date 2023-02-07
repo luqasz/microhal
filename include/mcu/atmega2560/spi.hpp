@@ -1,5 +1,7 @@
 #pragma once
+
 #include "sfr.hpp"
+#include <mcu/common/atmega/spi.hpp>
 
 namespace spi {
     struct spi0 {

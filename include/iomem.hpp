@@ -55,8 +55,10 @@ namespace iomem {
     inline void
     set_bit(const usize address, const BIT_SIZE bit, const BIT_SIZE set_mask)
     {
-        modify<BIT_SIZE>(address, [bit, set_mask](BIT_SIZE val) {
-            return static_cast<BIT_SIZE>((val & inverted<BIT_SIZE>(set_mask)) | bit);
+        // Get rid of bits not allowed in set_mask.
+        const BIT_SIZE masked_bit = bit & set_mask;
+        modify<BIT_SIZE>(address, [masked_bit, set_mask](BIT_SIZE val) {
+            return static_cast<BIT_SIZE>((val & inverted<BIT_SIZE>(set_mask)) | masked_bit);
         });
     }
 
