@@ -47,13 +47,13 @@ namespace spi {
     };
 
     enum class MasterClock : u8 {
-        _2   = SPI2X,
-        _4   = 0,
-        _8   = SFR::SPCR::SPR0 | SPI2X,
-        _16  = SFR::SPCR::SPR0,
-        _32  = SFR::SPCR::SPR1 | SPI2X,
-        _64  = SFR::SPCR::SPR1,
-        _128 = SFR::SPCR::SPR0 | SFR::SPCR::SPR1,
+        ClockDiv_2   = SPI2X,
+        ClockDiv_4   = 0,
+        ClockDiv_8   = SFR::SPCR::SPR0 | SPI2X,
+        ClockDiv_16  = SFR::SPCR::SPR0,
+        ClockDiv_32  = SFR::SPCR::SPR1 | SPI2X,
+        ClockDiv_64  = SFR::SPCR::SPR1,
+        ClockDiv_128 = SFR::SPCR::SPR0 | SFR::SPCR::SPR1,
     };
 
     struct Target {
