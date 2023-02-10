@@ -125,8 +125,10 @@ namespace spi {
         rx_tx(u8 & byte) const
         {
             iomem::write<u8>(REGS::spdr::address, byte);
-            iomem::set_bit_wait<u8>(REGS::spsr::address, REGS::spsr::SPIF); // Wait for transmission complete.
-            byte = iomem::read<u8>(REGS::spdr::address);                    // After reading SPDR, SPIF is cleared bu hardware.
+            // Wait for transmission complete.
+            iomem::set_bit_wait<u8>(REGS::spsr::address, REGS::spsr::SPIF);
+            // After reading SPDR, SPIF is cleared.
+            byte = iomem::read<u8>(REGS::spdr::address);
         }
     };
 }
