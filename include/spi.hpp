@@ -33,7 +33,7 @@ namespace spi {
     };
 
     /*
-    In which mode shoudl operate in.
+    In which mode should operate in.
     */
     enum class Mode : u8 {
         m0        = 0,                                 // clock polarity=0, clock phase=0
