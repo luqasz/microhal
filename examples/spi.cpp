@@ -15,7 +15,7 @@ constexpr units::Frequency fcpu = units::Hz * 11059200;
 auto constexpr target = spi::Target {
     spi::Order::MSB,
     spi::Mode::m0,
-    spi::MasterClock::_2,
+    spi::MasterClock::ClockDiv_2,
 };
 
 constexpr auto config = USART::Config {
