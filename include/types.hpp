@@ -17,10 +17,6 @@ using i64 = int64_t;
 template <typename T>
 struct limits;
 
-template <typename T>
-struct limits<const T> : public limits<T> {
-};
-
 template <>
 struct limits<u8> {
     static constexpr u8 max = 255;
@@ -37,4 +33,10 @@ template <>
 struct limits<u32> {
     static constexpr u32 max = 4294967295;
     static constexpr u32 min = 0;
+};
+
+template <>
+struct limits<u64> {
+    static constexpr u64 max = 18446744073709551615UL;
+    static constexpr u64 min = 0;
 };
