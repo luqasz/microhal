@@ -14,24 +14,29 @@ struct is_unsigned_struct {
 };
 
 template <>
-struct is_unsigned_struct<u8> {
+struct is_unsigned_struct<unsigned char> {
     static constexpr bool value = true;
 };
 
 template <>
-struct is_unsigned_struct<u16> {
+struct is_unsigned_struct<unsigned short> {
     static constexpr bool value = true;
 };
 
 template <>
-struct is_unsigned_struct<u32> {
+struct is_unsigned_struct<unsigned int> {
     static constexpr bool value = true;
 };
 
 template <>
-struct is_unsigned_struct<u64> {
+struct is_unsigned_struct<unsigned long> {
+    static constexpr bool value = true;
+};
+
+template <>
+struct is_unsigned_struct<unsigned long long> {
     static constexpr bool value = true;
 };
 
 template <typename T>
-constexpr bool is_unsigned = is_unsigned_struct<T>::value;
+inline constexpr bool is_unsigned = is_unsigned_struct<T>::value;

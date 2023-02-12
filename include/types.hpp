@@ -15,7 +15,10 @@ using i32 = int32_t;
 using i64 = int64_t;
 
 template <typename T>
-struct limits;
+struct limits {
+    static constexpr usize max = 0;
+    static constexpr usize min = 0;
+};
 
 template <>
 struct limits<u8> {
