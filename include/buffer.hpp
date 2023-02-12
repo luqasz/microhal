@@ -90,6 +90,22 @@ namespace buffer {
         {
             return ptr[idx];
         }
+
+        constexpr bool
+        operator==(const Span<const T> & other) const
+        {
+            if (size() != other.size()) {
+                return false;
+            }
+            usize idx = 0;
+            while (idx < size()) {
+                if ((*this)[idx] != other[idx]) {
+                    return false;
+                }
+                idx += 1;
+            }
+            return true;
+        }
     };
 
     template <typename Contained, usize Size>
@@ -157,21 +173,21 @@ namespace buffer {
         }
 
         constexpr
-        operator Span<Contained>() const
+        operator const Span<const Contained>() const
         {
             return Span(elems);
         }
 
         constexpr Span<Contained>
-        span()
+        span(const usize sidx = 0, const usize num = Size)
         {
-            return Span(elems);
+            return Span(elems).slice(sidx, num);
         }
 
-        constexpr const Span<Contained>
-        span() const
+        constexpr const Span<const Contained>
+        span(const usize sidx = 0, const usize num = Size) const
         {
-            return Span(elems);
+            return Span(elems).slice(sidx, num);
         }
     };
 
