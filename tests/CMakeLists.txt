@@ -9,6 +9,7 @@ add_executable(
     byte_swap.cpp
     encoders.cpp
     core.cpp
+    cobs.cpp
 )
 
 target_link_libraries(${LIBTESTS_TARGET} PUBLIC ${PROJECT_NAME})
