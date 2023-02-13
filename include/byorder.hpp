@@ -2,6 +2,8 @@
 
 #include "defs.hpp"
 #include "types.hpp"
+#include "concepts.hpp"
+#include "buffer.hpp"
 
 enum class endian : usize {
     little  = __ORDER_LITTLE_ENDIAN__,
@@ -30,7 +32,7 @@ namespace byorder {
         return __builtin_bswap64(val);
     }
 
-    template <endian INTO, typename SRC>
+    template <endian INTO, Unsigned SRC>
     constexpr SRC PUREFN
     into(const SRC val)
     {
@@ -42,7 +44,7 @@ namespace byorder {
         }
     }
 
-    template <endian INTO, typename SRC>
+    template <endian INTO, Unsigned SRC>
     constexpr SRC PUREFN
     from(const SRC val)
     {
@@ -52,5 +54,99 @@ namespace byorder {
         else {
             return swap(val);
         }
+    }
+
+    template <endian INTO>
+    constexpr buffer::Array<u8, 2> PUREFN
+    into_bytes(const u16 val)
+    {
+        u16 value = val;
+        if constexpr (INTO != endian::native) {
+            value = swap(val);
+        }
+        return buffer::Array<u8, 2> {
+            u8(value & 0xFF),
+            u8((value >> 8) & 0xFF),
+        };
+    }
+
+    template <endian INTO>
+    constexpr buffer::Array<u8, 4> PUREFN
+    into_bytes(const u32 val)
+    {
+        u32 value = val;
+        if constexpr (INTO != endian::native) {
+            value = swap(val);
+        }
+        return buffer::Array<u8, 4> {
+            u8(value & 0xFF),
+            u8((value >> 8) & 0xFF),
+            u8((value >> 16) & 0xFF),
+            u8((value >> 24) & 0xFF),
+        };
+    }
+
+    template <endian INTO>
+    constexpr buffer::Array<u8, 8> PUREFN
+    into_bytes(const u64 val)
+    {
+        u64 value = val;
+        if constexpr (INTO != endian::native) {
+            value = swap(val);
+        }
+        return buffer::Array<u8, 8> {
+            u8(value & 0xFF),
+            u8((value >> 8) & 0xFF),
+            u8((value >> 16) & 0xFF),
+            u8((value >> 24) & 0xFF),
+            u8((value >> 32) & 0xFF),
+            u8((value >> 40) & 0xFF),
+            u8((value >> 48) & 0xFF),
+            u8((value >> 56) & 0xFF),
+        };
+    }
+
+    template <endian INTO>
+    constexpr u16 PUREFN
+    from_bytes(const buffer::Array<u8, 2> & bytes)
+    {
+        u16 value = bytes[0] | //
+            u16(u16(bytes[1]) << 8);
+        if constexpr (INTO != endian::native) {
+            value = swap(value);
+        }
+        return value;
+    }
+
+    template <endian INTO>
+    constexpr u32 PUREFN
+    from_bytes(const buffer::Array<u8, 4> & bytes)
+    {
+        u32 value = bytes[0] |         //
+            u32(u32(bytes[1]) << 8) |  //
+            u32(u32(bytes[2]) << 16) | //
+            u32(u32(bytes[3]) << 24);
+        if constexpr (INTO != endian::native) {
+            value = swap(value);
+        }
+        return value;
+    }
+
+    template <endian INTO>
+    constexpr u64 PUREFN
+    from_bytes(const buffer::Array<u8, 8> & bytes)
+    {
+        u64 value = bytes[0] |         //
+            u64(u64(bytes[1]) << 8) |  //
+            u64(u64(bytes[2]) << 16) | //
+            u64(u64(bytes[3]) << 24) | //
+            u64(u64(bytes[4]) << 32) | //
+            u64(u64(bytes[5]) << 40) | //
+            u64(u64(bytes[6]) << 48) | //
+            u64(u64(bytes[7]) << 56);
+        if constexpr (INTO != endian::native) {
+            value = swap(value);
+        }
+        return value;
     }
 }

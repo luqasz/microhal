@@ -23,7 +23,6 @@ set_target_properties(
 target_compile_definitions(
     ${LIBTESTS_TARGET}
     PUBLIC
-    F_CPU=16000000UL
 )
 
 target_compile_options(
@@ -39,9 +38,6 @@ target_compile_options(
     -Wdouble-promotion
     -pedantic-errors
     -funsigned-char
-    -fno-exceptions
-    -fno-asynchronous-unwind-tables
-    -fno-rtti
 )
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")

@@ -22,24 +22,28 @@ struct limits {
 
 template <>
 struct limits<u8> {
-    static constexpr u8 max = 255;
-    static constexpr u8 min = 0;
+    static constexpr u8 max   = 255;
+    static constexpr u8 min   = 0;
+    static constexpr u8 bytes = 0;
 };
 
 template <>
 struct limits<u16> {
-    static constexpr u16 max = 65535;
-    static constexpr u16 min = 0;
+    static constexpr u16 max   = 65535;
+    static constexpr u16 min   = 0;
+    static constexpr u16 bytes = 1;
 };
 
 template <>
 struct limits<u32> {
-    static constexpr u32 max = 4294967295;
-    static constexpr u32 min = 0;
+    static constexpr u32 max   = 4294967295;
+    static constexpr u32 min   = 0;
+    static constexpr u32 bytes = 4;
 };
 
 template <>
 struct limits<u64> {
-    static constexpr u64 max = 18446744073709551615UL;
-    static constexpr u64 min = 0;
+    static constexpr u64 max   = 18446744073709551615UL;
+    static constexpr u64 min   = 0;
+    static constexpr u64 bytes = 8;
 };
