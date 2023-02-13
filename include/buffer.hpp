@@ -189,6 +189,19 @@ namespace buffer {
         {
             return Span(elems).slice(sidx, num);
         }
+
+        constexpr bool
+        operator==(const Array<Contained, Size> & other) const
+        {
+            usize idx = 0;
+            for (const Contained & elem : *this) {
+                if (elem != other[idx]) {
+                    return false;
+                    idx += 1;
+                }
+            }
+            return true;
+        }
     };
 
     template <class T, class... U>
