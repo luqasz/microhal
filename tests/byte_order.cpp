@@ -1,6 +1,6 @@
 #include "catch.hpp"
 
-#include <byorder.hpp>
+#include <byte_order.hpp>
 
 TEST_CASE("Into big endian u16")
 {

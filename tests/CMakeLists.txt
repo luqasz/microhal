@@ -6,7 +6,7 @@ add_executable(
     tests_main.cpp
     thermistor.cpp
     vdiv.cpp
-    byte_swap.cpp
+    byte_order.cpp
     encoders.cpp
     core.cpp
     cobs.cpp
