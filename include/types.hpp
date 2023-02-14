@@ -24,14 +24,14 @@ template <>
 struct limits<u8> {
     static constexpr u8 max   = 255;
     static constexpr u8 min   = 0;
-    static constexpr u8 bytes = 0;
+    static constexpr u8 bytes = 1;
 };
 
 template <>
 struct limits<u16> {
     static constexpr u16 max   = 65535;
     static constexpr u16 min   = 0;
-    static constexpr u16 bytes = 1;
+    static constexpr u16 bytes = 2;
 };
 
 template <>
