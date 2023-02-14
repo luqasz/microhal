@@ -26,6 +26,7 @@ namespace i2c {
         Slave address is 0x48 which is 01001000 (8 bit in binary).
         For writing into device, address will be converted into 0x90 10010000 (last bit 0 means writing)
         For reading from device, address will be converted into 0x91 10010001 (last bit 1 means reading)
+        TODO Fix this description ^ 7th bit is from left, not right.
         */
         const u8               address;
         const u8               start_address;

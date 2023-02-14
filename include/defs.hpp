@@ -13,3 +13,7 @@
 #if !defined(_WIN32) || !defined(_WIN64) || !defined(__linux__) || !defined(__APPLE__)
 #    define NO_OS
 #endif
+
+// clang-format off
+#define SMART_STRINGIFY_CASE(ENUM_CODE) case ENUM_CODE: return # ENUM_CODE
+// clang-format on
