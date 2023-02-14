@@ -54,28 +54,52 @@ from(const SRC val)
     }
 }
 
-template <endian INTO, Unsigned UINT>
+template <endian INTO>
 constexpr inline auto PUREFN
-into_bytes(UINT value)
+into_bytes(u16 value)
 {
     if constexpr (INTO != endian::native) {
         value = swap(value);
     }
-    buffer::Array<u8, limits<UINT>::bytes> bytes { 0 };
-    switch (limits<UINT>::bytes) {
-        case 8:
-            bytes[7] = u8((value >> 56) & 0xFF);
-            bytes[6] = u8((value >> 48) & 0xFF);
-            bytes[5] = u8((value >> 40) & 0xFF);
-            bytes[4] = u8((value >> 32) & 0xFF);
-        case 4:
-            bytes[3] = u8((value >> 24) & 0xFF);
-            bytes[2] = u8((value >> 16) & 0xFF);
-        case 2:
-            bytes[1] = u8((value >> 8) & 0xFF);
-            bytes[0] = u8(value & 0xFF);
+    return buffer::Array<u8, 2> {
+        u8(value & 0xFF),
+        u8((value >> 8) & 0xFF),
+    };
+}
+
+template <endian INTO>
+constexpr inline auto PUREFN
+into_bytes(u32 value)
+{
+    if constexpr (INTO != endian::native) {
+        value = swap(value);
     }
-    return bytes;
+    return buffer::Array<u8, 4> {
+        u8(value & 0xFF),
+        u8((value >> 8) & 0xFF),
+        u8((value >> 16) & 0xFF),
+        u8((value >> 24) & 0xFF),
+    };
+}
+
+template <endian INTO>
+constexpr inline auto PUREFN
+into_bytes(u64 value)
+{
+    if constexpr (INTO != endian::native) {
+        value = swap(value);
+    }
+    return buffer::Array<u8, 8> {
+        u8(value & 0xFF),
+        u8((value >> 8) & 0xFF),
+        u8((value >> 16) & 0xFF),
+        u8((value >> 24) & 0xFF),
+        u8((value >> 32) & 0xFF),
+        u8((value >> 40) & 0xFF),
+        u8((value >> 48) & 0xFF),
+        u8((value >> 56) & 0xFF),
+
+    };
 }
 
 template <endian INTO>
