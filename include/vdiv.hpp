@@ -32,7 +32,7 @@ namespace vdiv {
       ADV bits
       resistance in Ω
     */
-    constexpr float PUREFN
+    constexpr float CONSTFN
     calc_sink_r(const float adc_val, const float adc_bits, const float r1)
     {
         return r1 / ((static_cast<float>(pow(2, adc_bits)) / adc_val) - 1);
@@ -44,7 +44,7 @@ namespace vdiv {
       ADV bits
       resistance in Ω
     */
-    constexpr float PUREFN
+    constexpr float CONSTFN
     calc_source_r(const float adc_val, const float adc_bits, const float r2)
     {
         return r2 * ((static_cast<float>(pow(2, adc_bits)) / adc_val) - 1);

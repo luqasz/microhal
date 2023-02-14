@@ -85,7 +85,7 @@ namespace timer {
     };
 
     template <typename TOP_REG>
-    PUREFN constexpr TimerConfig
+    CONSTFN constexpr TimerConfig
     calc_prescaled_top(const units::Frequency & fcpu, const units::Frequency & desired)
     {
         for (Prescaler p : prescalers) {

@@ -12,26 +12,26 @@ enum class endian : usize {
     network = __ORDER_BIG_ENDIAN__,
 };
 
-constexpr u16 PUREFN
+constexpr u16 CONSTFN
 swap(const u16 val)
 {
     return __builtin_bswap16(val);
 }
 
-constexpr u32 PUREFN
+constexpr u32 CONSTFN
 swap(const u32 val)
 {
     return __builtin_bswap32(val);
 }
 
-constexpr u64 PUREFN
+constexpr u64 CONSTFN
 swap(const u64 val)
 {
     return __builtin_bswap64(val);
 }
 
 template <endian INTO, Unsigned SRC>
-constexpr SRC PUREFN
+constexpr SRC CONSTFN
 into(const SRC val)
 {
     if constexpr (endian::native == INTO) {
@@ -43,7 +43,7 @@ into(const SRC val)
 }
 
 template <endian INTO, Unsigned SRC>
-constexpr SRC PUREFN
+constexpr SRC CONSTFN
 from(const SRC val)
 {
     if constexpr (endian::native == INTO) {
@@ -55,7 +55,7 @@ from(const SRC val)
 }
 
 template <endian INTO>
-constexpr inline auto PUREFN
+constexpr inline auto CONSTFN
 into_bytes(u16 value)
 {
     if constexpr (INTO != endian::native) {
@@ -68,7 +68,7 @@ into_bytes(u16 value)
 }
 
 template <endian INTO>
-constexpr inline auto PUREFN
+constexpr inline auto CONSTFN
 into_bytes(u32 value)
 {
     if constexpr (INTO != endian::native) {
@@ -83,7 +83,7 @@ into_bytes(u32 value)
 }
 
 template <endian INTO>
-constexpr inline auto PUREFN
+constexpr inline auto CONSTFN
 into_bytes(u64 value)
 {
     if constexpr (INTO != endian::native) {
@@ -103,7 +103,7 @@ into_bytes(u64 value)
 }
 
 template <endian INTO>
-constexpr u16 PUREFN
+constexpr u16 CONSTFN
 from_bytes(const buffer::Array<u8, 2> & bytes)
 {
     u16 value = bytes[0] | //
@@ -115,7 +115,7 @@ from_bytes(const buffer::Array<u8, 2> & bytes)
 }
 
 template <endian INTO>
-constexpr u32 PUREFN
+constexpr u32 CONSTFN
 from_bytes(const buffer::Array<u8, 4> & bytes)
 {
     u32 value = bytes[0] |         //
@@ -129,7 +129,7 @@ from_bytes(const buffer::Array<u8, 4> & bytes)
 }
 
 template <endian INTO>
-constexpr u64 PUREFN
+constexpr u64 CONSTFN
 from_bytes(const buffer::Array<u8, 8> & bytes)
 {
     u64 value = bytes[0] |         //

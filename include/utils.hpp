@@ -6,7 +6,7 @@
 
 template <typename T>
     requires is_unsigned<T> bool
-constexpr PUREFN
+constexpr CONSTFN
 is_power_of_two(T number)
 {
     return (number != 0) and (number & (number - 1)) == 0;
@@ -15,7 +15,7 @@ is_power_of_two(T number)
 // Return first bit position starting from LSB and counting from 0.
 template <typename T>
     requires is_unsigned<T>
-usize constexpr PUREFN
+usize constexpr CONSTFN
 first_lsbit(T n)
 {
     usize i = 1, pos = 0;
@@ -33,7 +33,7 @@ first_lsbit(T n)
 
 template <typename T>
     requires is_unsigned<T>
-constexpr T PUREFN
+constexpr T CONSTFN
 countSetBits(T number)
 {
     T count = 0;
@@ -46,7 +46,7 @@ countSetBits(T number)
 
 template <typename T>
     requires is_unsigned<T>
-constexpr T PUREFN
+constexpr T CONSTFN
 inverted(T value)
 {
     return static_cast<T>(~value);

@@ -31,7 +31,7 @@ namespace thermistor {
     Provide each in steps of 25 °C.
     See producers data sheet for those values.
     */
-    constexpr Coefficients PUREFN
+    constexpr Coefficients CONSTFN
     calc_coef(const CelsiusOhm & rt1, const CelsiusOhm & rt2, const CelsiusOhm & rt3)
     {
         const float Y1 = 1 / (rt1.temp + KELVIN_C);
@@ -62,7 +62,7 @@ namespace thermistor {
     Return:
       Temperature in °C
     */
-    constexpr float PUREFN
+    constexpr float CONSTFN
     calc_temp(const float resistance, const Coefficients & coef)
     {
         const float log_r     = log(resistance);
@@ -79,7 +79,7 @@ namespace thermistor {
     Return
       Temperature in °C.
     */
-    constexpr float PUREFN
+    constexpr float CONSTFN
     calc_temp(const float resistance, const CelsiusOhm & nominal, const float beta)
     {
         const float in_kelvin = 1.0f / (nominal.temp + KELVIN_C) + static_cast<float>(log(resistance / nominal.res)) / beta;

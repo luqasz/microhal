@@ -1,12 +1,12 @@
 #pragma once
 
 // Function that:
-// * does not access any global data
+// * can safely read any non-volatile objects, and modify the value of objects in a way that does not affect their return value or the observable state of the program
 // * called with same arguments, return same result
 #define PUREFN __attribute__((pure))
 
 // Function that:
-// * may access any global const data
+// * may access any global non volatile constants
 // * called with same arguments, return same result
 #define CONSTFN __attribute__((const))
 
