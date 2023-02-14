@@ -208,8 +208,11 @@ namespace buffer {
     Array(T, U...) -> Array<T, 1 + sizeof...(U)>;
 
     template <typename DATA_TYPE, usize BUFFER_SIZE>
-        requires(is_power_of_two(BUFFER_SIZE) and BUFFER_SIZE > 1 and BUFFER_SIZE <= ((limits<usize>::max / 2) + 1))
+        requires(BUFFER_SIZE > 1)
     class Circular {
+        // clangd doesn't like below assertions inside requires()
+        static_assert(is_power_of_two(BUFFER_SIZE), "Buffer size must be power of 2.");
+        static_assert(BUFFER_SIZE <= ((limits<usize>::max / 2) + 1), "Buffer size must be at max half of usize.");
 
     private:
         usize                  head              = 0;
