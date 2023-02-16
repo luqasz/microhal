@@ -215,10 +215,10 @@ namespace buffer {
         static_assert(BUFFER_SIZE <= ((limits<usize>::max / 2) + 1), "Buffer size must be at max half of usize.");
 
     private:
-        usize                  head              = 0;
-        usize                  tail              = 0;
-        DATA_TYPE              data[BUFFER_SIZE] = { 0 };
-        constexpr static usize mask              = BUFFER_SIZE - 1;
+        usize                  head = 0;
+        usize                  tail = 0;
+        constexpr static usize mask = BUFFER_SIZE - 1;
+        DATA_TYPE              data[BUFFER_SIZE];
 
     public:
         constexpr usize
