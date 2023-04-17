@@ -52,7 +52,7 @@ namespace adc {
         return iomem::read<u16>(SFR::ADC::address);
     }
 
-    bool
+    inline bool
     pending()
     {
         return iomem::is_set_bit<u8>(SFR::ADCSRA::address, SFR::ADCSRA::ADSC);
