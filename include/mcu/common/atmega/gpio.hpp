@@ -30,6 +30,12 @@ namespace gpio {
         const usize port_address;
         const usize pin_address;
         const usize ddr_address;
+
+        constexpr bool
+        operator==(const Port & other) const
+        {
+            return other.ddr_address == ddr_address and other.pin_address == pin_address and other.port_address == port_address;
+        }
     };
 
     struct Pin {
@@ -56,6 +62,48 @@ namespace gpio {
             iomem::write<u8>(port.ddr_address, 0);
             return iomem::read<u8>(port.pin_address);
         }
+    };
+
+    // Takes at least 2 pins and forms a N bit bus.
+    // Pins must share same port address.
+    template <Pin F, Pin... O>
+        requires(F.port.port_address == (O.port.port_address | ...))
+    struct PortPins {
+        constexpr static u16 ddr_address  = F.port.ddr_address;
+        constexpr static u16 pin_address  = F.port.pin_address;
+        constexpr static u16 port_address = F.port.port_address;
+        constexpr static u8  pins         = F.number | (O.number | ...);
+
+        struct Output;
+        struct Input;
+
+        struct Output {
+            Output()
+            {
+                iomem::set_bit<u8>(ddr_address, pins);
+            }
+
+            void
+            write(const u8 byte) const
+            {
+                iomem::set_bit<u8>(port_address, byte, pins);
+            }
+        };
+
+        struct Input {
+            Input(const PullMode plmode)
+            {
+                iomem::clear_bit<u8>(ddr_address, pins);
+                const u8 mode = plmode == PullMode::PullUp ? pins : 0;
+                iomem::set_bit<u8>(ddr_address, mode, pins);
+            }
+
+            u8
+            read() const
+            {
+                return (iomem::read<u8>(pin_address) & pins);
+            }
+        };
     };
 
     struct Output {
