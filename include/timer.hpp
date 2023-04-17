@@ -16,11 +16,6 @@
 #    error "Unknown MCU."
 #endif
 
-// !!
-// OCR = 0 results in narrow spike
-// top = ICR when top < current counter value, timer has to count to MAX, then overflows. This results in missed events.
-// start/counter value can be set in IRQ
-
 namespace timer {
 
     // Capture/ICF irq fired when counter = TOP.
@@ -28,10 +23,10 @@ namespace timer {
     template <typename REGS>
     struct CompareMatch {
 
-        using REGS::Compare;
-        using Irq                       = typename REGS::Irq;
-        using Output                    = typename REGS::Output;
-        const iomem::RegRW<u16> counter = iomem::RegRW<u16>(REGS::tcnt);
+        using Irq    = typename REGS::Irq;
+        using Output = typename REGS::Output;
+        const typename REGS::CMP compare {};
+        const iomem::RegRW<u16>  counter = iomem::RegRW<u16>(REGS::tcnt);
         // Not double buffered.
         const iomem::RegRW<u16> top = iomem::RegRW<u16>(REGS::icr);
 
@@ -55,9 +50,23 @@ namespace timer {
         }
 
         const CompareMatch &
+        enable(const Irq irq) const
+        {
+            iomem::set_bit(REGS::timsk, static_cast<u8>(irq));
+            return *this;
+        }
+
+        const CompareMatch &
+        disable(const Irq irq) const
+        {
+            iomem::clear_bit(REGS::timsk, static_cast<u8>(irq));
+            return *this;
+        }
+
+        const CompareMatch &
         set(const Clock clk) const
         {
-            iomem::set_bit(REGS::tccrb, clk, CLOCK_MASK);
+            iomem::set_bit(REGS::tccrb, u8(clk), CLOCK_MASK);
             return *this;
         }
 
