@@ -22,7 +22,7 @@ public:
     {
         reg = sreg_value;
         // clang-format off
-        __asm__ volatile ("" ::: "memory");
+        __asm__ __volatile__ ("" ::: "memory");
         // clang-format on
     }
 };
