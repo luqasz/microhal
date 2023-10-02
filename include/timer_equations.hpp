@@ -7,9 +7,9 @@
 namespace timer {
 
     /*
-     Given timer input frequency, desired frequency, timer counts
-     return prescaler value.
-     */
+    Given timer input frequency, desired frequency, timer counts
+    return prescaler value.
+    */
     CONSTFN constexpr u32
     calc_prescaler(const units::Frequency & fin, const units::Frequency & fout, const u32 counts)
     {
@@ -17,9 +17,9 @@ namespace timer {
     }
 
     /*
-     Given timer input frequency, desired frequency, timer prescaler,
-     return number of timer counts required.
-     */
+    Given timer input frequency, desired frequency, timer prescaler,
+    return number of timer counts required.
+    */
     CONSTFN constexpr u32
     calc_counts(const units::Frequency & fin, const units::Frequency & fout, const u32 presc)
     {
