@@ -15,5 +15,9 @@
 #endif
 
 // clang-format off
-#define SMART_STRINGIFY_CASE(ENUM_CODE) case ENUM_CODE: return # ENUM_CODE
+#define ENUM_STR_CASE(ENUM_CODE) case ENUM_CODE: return #ENUM_CODE
 // clang-format on
+
+#define ENUM(name, atype, ...) \
+    enum name { __VA_ARGS__ }; \
+    static constexpr atype All_##name##_usize[] = { __VA_ARGS__ };
