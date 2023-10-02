@@ -31,3 +31,4 @@ BraceWrapping:
     AfterNamespace: false
 CompactNamespaces: false
 NamespaceIndentation: All
+BreakBeforeConceptDeclarations: Always
