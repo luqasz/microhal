@@ -356,7 +356,7 @@ namespace buffer {
     };
 
     template <typename CT, usize BUFFER_SIZE>
-        requires(BUFFER_SIZE > 1)
+    requires(BUFFER_SIZE > 1)
     struct Circular {
         using ContainedType = CT;
         using IndexType     = usize;
@@ -407,7 +407,7 @@ namespace buffer {
     };
 
     template <typename T, typename U>
-        requires Assignable<T, U>
+    requires Assignable<T, U>
     constexpr usize
     copy(const Span<T> src, Span<U> dst)
     {
@@ -421,7 +421,7 @@ namespace buffer {
     }
 
     template <typename T, Writer W>
-        requires Assignable<T, typename W::ContainedType>
+    requires Assignable<T, typename W::ContainedType>
     constexpr usize
     copy(const Span<T> src, W & dst)
     {
@@ -435,7 +435,7 @@ namespace buffer {
     }
 
     template <Reader R, typename T>
-        requires Assignable<typename R::ContainedType, T>
+    requires Assignable<typename R::ContainedType, T>
     constexpr usize
     copy(R & src, Span<T> dst)
     {
@@ -449,7 +449,7 @@ namespace buffer {
     }
 
     template <Reader R, Writer W>
-        requires Assignable<typename R::ContainedType, typename W::ContainedType>
+    requires Assignable<typename R::ContainedType, typename W::ContainedType>
     constexpr usize
     copy(R & src, W & dst)
     {

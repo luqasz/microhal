@@ -5,8 +5,8 @@
 #include "traits.hpp"
 
 template <typename T>
-    requires is_unsigned<T> bool
-constexpr CONSTFN
+requires is_unsigned<T>
+bool constexpr CONSTFN
 is_power_of_two(T number)
 {
     return (number != 0) and (number & (number - 1)) == 0;
@@ -14,7 +14,7 @@ is_power_of_two(T number)
 
 // Return first bit position starting from LSB and counting from 0.
 template <typename T>
-    requires is_unsigned<T>
+requires is_unsigned<T>
 usize constexpr CONSTFN
 first_lsbit(T n)
 {
@@ -32,7 +32,7 @@ first_lsbit(T n)
 }
 
 template <typename T>
-    requires is_unsigned<T>
+requires is_unsigned<T>
 constexpr T CONSTFN
 countSetBits(T number)
 {
@@ -45,7 +45,7 @@ countSetBits(T number)
 }
 
 template <typename T>
-    requires is_unsigned<T>
+requires is_unsigned<T>
 constexpr T CONSTFN
 inverted(T value)
 {

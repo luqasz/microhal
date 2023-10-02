@@ -28,7 +28,7 @@ namespace cobs {
     }
 
     template <Writer DST>
-        requires Assignable<u8, typename DST::ContainedType>
+    requires Assignable<u8, typename DST::ContainedType>
     constexpr usize
     encode(const buffer::Span<const u8> in, DST & out)
     {

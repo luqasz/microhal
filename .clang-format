@@ -32,3 +32,6 @@ BraceWrapping:
 CompactNamespaces: false
 NamespaceIndentation: All
 BreakBeforeConceptDeclarations: Always
+RequiresExpressionIndentation: OuterScope
+RequiresClausePosition: OwnLine
+IndentRequiresClause: false

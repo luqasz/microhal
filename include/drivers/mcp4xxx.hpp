@@ -43,9 +43,9 @@ namespace mcp4xxx {
 
     // Return bits ready to be sent over SPI bus.
     template <const usize bits>
-        requires(bits == 10 or bits == 12 or bits == 8)
+    requires(bits == 10 or bits == 12 or bits == 8)
     CONSTFN constexpr u16
-        cmd(const CtrllBits & ctrl, u16 value)
+    cmd(const CtrllBits & ctrl, u16 value)
     {
         if constexpr (bits == 10) {
             value <<= 2;
