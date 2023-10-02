@@ -10,6 +10,7 @@ add_executable(
     encoders.cpp
     core.cpp
     cobs.cpp
+    buffer.cpp
 )
 
 target_link_libraries(${LIBTESTS_TARGET} PUBLIC ${PROJECT_NAME})

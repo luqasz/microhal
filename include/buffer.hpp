@@ -253,6 +253,108 @@ namespace buffer {
     template <class T, class... U>
     Array(T, U...) -> Array<T, 1 + sizeof...(U)>;
 
+    template <typename CT>
+    struct CircPeek {
+        using ContainedType = CT;
+
+        ContainedType * data_ptr;
+        const usize     capacity;
+        usize           head;
+        usize           tail;
+
+        CircPeek() = delete;
+
+        template <usize LEN>
+        explicit CircPeek(const usize head_, const usize tail_, ContainedType (&ptr_)[LEN]) :
+            data_ptr(ptr_), capacity(LEN), head(head_), tail(tail_) { }
+
+        constexpr usize
+        len() const
+        {
+            return static_cast<usize>(head - tail);
+        }
+
+        constexpr usize
+        operator-(const CircPeek & other) const
+        {
+            return other.len() - len();
+        }
+
+        constexpr CircPeek &
+        operator++()
+        {
+            tail++;
+            return *this;
+        }
+
+        constexpr CircPeek
+        operator++(const int l)
+        {
+            CircPeek tmp = *this;
+            tail += l;
+            return tmp;
+        }
+
+        constexpr CircPeek &
+        operator--()
+        {
+            tail--;
+            return *this;
+        }
+
+        constexpr CircPeek
+        operator--(const int l)
+        {
+            CircPeek tmp = *this;
+            tail -= l;
+            return tmp;
+        }
+
+        constexpr bool
+        operator<(const CircPeek & other) const
+        {
+            return other.len() < len();
+        }
+
+        constexpr ContainedType &
+        operator*()
+        {
+            return data_ptr[tail & (capacity - 1)];
+        }
+
+        constexpr const ContainedType &
+        operator*() const
+        {
+            return data_ptr[tail & (capacity - 1)];
+        }
+
+        constexpr bool
+        operator==(const CircPeek & other) const
+        {
+            return data_ptr == other.data_ptr and head == other.head and tail == other.tail;
+        }
+
+        constexpr CircPeek
+        begin() const
+        {
+            return *this;
+        }
+
+        constexpr CircPeek
+        end() const
+        {
+            return CircPeek<ContainedType>(head, head, data_ptr, capacity);
+        }
+
+        constexpr operator CircPeek<const ContainedType>() const
+        {
+            return CircPeek<const ContainedType>(head, tail, data_ptr, capacity);
+        }
+
+        explicit CircPeek(const usize head_, const usize tail_, ContainedType * ptr_, const usize cap) :
+            data_ptr(ptr_), capacity(cap), head(head_), tail(tail_) { }
+    };
+
     template <typename CT, usize BUFFER_SIZE>
         requires(BUFFER_SIZE > 1)
     struct Circular {
@@ -266,6 +368,12 @@ namespace buffer {
         IndexType                  tail = 0;
         constexpr static IndexType mask = BUFFER_SIZE - 1;
         ContainedType              data[BUFFER_SIZE];
+
+        constexpr CircPeek<ContainedType>
+        peek()
+        {
+            return CircPeek<ContainedType>(head, tail, data);
+        }
 
         constexpr usize
         size() const
