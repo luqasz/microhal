@@ -10,9 +10,9 @@ constexpr units::Frequency fcpu = units::Hz * 11059200;
 
 constexpr auto config = USART::Config {
     .char_size = USART::CharacterSize::Bit8,
-    .parity    = USART::Parity::None,
+    .parity = USART::Parity::None,
     .stop_bits = USART::StopBits::One,
-    .ubrr      = USART::ubrr<fcpu, 115200, 2>(),
+    .ubrr = USART::ubrr<fcpu, 115200, 2>(),
 };
 
 using USART_0 = USART::Async<USART::usart0>;
@@ -20,9 +20,9 @@ using USART_0 = USART::Async<USART::usart0>;
 int
 main(void)
 {
-    auto usart  = USART_0().set(config).enable(USART::Channel::TX);
+    auto usart = USART_0().set(config).enable(USART::Channel::TX);
     auto serial = Printer(usart, LineEnd::CRLF);
-    IRQ::enable();
+    irq::global_enable();
     serial.printLn("Enabling watchdog.");
     watchdog::enable(watchdog::Clock::s1);
     serial.printLn("Resetting watchdog.");

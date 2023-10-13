@@ -11,13 +11,13 @@ main(void)
     PinIRQ::set(PinIRQ::INT0, PinIRQ::Rising);
     PinIRQ::enable(PinIRQ::INT0);
 
-    IRQ::enable();
+    irq::global_enable();
     while (true) {
     }
 }
 
 void
-IRQ::INT0()
+irq::INT0::handler()
 {
     static const auto pin = gpio::Output(TOGGLE_PIN);
     pin.toggle();

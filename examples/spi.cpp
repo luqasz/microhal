@@ -20,15 +20,15 @@ auto constexpr target = spi::Target {
 
 constexpr auto config = USART::Config {
     .char_size = USART::CharacterSize::Bit8,
-    .parity    = USART::Parity::None,
+    .parity = USART::Parity::None,
     .stop_bits = USART::StopBits::One,
-    .ubrr      = USART::ubrr<fcpu, 115200, 2>(),
+    .ubrr = USART::ubrr<fcpu, 115200, 2>(),
 };
 
 constexpr auto ctrl_bits = mcp4xxx::CtrllBits {
-    .ch    = mcp4xxx::A,
-    .buf   = mcp4xxx::Buffered,
-    .gain  = mcp4xxx::x1,
+    .ch = mcp4xxx::A,
+    .buf = mcp4xxx::Buffered,
+    .gain = mcp4xxx::x1,
     .state = mcp4xxx::On,
 };
 
@@ -39,8 +39,8 @@ void
 send(SENDER spi, u16 value, const gpio::Output cs)
 {
 
-    const u16 data      = mcp4xxx::cmd<12>(ctrl_bits, value);
-    u8        buffer[2] = {
+    const u16 data = mcp4xxx::cmd<12>(ctrl_bits, value);
+    u8 buffer[2] = {
         static_cast<u8>(data >> 8),
         static_cast<u8>(data),
     };
@@ -52,13 +52,13 @@ send(SENDER spi, u16 value, const gpio::Output cs)
 int
 main(void)
 {
-    auto usart  = USART_0().set(config).enable(USART::Channel::TX);
+    auto usart = USART_0().set(config).enable(USART::Channel::TX);
     auto serial = Printer(usart, LineEnd::CRLF);
-    auto spi    = spi::Master<spi::spi0>(gpio::PB5, gpio::PB6, gpio::PB7);
+    auto spi = spi::Master<spi::spi0>(gpio::PB5, gpio::PB6, gpio::PB7);
     spi.enable();
     auto DAC_CS = gpio::Output(gpio::PB4);
     DAC_CS.set(gpio::High);
-    IRQ::enable();
+    irq::global_enable();
     serial.printLn("Sending bytes over SPI");
     while (true) {
         send(spi, 4095, DAC_CS);
