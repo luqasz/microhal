@@ -36,12 +36,12 @@ main()
     auto serial = Printer(usart, LineEnd::CRLF);
     auto bus = i2c::Master<i2c::i2c0>(fcpu);
     auto dt = DateTime {
+        .year = 2019,
         .second = 50,
         .minute = 59,
         .hour = 23,
         .day = 30,
         .month = 11,
-        .year = 2019,
     };
 
     serial.printLn("Setting date and time.");
