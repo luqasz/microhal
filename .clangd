@@ -8,4 +8,4 @@ InlayHints:
 
 CompileFlags:
   Add:
-  - -I/opt/local/avr/include
+  - -Wno-unknown-attributes
