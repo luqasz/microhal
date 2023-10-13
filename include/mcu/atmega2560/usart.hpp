@@ -6,7 +6,7 @@
 namespace USART {
 
     struct usart0 {
-        static constexpr auto udr   = SFR::UDR0::address;
+        static constexpr auto udr = SFR::UDR0::address;
         static constexpr auto ucsra = SFR::UCSR0A::address;
         static constexpr auto ucsrb = SFR::UCSR0B::address;
         static constexpr auto ucsrc = SFR::UCSR0C::address;
@@ -15,7 +15,7 @@ namespace USART {
     };
 
     struct usart1 {
-        static constexpr auto udr   = SFR::UDR1::address;
+        static constexpr auto udr = SFR::UDR1::address;
         static constexpr auto ucsra = SFR::UCSR1A::address;
         static constexpr auto ucsrb = SFR::UCSR1B::address;
         static constexpr auto ucsrc = SFR::UCSR1C::address;
@@ -24,7 +24,7 @@ namespace USART {
     };
 
     struct usart2 {
-        static constexpr auto udr   = SFR::UDR2::address;
+        static constexpr auto udr = SFR::UDR2::address;
         static constexpr auto ucsra = SFR::UCSR2A::address;
         static constexpr auto ucsrb = SFR::UCSR2B::address;
         static constexpr auto ucsrc = SFR::UCSR2C::address;
@@ -33,7 +33,7 @@ namespace USART {
     };
 
     struct usart3 {
-        static constexpr auto udr   = SFR::UDR3::address;
+        static constexpr auto udr = SFR::UDR3::address;
         static constexpr auto ucsra = SFR::UCSR3A::address;
         static constexpr auto ucsrb = SFR::UCSR3B::address;
         static constexpr auto ucsrc = SFR::UCSR3C::address;

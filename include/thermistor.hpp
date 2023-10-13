@@ -65,8 +65,8 @@ namespace thermistor {
     constexpr float CONSTFN
     calc_temp(const float resistance, const Coefficients & coef)
     {
-        const float log_r     = log(resistance);
-        const float log_r3    = log_r * log_r * log_r;
+        const float log_r = log(resistance);
+        const float log_r3 = log_r * log_r * log_r;
         const float in_kelvin = 1.0f / (coef.a + coef.b * log_r + coef.c * log_r3);
         return in_kelvin - KELVIN_C;
     }

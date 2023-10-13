@@ -28,8 +28,8 @@ namespace i2c {
         For reading from device, address will be converted into 0x91 10010001 (last bit 1 means reading)
         TODO Fix this description ^ 7th bit is from left, not right.
         */
-        const u8               address;
-        const u8               start_address;
+        const u8 address;
+        const u8 start_address;
         const units::Frequency speed;
     };
 
@@ -115,7 +115,7 @@ namespace i2c {
         read(buffer::Span<u8> buffer, const i2c::Target target) const
         {
             usize elems = buffer.size();
-            auto  elem  = buffer.begin();
+            auto elem = buffer.begin();
             set_speed(target.speed);
             start_signal();
             write_blocking(static_cast<u8>(target.address << 1));

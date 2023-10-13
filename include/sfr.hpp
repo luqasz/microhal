@@ -30,7 +30,7 @@ namespace SFR {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Warray-bounds"
         u8 current = iomem<u8>(address);
-        current    = current | inverted<u8>(set_mask);
+        current = current | inverted<u8>(set_mask);
         iomem<u8>(address) |= bit;
 #pragma GCC diagnostic pop
     }

@@ -9,33 +9,33 @@
 namespace HD44780 {
 
     // DB7 high and DB0..DB6 low, represents busy flag.
-    constexpr u8 BUSY_FLAG          = 0x80;
-    constexpr u8 LINE_1_ADDRESS     = 0x00;
-    constexpr u8 LINE_2_ADDRESS     = 0x40;
-    constexpr u8 LINE_3_ADDRESS     = 0x14;
-    constexpr u8 LINE_4_ADDRESS     = 0x54;
-    constexpr u8 SET_CGRAM_ADDRESS  = 0x40;
-    constexpr u8 SET_DDRAM_ADDRESS  = 0x80;
-    constexpr u8 ENTRY_MODE         = 0x04;
-    constexpr u8 DISPLAY_CONTROLL   = 0x08;
-    constexpr u8 FUNCTION_SET       = 0x20;
+    constexpr u8 BUSY_FLAG = 0x80;
+    constexpr u8 LINE_1_ADDRESS = 0x00;
+    constexpr u8 LINE_2_ADDRESS = 0x40;
+    constexpr u8 LINE_3_ADDRESS = 0x14;
+    constexpr u8 LINE_4_ADDRESS = 0x54;
+    constexpr u8 SET_CGRAM_ADDRESS = 0x40;
+    constexpr u8 SET_DDRAM_ADDRESS = 0x80;
+    constexpr u8 ENTRY_MODE = 0x04;
+    constexpr u8 DISPLAY_CONTROLL = 0x08;
+    constexpr u8 FUNCTION_SET = 0x20;
     constexpr u8 ENTRY_CURSOR_RIGHT = ENTRY_MODE | 0x02;
-    constexpr u8 ENTRY_CURSOR_LEFT  = ENTRY_MODE | 0x00;
-    constexpr u8 DisplayOn          = DISPLAY_CONTROLL | 0x04;
-    constexpr u8 DisplayOff         = DISPLAY_CONTROLL | 0x00;
-    constexpr u8 DisplayCursor      = DISPLAY_CONTROLL | 0x02;
-    constexpr u8 HideCursor         = DISPLAY_CONTROLL;
-    constexpr u8 CursorBlink        = DISPLAY_CONTROLL | 0x01;
-    constexpr u8 Mode_8Bit          = FUNCTION_SET | 0x10;
-    constexpr u8 Mode_4Bit          = FUNCTION_SET | 0x00;
-    constexpr u8 Lines_2            = FUNCTION_SET | 0x08;
-    constexpr u8 Lines_1            = FUNCTION_SET | 0x00;
-    constexpr u8 Dots_5x10          = FUNCTION_SET | 0x04;
-    constexpr u8 Dots_5x8           = FUNCTION_SET | 0x00;
+    constexpr u8 ENTRY_CURSOR_LEFT = ENTRY_MODE | 0x00;
+    constexpr u8 DisplayOn = DISPLAY_CONTROLL | 0x04;
+    constexpr u8 DisplayOff = DISPLAY_CONTROLL | 0x00;
+    constexpr u8 DisplayCursor = DISPLAY_CONTROLL | 0x02;
+    constexpr u8 HideCursor = DISPLAY_CONTROLL;
+    constexpr u8 CursorBlink = DISPLAY_CONTROLL | 0x01;
+    constexpr u8 Mode_8Bit = FUNCTION_SET | 0x10;
+    constexpr u8 Mode_4Bit = FUNCTION_SET | 0x00;
+    constexpr u8 Lines_2 = FUNCTION_SET | 0x08;
+    constexpr u8 Lines_1 = FUNCTION_SET | 0x00;
+    constexpr u8 Dots_5x10 = FUNCTION_SET | 0x04;
+    constexpr u8 Dots_5x8 = FUNCTION_SET | 0x00;
 
     enum Cmd {
         ClearScreen = 0x01,
-        CursorHome  = 0x02,
+        CursorHome = 0x02,
     };
 
     /*
@@ -48,16 +48,16 @@ namespace HD44780 {
 
     class LCD {
         const gpio::Bus8Bit & bus;
-        const gpio::Output &  rs;
-        const gpio::Output &  rw;
-        const gpio::Output &  e;
+        const gpio::Output & rs;
+        const gpio::Output & rw;
+        const gpio::Output & e;
         /*
         RS is a Register select pin.
         Low for command,
         High for data,
         */
         auto static constexpr COMMAND = gpio::Low;
-        auto static constexpr DATA    = gpio::High;
+        auto static constexpr DATA = gpio::High;
 
         void
         busy_wait() const

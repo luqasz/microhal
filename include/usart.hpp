@@ -19,9 +19,9 @@ namespace USART {
 
     struct Config {
         const CharacterSize char_size;
-        const Parity        parity;
-        const StopBits      stop_bits;
-        const UBRR          ubrr;
+        const Parity parity;
+        const StopBits stop_bits;
+        const UBRR ubrr;
     };
 
     template <typename REGS>
@@ -73,7 +73,7 @@ namespace USART {
                 // The URSEL must be zero when writing to UBRRH.
                 // To be extra safe, bitwise & speed with register max allowed value.
                 constexpr u16 reg_max = 4095;
-                const u16     value   = static_cast<u16>(cfg.ubrr.value & reg_max);
+                const u16 value = static_cast<u16>(cfg.ubrr.value & reg_max);
                 iomem::write<u8>(REGS::ubrrh, static_cast<u8>(value >> 8));
                 iomem::write<u8>(REGS::ubrrl, static_cast<u8>(value));
             }
@@ -87,10 +87,10 @@ namespace USART {
                 iomem::clear_bit<u8>(REGS::ucsra, UCSRA::U2X);
             }
             constexpr static u8 CHAR_SIZE_MASK = UCSRC::UCSZ0 | UCSRC::UCSZ1;
-            constexpr static u8 PARITY_MASK    = UCSRC::UPM1 | UCSRC::UPM0;
-            constexpr static u8 STOP_BIT_MASK  = UCSRC::USBS;
-            constexpr static u8 MASK           = CHAR_SIZE_MASK | PARITY_MASK | STOP_BIT_MASK;
-            const u8            bits           = u8(cfg.char_size) | u8(cfg.stop_bits) | u8(cfg.parity);
+            constexpr static u8 PARITY_MASK = UCSRC::UPM1 | UCSRC::UPM0;
+            constexpr static u8 STOP_BIT_MASK = UCSRC::USBS;
+            constexpr static u8 MASK = CHAR_SIZE_MASK | PARITY_MASK | STOP_BIT_MASK;
+            const u8 bits = u8(cfg.char_size) | u8(cfg.stop_bits) | u8(cfg.parity);
             ucsrc_set(bits, MASK);
             return *this;
         }

@@ -6,16 +6,16 @@
 namespace mcp4xxx {
 
     enum Channel : u16 {
-        A      = 0,
-        B      = 0x8080,
+        A = 0,
+        B = 0x8080,
         Single = 0, // DACs with single output.
     };
 
     // VREF Input buffer control.
     enum BufferCtrl : u16 {
-        Buffered   = 0x4000,
+        Buffered = 0x4000,
         Unbuffered = 0,
-        None       = 0, // DACs without any buffer control.
+        None = 0, // DACs without any buffer control.
     };
 
     enum Gain : u16 {
@@ -25,14 +25,14 @@ namespace mcp4xxx {
 
     enum State : u16 {
         Off = 0,
-        On  = 0x1000,
+        On = 0x1000,
     };
 
     struct CtrllBits {
-        Channel    ch;
+        Channel ch;
         BufferCtrl buf;
-        Gain       gain;
-        State      state;
+        Gain gain;
+        State state;
 
         constexpr explicit
         operator u16() const

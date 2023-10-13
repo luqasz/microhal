@@ -8,7 +8,7 @@ namespace i2c {
         using twbr = SFR::TWBR;
         using twdr = SFR::TWDR;
 
-        constexpr static u8 ACK  = twcr::TWEA;
+        constexpr static u8 ACK = twcr::TWEA;
         constexpr static u8 NACK = 0;
     };
 }

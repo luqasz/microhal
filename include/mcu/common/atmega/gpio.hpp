@@ -5,7 +5,7 @@
 namespace gpio {
 
     enum State {
-        Low  = 0,
+        Low = 0,
         High = 1,
     };
 
@@ -21,8 +21,8 @@ namespace gpio {
     };
 
     enum PullMode {
-        HiZ    = 0,
-        None   = HiZ,
+        HiZ = 0,
+        None = HiZ,
         PullUp = 1,
     };
 
@@ -39,7 +39,7 @@ namespace gpio {
     };
 
     struct Pin {
-        const Port      port;
+        const Port port;
         const PinNumber number;
     };
 
@@ -69,10 +69,10 @@ namespace gpio {
     template <Pin F, Pin... O>
     requires(F.port.port_address == (O.port.port_address | ...))
     struct PortPins {
-        constexpr static u16 ddr_address  = F.port.ddr_address;
-        constexpr static u16 pin_address  = F.port.pin_address;
+        constexpr static u16 ddr_address = F.port.ddr_address;
+        constexpr static u16 pin_address = F.port.pin_address;
         constexpr static u16 port_address = F.port.port_address;
-        constexpr static u8  pins         = F.number | (O.number | ...);
+        constexpr static u8 pins = F.number | (O.number | ...);
 
         struct Output;
         struct Input;

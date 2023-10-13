@@ -74,9 +74,9 @@ struct String {
     constexpr String &
     operator+=(const String<OLEN> & other)
     {
-        auto       start  = end();
+        auto start = end();
         const auto finish = start + min(free(), other.len());
-        auto       optr   = other.begin();
+        auto optr = other.begin();
         while (start < finish) {
             *start++ = *optr++;
         }

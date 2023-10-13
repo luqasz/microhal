@@ -19,18 +19,18 @@ namespace adc {
     enum class Setting {
         // When Auto Triggering is used, the prescaler is reset when the trigger event occurs.
         AutoTrigger = SFR::ADCSRA::ADATE,
-        Irq         = SFR::ADCSRA::ADIE,
+        Irq = SFR::ADCSRA::ADIE,
         Trigger_Irq = AutoTrigger | Irq,
     };
 
     enum class Clock {
-        Stopped      = 0,
-        ClockDiv_2   = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS0,
-        ClockDiv_4   = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS1,
-        ClockDiv_8   = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS1,
-        ClockDiv_16  = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS2,
-        ClockDiv_32  = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS2,
-        ClockDiv_64  = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS1 | SFR::ADCSRA::ADPS2,
+        Stopped = 0,
+        ClockDiv_2 = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS0,
+        ClockDiv_4 = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS1,
+        ClockDiv_8 = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS1,
+        ClockDiv_16 = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS2,
+        ClockDiv_32 = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS2,
+        ClockDiv_64 = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS1 | SFR::ADCSRA::ADPS2,
         ClockDiv_128 = SFR::ADCSRA::ADEN | SFR::ADCSRA::ADPS0 | SFR::ADCSRA::ADPS1 | SFR::ADCSRA::ADPS2,
     };
 

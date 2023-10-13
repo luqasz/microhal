@@ -36,10 +36,10 @@ namespace spi {
     In which mode should operate in.
     */
     enum class Mode : u8 {
-        m0        = 0,                                 // clock polarity=0, clock phase=0
-        m1        = SFR::SPCR::CPHA,                   // clock polarity=0, clock phase=1
-        m2        = SFR::SPCR::CPOL,                   // clock polarity=1, clock phase=0
-        m3        = SFR::SPCR::CPOL | SFR::SPCR::CPHA, // clock polarity=1, clock phase=1
+        m0 = 0,                                 // clock polarity=0, clock phase=0
+        m1 = SFR::SPCR::CPHA,                   // clock polarity=0, clock phase=1
+        m2 = SFR::SPCR::CPOL,                   // clock polarity=1, clock phase=0
+        m3 = SFR::SPCR::CPOL | SFR::SPCR::CPHA, // clock polarity=1, clock phase=1
         pol0_pha0 = m0,
         pol0_pha1 = m1,
         pol1_pha0 = m2,
@@ -47,18 +47,18 @@ namespace spi {
     };
 
     enum class MasterClock : u8 {
-        ClockDiv_2   = SPI2X,
-        ClockDiv_4   = 0,
-        ClockDiv_8   = SFR::SPCR::SPR0 | SPI2X,
-        ClockDiv_16  = SFR::SPCR::SPR0,
-        ClockDiv_32  = SFR::SPCR::SPR1 | SPI2X,
-        ClockDiv_64  = SFR::SPCR::SPR1,
+        ClockDiv_2 = SPI2X,
+        ClockDiv_4 = 0,
+        ClockDiv_8 = SFR::SPCR::SPR0 | SPI2X,
+        ClockDiv_16 = SFR::SPCR::SPR0,
+        ClockDiv_32 = SFR::SPCR::SPR1 | SPI2X,
+        ClockDiv_64 = SFR::SPCR::SPR1,
         ClockDiv_128 = SFR::SPCR::SPR0 | SFR::SPCR::SPR1,
     };
 
     struct Target {
-        const Order       order;
-        const Mode        mode;
+        const Order order;
+        const Mode mode;
         const MasterClock clock;
     };
 
@@ -88,10 +88,10 @@ namespace spi {
         void
         set(const Target & target) const
         {
-            constexpr u8 CLOCK_MASK      = REGS::spcr::SPR0 | REGS::spcr::SPR1;
-            constexpr u8 MODE_MASK       = REGS::spcr::CPHA | REGS::spcr::CPOL;
+            constexpr u8 CLOCK_MASK = REGS::spcr::SPR0 | REGS::spcr::SPR1;
+            constexpr u8 MODE_MASK = REGS::spcr::CPHA | REGS::spcr::CPOL;
             constexpr u8 DATA_ORDER_MASK = REGS::spcr::DORD;
-            constexpr u8 SPCR_MASK       = CLOCK_MASK | MODE_MASK | DATA_ORDER_MASK;
+            constexpr u8 SPCR_MASK = CLOCK_MASK | MODE_MASK | DATA_ORDER_MASK;
             static_assert(!(SPCR_MASK & SPI2X), "SPI2X bit can't be inside SPR0,SPR1 bits");
             const u8 reg_value = static_cast<u8>(target.clock) | static_cast<u8>(target.mode) | static_cast<u8>(target.order);
             iomem::set_bit<u8>(REGS::spcr::address, reg_value, SPCR_MASK);

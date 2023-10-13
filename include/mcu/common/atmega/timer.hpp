@@ -8,8 +8,8 @@
 namespace timer {
 
     enum TCCRA : u8 {
-        WGM0  = 1,
-        WGM1  = 2,
+        WGM0 = 1,
+        WGM1 = 2,
         COMC0 = 4,
         COMC1 = 8,
         COMB0 = 16,
@@ -19,9 +19,9 @@ namespace timer {
     };
 
     enum TCCRB : u8 {
-        CS0  = 1,
-        CS1  = 2,
-        CS2  = 4,
+        CS0 = 1,
+        CS1 = 2,
+        CS2 = 4,
         WGM2 = 8,
         WGM3 = 16,
         ICES = 64,
@@ -29,22 +29,22 @@ namespace timer {
     };
 
     enum TIMSK : u8 {
-        TOIE  = 0,
+        TOIE = 0,
         OCIEA = 2,
         OCIEB = 4,
         OCIEC = 8,
-        ICIE  = 32,
+        ICIE = 32,
     };
 
     enum Clock : u8 {
-        Stopped         = 0,
-        ClockDiv_1      = TCCRB::CS0,
-        ClockDiv_8      = TCCRB::CS1,
-        ClockDiv_64     = TCCRB::CS0 | TCCRB::CS1,
-        ClockDiv_256    = TCCRB::CS2,
-        ClockDiv_1024   = TCCRB::CS0 | TCCRB::CS2,
+        Stopped = 0,
+        ClockDiv_1 = TCCRB::CS0,
+        ClockDiv_8 = TCCRB::CS1,
+        ClockDiv_64 = TCCRB::CS0 | TCCRB::CS1,
+        ClockDiv_256 = TCCRB::CS2,
+        ClockDiv_1024 = TCCRB::CS0 | TCCRB::CS2,
         ExternalFalling = TCCRB::CS1 | TCCRB::CS2,
-        ExternalRising  = TCCRB::CS0 | TCCRB::CS1 | TCCRB::CS2,
+        ExternalRising = TCCRB::CS0 | TCCRB::CS1 | TCCRB::CS2,
     };
 
     constexpr u8 CLOCK_MASK = TCCRB::CS0 | TCCRB::CS1 | TCCRB::CS2;
@@ -53,12 +53,12 @@ namespace timer {
 
     struct Prescaler {
         const Clock clock;
-        const u16   value;
+        const u16 value;
     };
 
     struct TimerConfig {
         const Clock clock;
-        const u16   top;
+        const u16 top;
     };
 
     constexpr Prescaler prescalers[] = {
@@ -93,13 +93,13 @@ namespace timer {
             if (top < u32 { limits<TOP_REG>::max } + 1) {
                 return TimerConfig {
                     .clock = p.clock,
-                    .top   = static_cast<TOP_REG>(top),
+                    .top = static_cast<TOP_REG>(top),
                 };
             }
         }
         return TimerConfig {
             .clock = Clock::Stopped,
-            .top   = 0,
+            .top = 0,
         };
     }
 }

@@ -9,7 +9,7 @@ namespace buffer {
 
     template <typename T>
     struct Span {
-        T *   ptr;
+        T * ptr;
         usize length;
         using ContainedType = T;
 
@@ -258,9 +258,9 @@ namespace buffer {
         using ContainedType = CT;
 
         ContainedType * data_ptr;
-        const usize     capacity;
-        usize           head;
-        usize           tail;
+        const usize capacity;
+        usize head;
+        usize tail;
 
         CircPeek() = delete;
 
@@ -359,15 +359,15 @@ namespace buffer {
     requires(BUFFER_SIZE > 1)
     struct Circular {
         using ContainedType = CT;
-        using IndexType     = usize;
+        using IndexType = usize;
         // clangd doesn't like below assertions inside requires()
         static_assert(is_power_of_two(BUFFER_SIZE), "Buffer size must be power of 2.");
         static_assert(BUFFER_SIZE <= usize((limits<IndexType>::max / 2) + 1), "Buffer size must be at max half of given index type.");
 
-        IndexType                  head = 0;
-        IndexType                  tail = 0;
+        IndexType head = 0;
+        IndexType tail = 0;
         constexpr static IndexType mask = BUFFER_SIZE - 1;
-        ContainedType              data[BUFFER_SIZE];
+        ContainedType data[BUFFER_SIZE];
 
         constexpr CircPeek<ContainedType>
         peek()
@@ -411,8 +411,8 @@ namespace buffer {
     constexpr usize
     copy(const Span<T> src, Span<U> dst)
     {
-        usize       copied = 0;
-        const usize limit  = min(src.len(), dst.len());
+        usize copied = 0;
+        const usize limit = min(src.len(), dst.len());
         while (copied < limit) {
             dst[copied] = src[copied];
             copied++;
@@ -425,8 +425,8 @@ namespace buffer {
     constexpr usize
     copy(const Span<T> src, W & dst)
     {
-        usize       copied = 0;
-        const usize limit  = min(dst.free(), src.len());
+        usize copied = 0;
+        const usize limit = min(dst.free(), src.len());
         while (copied < limit) {
             dst.write(src[copied]);
             copied++;
@@ -439,8 +439,8 @@ namespace buffer {
     constexpr usize
     copy(R & src, Span<T> dst)
     {
-        usize       copied = 0;
-        const usize limit  = min(src.len(), dst.len());
+        usize copied = 0;
+        const usize limit = min(src.len(), dst.len());
         while (copied < limit) {
             dst[copied] = src.read();
             copied++;
@@ -453,8 +453,8 @@ namespace buffer {
     constexpr usize
     copy(R & src, W & dst)
     {
-        usize       copied = 0;
-        const usize limit  = min(src.len(), dst.free());
+        usize copied = 0;
+        const usize limit = min(src.len(), dst.free());
         while (copied < limit) {
             dst.write(src.read());
             copied++;

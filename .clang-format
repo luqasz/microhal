@@ -19,8 +19,8 @@ UseTab: Never
 AlignTrailingComments: true
 AllowAllParametersOfDeclarationOnNextLine: true
 IncludeBlocks: Regroup
-AlignConsecutiveAssignments: true
-AlignConsecutiveDeclarations: true
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
 AlignEscapedNewlines: Right
 IndentPPDirectives: AfterHash
 BreakConstructorInitializers: AfterColon
@@ -34,3 +34,4 @@ NamespaceIndentation: All
 BreakBeforeConceptDeclarations: Always
 RequiresClausePosition: OwnLine
 IndentRequiresClause: false
+BreakBeforeInlineASMColon: Never

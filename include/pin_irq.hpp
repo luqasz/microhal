@@ -19,11 +19,11 @@
 namespace PinIRQ {
 
     enum Trigger {
-        Low     = 0x00, // Low level must be held until the completion of the currently executing instruction to generate an interrupt.
-        Change  = 0x01, // Any logical change will trigger irq.
-        Any     = Change,
+        Low = 0x00,    // Low level must be held until the completion of the currently executing instruction to generate an interrupt.
+        Change = 0x01, // Any logical change will trigger irq.
+        Any = Change,
         Falling = 0x02, // Falling edge will trigger irq.
-        Rising  = 0x03, // Rising edge will trigger irq.
+        Rising = 0x03,  // Rising edge will trigger irq.
     };
 
     inline void
@@ -33,8 +33,8 @@ namespace PinIRQ {
         // When changing the ISCn1/ISCn0 bits, the interrupt must be disabled by clearing its Interrupt Enable bit in the EIMSK Register.
         // Otherwise an interrupt can occur when the bits are changed.
         constexpr u8 TRIGGER_BITS = 0b11;
-        const u8     bits         = static_cast<u8>(trigger << pin.bit_pos);
-        const u8     MASK         = static_cast<u8>(TRIGGER_BITS << pin.bit_pos);
+        const u8 bits = static_cast<u8>(trigger << pin.bit_pos);
+        const u8 MASK = static_cast<u8>(TRIGGER_BITS << pin.bit_pos);
         iomem::set_bit<u8>(pin.reg, bits, MASK);
     }
 

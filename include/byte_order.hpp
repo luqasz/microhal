@@ -6,9 +6,9 @@
 #include "buffer.hpp"
 
 enum class endian : usize {
-    little  = __ORDER_LITTLE_ENDIAN__,
-    big     = __ORDER_BIG_ENDIAN__,
-    native  = __BYTE_ORDER__,
+    little = __ORDER_LITTLE_ENDIAN__,
+    big = __ORDER_BIG_ENDIAN__,
+    native = __BYTE_ORDER__,
     network = __ORDER_BIG_ENDIAN__,
 };
 

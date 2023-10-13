@@ -8,11 +8,11 @@ namespace SFR {
     struct ADCSRB {
         static const uint16_t address = 0x7b;
         enum bits : uint8_t {
-            ACME  = 64, //
-            ADTS0 = 1,  // ADC Auto Trigger Source bits
-            ADTS1 = 2,  // ADC Auto Trigger Source bits
-            ADTS2 = 4,  // ADC Auto Trigger Source bits
-            MUX5  = 8,  // Analog Channel and Gain Selection Bits
+            ACME = 64, //
+            ADTS0 = 1, // ADC Auto Trigger Source bits
+            ADTS1 = 2, // ADC Auto Trigger Source bits
+            ADTS2 = 4, // ADC Auto Trigger Source bits
+            MUX5 = 8,  // Analog Channel and Gain Selection Bits
         };
     };
 
@@ -20,14 +20,14 @@ namespace SFR {
     struct ACSR {
         static const uint16_t address = 0x50;
         enum bits : uint8_t {
-            ACO   = 32,  // Analog Compare Output
-            ACD   = 128, // Analog Comparator Disable
-            ACIS0 = 1,   // Analog Comparator Interrupt Mode Select bits
-            ACIS1 = 2,   // Analog Comparator Interrupt Mode Select bits
-            ACIC  = 4,   // Analog Comparator Input Capture Enable
-            ACBG  = 64,  // Analog Comparator Bandgap Select
-            ACIE  = 8,   // Analog Comparator Interrupt Enable
-            ACI   = 16,  // Analog Comparator Interrupt Flag
+            ACO = 32,  // Analog Compare Output
+            ACD = 128, // Analog Comparator Disable
+            ACIS0 = 1, // Analog Comparator Interrupt Mode Select bits
+            ACIS1 = 2, // Analog Comparator Interrupt Mode Select bits
+            ACIC = 4,  // Analog Comparator Input Capture Enable
+            ACBG = 64, // Analog Comparator Bandgap Select
+            ACIE = 8,  // Analog Comparator Interrupt Enable
+            ACI = 16,  // Analog Comparator Interrupt Flag
         };
     };
 
@@ -49,14 +49,14 @@ namespace SFR {
     struct UCSR0A {
         static const uint16_t address = 0xc0;
         enum bits : uint8_t {
-            UDRE0 = 32,  // USART Data Register Empty
-            TXC0  = 64,  // USART Transmitt Complete
-            RXC0  = 128, // USART Receive Complete
-            MPCM0 = 1,   // Multi-processor Communication Mode
-            UPE0  = 4,   // Parity Error
-            U2X0  = 2,   // Double the USART transmission speed
-            DOR0  = 8,   // Data overRun
-            FE0   = 16,  // Framing Error
+            UDRE0 = 32, // USART Data Register Empty
+            TXC0 = 64,  // USART Transmitt Complete
+            RXC0 = 128, // USART Receive Complete
+            MPCM0 = 1,  // Multi-processor Communication Mode
+            UPE0 = 4,   // Parity Error
+            U2X0 = 2,   // Double the USART transmission speed
+            DOR0 = 8,   // Data overRun
+            FE0 = 16,   // Framing Error
         };
     };
 
@@ -65,13 +65,13 @@ namespace SFR {
         static const uint16_t address = 0xc1;
         enum bits : uint8_t {
             UDRIE0 = 32,  // USART Data register Empty Interrupt Enable
-            TXB80  = 1,   // Transmit Data Bit 8
+            TXB80 = 1,    // Transmit Data Bit 8
             RXCIE0 = 128, // RX Complete Interrupt Enable
-            RXB80  = 2,   // Receive Data Bit 8
+            RXB80 = 2,    // Receive Data Bit 8
             UCSZ02 = 4,   // Character Size
             TXCIE0 = 64,  // TX Complete Interrupt Enable
-            TXEN0  = 8,   // Transmitter Enable
-            RXEN0  = 16,  // Receiver Enable
+            TXEN0 = 8,    // Transmitter Enable
+            RXEN0 = 16,   // Receiver Enable
         };
     };
 
@@ -80,13 +80,13 @@ namespace SFR {
         static const uint16_t address = 0xc2;
         enum bits : uint8_t {
             UMSEL00 = 64,  // USART Mode Select
-            UCPOL0  = 1,   // Clock Polarity
-            UCSZ00  = 2,   // Character Size
+            UCPOL0 = 1,    // Clock Polarity
+            UCSZ00 = 2,    // Character Size
             UMSEL01 = 128, // USART Mode Select
-            UCSZ01  = 4,   // Character Size
-            UPM01   = 32,  // Parity Mode Bits
-            USBS0   = 8,   // Stop Bit Select
-            UPM00   = 16,  // Parity Mode Bits
+            UCSZ01 = 4,    // Character Size
+            UPM01 = 32,    // Parity Mode Bits
+            USBS0 = 8,     // Stop Bit Select
+            UPM00 = 16,    // Parity Mode Bits
         };
     };
 
@@ -104,14 +104,14 @@ namespace SFR {
     struct UCSR1A {
         static const uint16_t address = 0xc8;
         enum bits : uint8_t {
-            RXC1  = 128, // USART Receive Complete
-            MPCM1 = 1,   // Multi-processor Communication Mode
-            TXC1  = 64,  // USART Transmitt Complete
-            UDRE1 = 32,  // USART Data Register Empty
-            UPE1  = 4,   // Parity Error
-            U2X1  = 2,   // Double the USART transmission speed
-            DOR1  = 8,   // Data overRun
-            FE1   = 16,  // Framing Error
+            RXC1 = 128, // USART Receive Complete
+            MPCM1 = 1,  // Multi-processor Communication Mode
+            TXC1 = 64,  // USART Transmitt Complete
+            UDRE1 = 32, // USART Data Register Empty
+            UPE1 = 4,   // Parity Error
+            U2X1 = 2,   // Double the USART transmission speed
+            DOR1 = 8,   // Data overRun
+            FE1 = 16,   // Framing Error
         };
     };
 
@@ -121,12 +121,12 @@ namespace SFR {
         enum bits : uint8_t {
             UDRIE1 = 32,  // USART Data register Empty Interrupt Enable
             TXCIE1 = 64,  // TX Complete Interrupt Enable
-            RXB81  = 2,   // Receive Data Bit 8
-            TXB81  = 1,   // Transmit Data Bit 8
+            RXB81 = 2,    // Receive Data Bit 8
+            TXB81 = 1,    // Transmit Data Bit 8
             RXCIE1 = 128, // RX Complete Interrupt Enable
             UCSZ12 = 4,   // Character Size
-            TXEN1  = 8,   // Transmitter Enable
-            RXEN1  = 16,  // Receiver Enable
+            TXEN1 = 8,    // Transmitter Enable
+            RXEN1 = 16,   // Receiver Enable
         };
     };
 
@@ -135,13 +135,13 @@ namespace SFR {
         static const uint16_t address = 0xca;
         enum bits : uint8_t {
             UMSEL10 = 64,  // USART Mode Select
-            UCPOL1  = 1,   // Clock Polarity
+            UCPOL1 = 1,    // Clock Polarity
             UMSEL11 = 128, // USART Mode Select
-            UPM11   = 32,  // Parity Mode Bits
-            UCSZ10  = 2,   // Character Size
-            UCSZ11  = 4,   // Character Size
-            USBS1   = 8,   // Stop Bit Select
-            UPM10   = 16,  // Parity Mode Bits
+            UPM11 = 32,    // Parity Mode Bits
+            UCSZ10 = 2,    // Character Size
+            UCSZ11 = 4,    // Character Size
+            USBS1 = 8,     // Stop Bit Select
+            UPM10 = 16,    // Parity Mode Bits
         };
     };
 
@@ -159,14 +159,14 @@ namespace SFR {
     struct UCSR2A {
         static const uint16_t address = 0xd0;
         enum bits : uint8_t {
-            TXC2  = 64,  // USART Transmitt Complete
-            MPCM2 = 1,   // Multi-processor Communication Mode
-            U2X2  = 2,   // Double the USART transmission speed
-            RXC2  = 128, // USART Receive Complete
-            UPE2  = 4,   // Parity Error
-            UDRE2 = 32,  // USART Data Register Empty
-            DOR2  = 8,   // Data overRun
-            FE2   = 16,  // Framing Error
+            TXC2 = 64,  // USART Transmitt Complete
+            MPCM2 = 1,  // Multi-processor Communication Mode
+            U2X2 = 2,   // Double the USART transmission speed
+            RXC2 = 128, // USART Receive Complete
+            UPE2 = 4,   // Parity Error
+            UDRE2 = 32, // USART Data Register Empty
+            DOR2 = 8,   // Data overRun
+            FE2 = 16,   // Framing Error
         };
     };
 
@@ -176,12 +176,12 @@ namespace SFR {
         enum bits : uint8_t {
             UDRIE2 = 32,  // USART Data register Empty Interrupt Enable
             RXCIE2 = 128, // RX Complete Interrupt Enable
-            RXB82  = 2,   // Receive Data Bit 8
+            RXB82 = 2,    // Receive Data Bit 8
             TXCIE2 = 64,  // TX Complete Interrupt Enable
             UCSZ22 = 4,   // Character Size
-            TXB82  = 1,   // Transmit Data Bit 8
-            TXEN2  = 8,   // Transmitter Enable
-            RXEN2  = 16,  // Receiver Enable
+            TXB82 = 1,    // Transmit Data Bit 8
+            TXEN2 = 8,    // Transmitter Enable
+            RXEN2 = 16,   // Receiver Enable
         };
     };
 
@@ -190,13 +190,13 @@ namespace SFR {
         static const uint16_t address = 0xd2;
         enum bits : uint8_t {
             UMSEL20 = 64,  // USART Mode Select
-            UPM21   = 32,  // Parity Mode Bits
+            UPM21 = 32,    // Parity Mode Bits
             UMSEL21 = 128, // USART Mode Select
-            UCPOL2  = 1,   // Clock Polarity
-            UCSZ20  = 2,   // Character Size
-            UCSZ21  = 4,   // Character Size
-            USBS2   = 8,   // Stop Bit Select
-            UPM20   = 16,  // Parity Mode Bits
+            UCPOL2 = 1,    // Clock Polarity
+            UCSZ20 = 2,    // Character Size
+            UCSZ21 = 4,    // Character Size
+            USBS2 = 8,     // Stop Bit Select
+            UPM20 = 16,    // Parity Mode Bits
         };
     };
 
@@ -214,14 +214,14 @@ namespace SFR {
     struct UCSR3A {
         static const uint16_t address = 0x130;
         enum bits : uint8_t {
-            UDRE3 = 32,  // USART Data Register Empty
-            RXC3  = 128, // USART Receive Complete
-            U2X3  = 2,   // Double the USART transmission speed
-            TXC3  = 64,  // USART Transmitt Complete
-            UPE3  = 4,   // Parity Error
-            MPCM3 = 1,   // Multi-processor Communication Mode
-            DOR3  = 8,   // Data overRun
-            FE3   = 16,  // Framing Error
+            UDRE3 = 32, // USART Data Register Empty
+            RXC3 = 128, // USART Receive Complete
+            U2X3 = 2,   // Double the USART transmission speed
+            TXC3 = 64,  // USART Transmitt Complete
+            UPE3 = 4,   // Parity Error
+            MPCM3 = 1,  // Multi-processor Communication Mode
+            DOR3 = 8,   // Data overRun
+            FE3 = 16,   // Framing Error
         };
     };
 
@@ -230,13 +230,13 @@ namespace SFR {
         static const uint16_t address = 0x131;
         enum bits : uint8_t {
             UDRIE3 = 32,  // USART Data register Empty Interrupt Enable
-            TXB83  = 1,   // Transmit Data Bit 8
-            RXB83  = 2,   // Receive Data Bit 8
+            TXB83 = 1,    // Transmit Data Bit 8
+            RXB83 = 2,    // Receive Data Bit 8
             TXCIE3 = 64,  // TX Complete Interrupt Enable
             UCSZ32 = 4,   // Character Size
             RXCIE3 = 128, // RX Complete Interrupt Enable
-            TXEN3  = 8,   // Transmitter Enable
-            RXEN3  = 16,  // Receiver Enable
+            TXEN3 = 8,    // Transmitter Enable
+            RXEN3 = 16,   // Receiver Enable
         };
     };
 
@@ -245,13 +245,13 @@ namespace SFR {
         static const uint16_t address = 0x132;
         enum bits : uint8_t {
             UMSEL30 = 64,  // USART Mode Select
-            UCPOL3  = 1,   // Clock Polarity
-            UCSZ30  = 2,   // Character Size
+            UCPOL3 = 1,    // Clock Polarity
+            UCSZ30 = 2,    // Character Size
             UMSEL31 = 128, // USART Mode Select
-            UCSZ31  = 4,   // Character Size
-            UPM31   = 32,  // Parity Mode Bits
-            USBS3   = 8,   // Stop Bit Select
-            UPM30   = 16,  // Parity Mode Bits
+            UCSZ31 = 4,    // Character Size
+            UPM31 = 32,    // Parity Mode Bits
+            USBS3 = 8,     // Stop Bit Select
+            UPM30 = 16,    // Parity Mode Bits
         };
     };
 
@@ -283,12 +283,12 @@ namespace SFR {
     struct TWCR {
         static const uint16_t address = 0xbc;
         enum bits : uint8_t {
-            TWEA  = 64,  // TWI Enable Acknowledge Bit
+            TWEA = 64,   // TWI Enable Acknowledge Bit
             TWINT = 128, // TWI Interrupt Flag
-            TWIE  = 1,   // TWI Interrupt Enable
+            TWIE = 1,    // TWI Interrupt Enable
             TWSTA = 32,  // TWI Start Condition Bit
-            TWEN  = 4,   // TWI Enable Bit
-            TWWC  = 8,   // TWI Write Collition Flag
+            TWEN = 4,    // TWI Enable Bit
+            TWWC = 8,    // TWI Write Collition Flag
             TWSTO = 16,  // TWI Stop Condition Bit
         };
     };
@@ -297,13 +297,13 @@ namespace SFR {
     struct TWSR {
         static const uint16_t address = 0xb9;
         enum bits : uint8_t {
-            TWS2  = 32,  // TWI Status
-            TWPS0 = 1,   // TWI Prescaler
-            TWPS1 = 2,   // TWI Prescaler
-            TWS3  = 64,  // TWI Status
-            TWS4  = 128, // TWI Status
-            TWS0  = 8,   // TWI Status
-            TWS1  = 16,  // TWI Status
+            TWS2 = 32,  // TWI Status
+            TWPS0 = 1,  // TWI Prescaler
+            TWPS1 = 2,  // TWI Prescaler
+            TWS3 = 64,  // TWI Status
+            TWS4 = 128, // TWI Status
+            TWS0 = 8,   // TWI Status
+            TWS1 = 16,  // TWI Status
         };
     };
 
@@ -316,14 +316,14 @@ namespace SFR {
     struct TWAR {
         static const uint16_t address = 0xba;
         enum bits : uint8_t {
-            TWA4  = 32,  // TWI (Slave) Address register Bits
-            TWGCE = 1,   // TWI General Call Recognition Enable Bit
-            TWA0  = 2,   // TWI (Slave) Address register Bits
-            TWA5  = 64,  // TWI (Slave) Address register Bits
-            TWA1  = 4,   // TWI (Slave) Address register Bits
-            TWA6  = 128, // TWI (Slave) Address register Bits
-            TWA2  = 8,   // TWI (Slave) Address register Bits
-            TWA3  = 16,  // TWI (Slave) Address register Bits
+            TWA4 = 32,  // TWI (Slave) Address register Bits
+            TWGCE = 1,  // TWI General Call Recognition Enable Bit
+            TWA0 = 2,   // TWI (Slave) Address register Bits
+            TWA5 = 64,  // TWI (Slave) Address register Bits
+            TWA1 = 4,   // TWI (Slave) Address register Bits
+            TWA6 = 128, // TWI (Slave) Address register Bits
+            TWA2 = 8,   // TWI (Slave) Address register Bits
+            TWA3 = 16,  // TWI (Slave) Address register Bits
         };
     };
 
@@ -334,7 +334,7 @@ namespace SFR {
             DORD = 32,  // Data Order
             SPR0 = 1,   // SPI Clock Rate Selects
             SPR1 = 2,   // SPI Clock Rate Selects
-            SPE  = 64,  // SPI Enable
+            SPE = 64,   // SPI Enable
             SPIE = 128, // SPI Interrupt Enable
             CPHA = 4,   // Clock Phase
             CPOL = 8,   // Clock polarity
@@ -346,9 +346,9 @@ namespace SFR {
     struct SPSR {
         static const uint16_t address = 0x4d;
         enum bits : uint8_t {
-            WCOL  = 64,  // Write Collision Flag
-            SPI2X = 1,   // Double SPI Speed Bit
-            SPIF  = 128, // SPI Interrupt Flag
+            WCOL = 64,  // Write Collision Flag
+            SPI2X = 1,  // Double SPI Speed Bit
+            SPIF = 128, // SPI Interrupt Flag
         };
     };
 
@@ -543,9 +543,9 @@ namespace SFR {
         enum bits : uint8_t {
             FOC0A = 128, // Force Output Compare A
             FOC0B = 64,  // Force Output Compare B
-            CS01  = 2,   // Clock Select
-            CS00  = 1,   // Clock Select
-            CS02  = 4,   // Clock Select
+            CS01 = 2,    // Clock Select
+            CS00 = 1,    // Clock Select
+            CS02 = 4,    // Clock Select
             WGM02 = 8,   //
         };
     };
@@ -555,8 +555,8 @@ namespace SFR {
         static const uint16_t address = 0x44;
         enum bits : uint8_t {
             COM0B1 = 32,  // Compare Output Mode, Fast PWm
-            WGM00  = 1,   // Waveform Generation Mode
-            WGM01  = 2,   // Waveform Generation Mode
+            WGM00 = 1,    // Waveform Generation Mode
+            WGM01 = 2,    // Waveform Generation Mode
             COM0A0 = 64,  // Compare Output Mode, Phase Correct PWM Mode
             COM0A1 = 128, // Compare Output Mode, Phase Correct PWM Mode
             COM0B0 = 16,  // Compare Output Mode, Fast PWm
@@ -567,7 +567,7 @@ namespace SFR {
     struct TIMSK0 {
         static const uint16_t address = 0x6e;
         enum bits : uint8_t {
-            TOIE0  = 1, // Timer/Counter0 Overflow Interrupt Enable
+            TOIE0 = 1,  // Timer/Counter0 Overflow Interrupt Enable
             OCIE0A = 2, // Timer/Counter0 Output Compare Match A Interrupt Enable
             OCIE0B = 4, // Timer/Counter0 Output Compare Match B Interrupt Enable
         };
@@ -577,7 +577,7 @@ namespace SFR {
     struct TIFR0 {
         static const uint16_t address = 0x35;
         enum bits : uint8_t {
-            TOV0  = 1, // Timer/Counter0 Overflow Flag
+            TOV0 = 1,  // Timer/Counter0 Overflow Flag
             OCF0A = 2, // Timer/Counter0 Output Compare Flag 0A
             OCF0B = 4, // Timer/Counter0 Output Compare Flag 0B
         };
@@ -587,9 +587,9 @@ namespace SFR {
     struct GTCCR {
         static const uint16_t address = 0x43;
         enum bits : uint8_t {
-            TSM     = 128, // Timer/Counter Synchronization Mode
-            PSRSYNC = 1,   // Prescaler Reset Timer/Counter1 and Timer/Counter0
-            PSRASY  = 2,   // Prescaler Reset Timer/Counter2
+            TSM = 128,   // Timer/Counter Synchronization Mode
+            PSRSYNC = 1, // Prescaler Reset Timer/Counter1 and Timer/Counter0
+            PSRASY = 2,  // Prescaler Reset Timer/Counter2
         };
     };
 
@@ -597,7 +597,7 @@ namespace SFR {
     struct TIMSK2 {
         static const uint16_t address = 0x70;
         enum bits : uint8_t {
-            TOIE2  = 1, // Timer/Counter2 Overflow Interrupt Enable
+            TOIE2 = 1,  // Timer/Counter2 Overflow Interrupt Enable
             OCIE2A = 2, // Timer/Counter2 Output Compare Match A Interrupt Enable
             OCIE2B = 4, // Timer/Counter2 Output Compare Match B Interrupt Enable
         };
@@ -607,7 +607,7 @@ namespace SFR {
     struct TIFR2 {
         static const uint16_t address = 0x37;
         enum bits : uint8_t {
-            TOV2  = 1, // Timer/Counter2 Overflow Flag
+            TOV2 = 1,  // Timer/Counter2 Overflow Flag
             OCF2A = 2, // Output Compare Flag 2A
             OCF2B = 4, // Output Compare Flag 2B
         };
@@ -618,8 +618,8 @@ namespace SFR {
         static const uint16_t address = 0xb0;
         enum bits : uint8_t {
             COM2B1 = 32,  // Compare Output Mode bits
-            WGM20  = 1,   // Waveform Genration Mode
-            WGM21  = 2,   // Waveform Genration Mode
+            WGM20 = 1,    // Waveform Genration Mode
+            WGM21 = 2,    // Waveform Genration Mode
             COM2A0 = 64,  // Compare Output Mode bits
             COM2A1 = 128, // Compare Output Mode bits
             COM2B0 = 16,  // Compare Output Mode bits
@@ -631,10 +631,10 @@ namespace SFR {
         static const uint16_t address = 0xb1;
         enum bits : uint8_t {
             FOC2B = 64,  // Force Output Compare B
-            CS20  = 1,   // Clock Select bits
-            CS21  = 2,   // Clock Select bits
+            CS20 = 1,    // Clock Select bits
+            CS21 = 2,    // Clock Select bits
             FOC2A = 128, // Force Output Compare A
-            CS22  = 4,   // Clock Select bits
+            CS22 = 4,    // Clock Select bits
             WGM22 = 8,   // Waveform Generation Mode
         };
     };
@@ -658,13 +658,13 @@ namespace SFR {
     struct ASSR {
         static const uint16_t address = 0xb6;
         enum bits : uint8_t {
-            EXCLK   = 64, // Enable External Clock Input
-            TCR2BUB = 1,  // Timer/Counter Control Register2 Update Busy
-            TCR2AUB = 2,  // Timer/Counter Control Register2 Update Busy
-            AS2     = 32, // Asynchronous Timer/Counter2
-            OCR2BUB = 4,  // Output Compare Register 2 Update Busy
-            OCR2AUB = 8,  // Output Compare Register2 Update Busy
-            TCN2UB  = 16, // Timer/Counter2 Update Busy
+            EXCLK = 64,  // Enable External Clock Input
+            TCR2BUB = 1, // Timer/Counter Control Register2 Update Busy
+            TCR2AUB = 2, // Timer/Counter Control Register2 Update Busy
+            AS2 = 32,    // Asynchronous Timer/Counter2
+            OCR2BUB = 4, // Output Compare Register 2 Update Busy
+            OCR2AUB = 8, // Output Compare Register2 Update Busy
+            TCN2UB = 16, // Timer/Counter2 Update Busy
         };
     };
 
@@ -678,7 +678,7 @@ namespace SFR {
             WDP3 = 32,  // Watchdog Timer Prescaler Bits
             WDP2 = 4,   // Watchdog Timer Prescaler Bits
             WDIF = 128, // Watchdog Timeout Interrupt Flag
-            WDE  = 8,   // Watch Dog Enable
+            WDE = 8,    // Watch Dog Enable
             WDCE = 16,  // Watchdog Change Enable
         };
     };
@@ -698,8 +698,8 @@ namespace SFR {
         static const uint16_t address = 0x3f;
         enum bits : uint8_t {
             EEPM1 = 32, // EEPROM Programming Mode Bits
-            EERE  = 1,  // EEPROM Read Enable
-            EEPE  = 2,  // EEPROM Write Enable
+            EERE = 1,   // EEPROM Read Enable
+            EEPE = 2,   // EEPROM Write Enable
             EEMPE = 4,  // EEPROM Master Write Enable
             EERIE = 8,  // EEPROM Ready Interrupt Enable
             EEPM0 = 16, // EEPROM Programming Mode Bits
@@ -711,8 +711,8 @@ namespace SFR {
         static const uint16_t address = 0x120;
         enum bits : uint8_t {
             COM5B1 = 32,  // Compare Output Mode 5B, bits
-            WGM50  = 1,   // Waveform Generation Mode
-            WGM51  = 2,   // Waveform Generation Mode
+            WGM50 = 1,    // Waveform Generation Mode
+            WGM51 = 2,    // Waveform Generation Mode
             COM5A0 = 64,  // Compare Output Mode 1A, bits
             COM5C0 = 4,   // Compare Output Mode 5C, bits
             COM5A1 = 128, // Compare Output Mode 1A, bits
@@ -726,10 +726,10 @@ namespace SFR {
         static const uint16_t address = 0x121;
         enum bits : uint8_t {
             ICNC5 = 128, // Input Capture 5 Noise Canceler
-            CS50  = 1,   // Prescaler source of Timer/Counter 5
-            CS51  = 2,   // Prescaler source of Timer/Counter 5
+            CS50 = 1,    // Prescaler source of Timer/Counter 5
+            CS51 = 2,    // Prescaler source of Timer/Counter 5
             ICES5 = 64,  // Input Capture 5 Edge Select
-            CS52  = 4,   // Prescaler source of Timer/Counter 5
+            CS52 = 4,    // Prescaler source of Timer/Counter 5
             WGM52 = 8,   // Waveform Generation Mode
             WGM53 = 16,  // Waveform Generation Mode
         };
@@ -774,11 +774,11 @@ namespace SFR {
     struct TIMSK5 {
         static const uint16_t address = 0x73;
         enum bits : uint8_t {
-            ICIE5  = 32, // Timer/Counter5 Input Capture Interrupt Enable
-            TOIE5  = 1,  // Timer/Counter5 Overflow Interrupt Enable
-            OCIE5A = 2,  // Timer/Counter5 Output Compare A Match Interrupt Enable
-            OCIE5B = 4,  // Timer/Counter5 Output Compare B Match Interrupt Enable
-            OCIE5C = 8,  // Timer/Counter5 Output Compare C Match Interrupt Enable
+            ICIE5 = 32, // Timer/Counter5 Input Capture Interrupt Enable
+            TOIE5 = 1,  // Timer/Counter5 Overflow Interrupt Enable
+            OCIE5A = 2, // Timer/Counter5 Output Compare A Match Interrupt Enable
+            OCIE5B = 4, // Timer/Counter5 Output Compare B Match Interrupt Enable
+            OCIE5C = 8, // Timer/Counter5 Output Compare C Match Interrupt Enable
         };
     };
 
@@ -786,11 +786,11 @@ namespace SFR {
     struct TIFR5 {
         static const uint16_t address = 0x3a;
         enum bits : uint8_t {
-            ICF5  = 32, // Input Capture Flag 5
-            TOV5  = 1,  // Timer/Counter5 Overflow Flag
-            OCF5A = 2,  // Output Compare Flag 5A
-            OCF5B = 4,  // Output Compare Flag 5B
-            OCF5C = 8,  // Output Compare Flag 5C
+            ICF5 = 32, // Input Capture Flag 5
+            TOV5 = 1,  // Timer/Counter5 Overflow Flag
+            OCF5A = 2, // Output Compare Flag 5A
+            OCF5B = 4, // Output Compare Flag 5B
+            OCF5C = 8, // Output Compare Flag 5C
         };
     };
 
@@ -799,8 +799,8 @@ namespace SFR {
         static const uint16_t address = 0xa0;
         enum bits : uint8_t {
             COM4A0 = 64,  // Compare Output Mode 1A, bits
-            WGM40  = 1,   // Waveform Generation Mode
-            WGM41  = 2,   // Waveform Generation Mode
+            WGM40 = 1,    // Waveform Generation Mode
+            WGM41 = 2,    // Waveform Generation Mode
             COM4A1 = 128, // Compare Output Mode 1A, bits
             COM4C0 = 4,   // Compare Output Mode 4C, bits
             COM4B1 = 32,  // Compare Output Mode 4B, bits
@@ -815,9 +815,9 @@ namespace SFR {
         enum bits : uint8_t {
             ICNC4 = 128, // Input Capture 4 Noise Canceler
             ICES4 = 64,  // Input Capture 4 Edge Select
-            CS40  = 1,   // Prescaler source of Timer/Counter 4
-            CS41  = 2,   // Prescaler source of Timer/Counter 4
-            CS42  = 4,   // Prescaler source of Timer/Counter 4
+            CS40 = 1,    // Prescaler source of Timer/Counter 4
+            CS41 = 2,    // Prescaler source of Timer/Counter 4
+            CS42 = 4,    // Prescaler source of Timer/Counter 4
             WGM42 = 8,   // Waveform Generation Mode
             WGM43 = 16,  // Waveform Generation Mode
         };
@@ -862,11 +862,11 @@ namespace SFR {
     struct TIMSK4 {
         static const uint16_t address = 0x72;
         enum bits : uint8_t {
-            ICIE4  = 32, // Timer/Counter4 Input Capture Interrupt Enable
-            TOIE4  = 1,  // Timer/Counter4 Overflow Interrupt Enable
-            OCIE4A = 2,  // Timer/Counter4 Output Compare A Match Interrupt Enable
-            OCIE4B = 4,  // Timer/Counter4 Output Compare B Match Interrupt Enable
-            OCIE4C = 8,  // Timer/Counter4 Output Compare C Match Interrupt Enable
+            ICIE4 = 32, // Timer/Counter4 Input Capture Interrupt Enable
+            TOIE4 = 1,  // Timer/Counter4 Overflow Interrupt Enable
+            OCIE4A = 2, // Timer/Counter4 Output Compare A Match Interrupt Enable
+            OCIE4B = 4, // Timer/Counter4 Output Compare B Match Interrupt Enable
+            OCIE4C = 8, // Timer/Counter4 Output Compare C Match Interrupt Enable
         };
     };
 
@@ -874,11 +874,11 @@ namespace SFR {
     struct TIFR4 {
         static const uint16_t address = 0x39;
         enum bits : uint8_t {
-            ICF4  = 32, // Input Capture Flag 4
-            TOV4  = 1,  // Timer/Counter4 Overflow Flag
-            OCF4A = 2,  // Output Compare Flag 4A
-            OCF4B = 4,  // Output Compare Flag 4B
-            OCF4C = 8,  // Output Compare Flag 4C
+            ICF4 = 32, // Input Capture Flag 4
+            TOV4 = 1,  // Timer/Counter4 Overflow Flag
+            OCF4A = 2, // Output Compare Flag 4A
+            OCF4B = 4, // Output Compare Flag 4B
+            OCF4C = 8, // Output Compare Flag 4C
         };
     };
 
@@ -887,8 +887,8 @@ namespace SFR {
         static const uint16_t address = 0x90;
         enum bits : uint8_t {
             COM3A0 = 64,  // Compare Output Mode 1A, bits
-            WGM30  = 1,   // Waveform Generation Mode
-            WGM31  = 2,   // Waveform Generation Mode
+            WGM30 = 1,    // Waveform Generation Mode
+            WGM31 = 2,    // Waveform Generation Mode
             COM3A1 = 128, // Compare Output Mode 1A, bits
             COM3B1 = 32,  // Compare Output Mode 3B, bits
             COM3C0 = 4,   // Compare Output Mode 3C, bits
@@ -902,10 +902,10 @@ namespace SFR {
         static const uint16_t address = 0x91;
         enum bits : uint8_t {
             ICNC3 = 128, // Input Capture 3 Noise Canceler
-            CS30  = 1,   // Prescaler source of Timer/Counter 3
-            CS31  = 2,   // Prescaler source of Timer/Counter 3
+            CS30 = 1,    // Prescaler source of Timer/Counter 3
+            CS31 = 2,    // Prescaler source of Timer/Counter 3
             ICES3 = 64,  // Input Capture 3 Edge Select
-            CS32  = 4,   // Prescaler source of Timer/Counter 3
+            CS32 = 4,    // Prescaler source of Timer/Counter 3
             WGM32 = 8,   // Waveform Generation Mode
             WGM33 = 16,  // Waveform Generation Mode
         };
@@ -950,11 +950,11 @@ namespace SFR {
     struct TIMSK3 {
         static const uint16_t address = 0x71;
         enum bits : uint8_t {
-            ICIE3  = 32, // Timer/Counter3 Input Capture Interrupt Enable
-            TOIE3  = 1,  // Timer/Counter3 Overflow Interrupt Enable
-            OCIE3A = 2,  // Timer/Counter3 Output Compare A Match Interrupt Enable
-            OCIE3B = 4,  // Timer/Counter3 Output Compare B Match Interrupt Enable
-            OCIE3C = 8,  // Timer/Counter3 Output Compare C Match Interrupt Enable
+            ICIE3 = 32, // Timer/Counter3 Input Capture Interrupt Enable
+            TOIE3 = 1,  // Timer/Counter3 Overflow Interrupt Enable
+            OCIE3A = 2, // Timer/Counter3 Output Compare A Match Interrupt Enable
+            OCIE3B = 4, // Timer/Counter3 Output Compare B Match Interrupt Enable
+            OCIE3C = 8, // Timer/Counter3 Output Compare C Match Interrupt Enable
         };
     };
 
@@ -962,11 +962,11 @@ namespace SFR {
     struct TIFR3 {
         static const uint16_t address = 0x38;
         enum bits : uint8_t {
-            ICF3  = 32, // Input Capture Flag 3
-            TOV3  = 1,  // Timer/Counter3 Overflow Flag
-            OCF3A = 2,  // Output Compare Flag 3A
-            OCF3B = 4,  // Output Compare Flag 3B
-            OCF3C = 8,  // Output Compare Flag 3C
+            ICF3 = 32, // Input Capture Flag 3
+            TOV3 = 1,  // Timer/Counter3 Overflow Flag
+            OCF3A = 2, // Output Compare Flag 3A
+            OCF3B = 4, // Output Compare Flag 3B
+            OCF3C = 8, // Output Compare Flag 3C
         };
     };
 
@@ -977,9 +977,9 @@ namespace SFR {
             COM1A0 = 64,  // Compare Output Mode 1A, bits
             COM1B1 = 32,  // Compare Output Mode 1B, bits
             COM1A1 = 128, // Compare Output Mode 1A, bits
-            WGM10  = 1,   // Waveform Generation Mode
+            WGM10 = 1,    // Waveform Generation Mode
             COM1C0 = 4,   // Compare Output Mode 1C, bits
-            WGM11  = 2,   // Waveform Generation Mode
+            WGM11 = 2,    // Waveform Generation Mode
             COM1C1 = 8,   // Compare Output Mode 1C, bits
             COM1B0 = 16,  // Compare Output Mode 1B, bits
         };
@@ -990,10 +990,10 @@ namespace SFR {
         static const uint16_t address = 0x81;
         enum bits : uint8_t {
             ICNC1 = 128, // Input Capture 1 Noise Canceler
-            CS10  = 1,   // Prescaler source of Timer/Counter 1
-            CS11  = 2,   // Prescaler source of Timer/Counter 1
+            CS10 = 1,    // Prescaler source of Timer/Counter 1
+            CS11 = 2,    // Prescaler source of Timer/Counter 1
             ICES1 = 64,  // Input Capture 1 Edge Select
-            CS12  = 4,   // Prescaler source of Timer/Counter 1
+            CS12 = 4,    // Prescaler source of Timer/Counter 1
             WGM12 = 8,   // Waveform Generation Mode
             WGM13 = 16,  // Waveform Generation Mode
         };
@@ -1038,11 +1038,11 @@ namespace SFR {
     struct TIMSK1 {
         static const uint16_t address = 0x6f;
         enum bits : uint8_t {
-            ICIE1  = 32, // Timer/Counter1 Input Capture Interrupt Enable
-            TOIE1  = 1,  // Timer/Counter1 Overflow Interrupt Enable
-            OCIE1A = 2,  // Timer/Counter1 Output Compare A Match Interrupt Enable
-            OCIE1B = 4,  // Timer/Counter1 Output Compare B Match Interrupt Enable
-            OCIE1C = 8,  // Timer/Counter1 Output Compare C Match Interrupt Enable
+            ICIE1 = 32, // Timer/Counter1 Input Capture Interrupt Enable
+            TOIE1 = 1,  // Timer/Counter1 Overflow Interrupt Enable
+            OCIE1A = 2, // Timer/Counter1 Output Compare A Match Interrupt Enable
+            OCIE1B = 4, // Timer/Counter1 Output Compare B Match Interrupt Enable
+            OCIE1C = 8, // Timer/Counter1 Output Compare C Match Interrupt Enable
         };
     };
 
@@ -1050,11 +1050,11 @@ namespace SFR {
     struct TIFR1 {
         static const uint16_t address = 0x36;
         enum bits : uint8_t {
-            ICF1  = 32, // Input Capture Flag 1
-            TOV1  = 1,  // Timer/Counter1 Overflow Flag
-            OCF1A = 2,  // Output Compare Flag 1A
-            OCF1B = 4,  // Output Compare Flag 1B
-            OCF1C = 8,  // Output Compare Flag 1C
+            ICF1 = 32, // Input Capture Flag 1
+            TOV1 = 1,  // Timer/Counter1 Overflow Flag
+            OCF1A = 2, // Output Compare Flag 1A
+            OCF1B = 4, // Output Compare Flag 1B
+            OCF1C = 8, // Output Compare Flag 1C
         };
     };
 
@@ -1067,10 +1067,10 @@ namespace SFR {
     struct MCUCR {
         static const uint16_t address = 0x55;
         enum bits : uint8_t {
-            JTD   = 128, // JTAG Interface Disable
-            PUD   = 16,  // Pull-up disable
-            IVSEL = 2,   // Interrupt Vector Select
-            IVCE  = 1,   // Interrupt Vector Change Enable
+            JTD = 128, // JTAG Interface Disable
+            PUD = 16,  // Pull-up disable
+            IVSEL = 2, // Interrupt Vector Select
+            IVCE = 1,  // Interrupt Vector Change Enable
         };
     };
 
@@ -1078,11 +1078,11 @@ namespace SFR {
     struct MCUSR {
         static const uint16_t address = 0x54;
         enum bits : uint8_t {
-            PORF  = 1,  // Power-on reset flag
-            EXTRF = 2,  // External Reset Flag
-            BORF  = 4,  // Brown-out Reset Flag
-            WDRF  = 8,  // Watchdog Reset Flag
-            JTRF  = 16, // JTAG Reset Flag
+            PORF = 1,  // Power-on reset flag
+            EXTRF = 2, // External Reset Flag
+            BORF = 4,  // Brown-out Reset Flag
+            WDRF = 8,  // Watchdog Reset Flag
+            JTRF = 16, // JTAG Reset Flag
         };
     };
 
@@ -1235,14 +1235,14 @@ namespace SFR {
     struct XMCRA {
         static const uint16_t address = 0x74;
         enum bits : uint8_t {
-            SRL1  = 32,  // Wait state page limit
-            SRW00 = 1,   // Wait state select bit lower page
-            SRL2  = 64,  // Wait state page limit
-            SRW01 = 2,   // Wait state select bit lower page
-            SRE   = 128, // External SRAM Enable
-            SRW10 = 4,   // Wait state select bit upper page
-            SRW11 = 8,   // Wait state select bit upper page
-            SRL0  = 16,  // Wait state page limit
+            SRL1 = 32, // Wait state page limit
+            SRW00 = 1, // Wait state select bit lower page
+            SRL2 = 64, // Wait state page limit
+            SRW01 = 2, // Wait state select bit lower page
+            SRE = 128, // External SRAM Enable
+            SRW10 = 4, // Wait state select bit upper page
+            SRW11 = 8, // Wait state select bit upper page
+            SRL0 = 16, // Wait state page limit
         };
     };
 
@@ -1289,7 +1289,7 @@ namespace SFR {
         static const uint16_t address = 0x53;
         enum bits : uint8_t {
             SM2 = 8, // Sleep Mode Select bits
-            SE  = 1, // Sleep Enable
+            SE = 1,  // Sleep Enable
             SM0 = 2, // Sleep Mode Select bits
             SM1 = 4, // Sleep Mode Select bits
         };
@@ -1324,12 +1324,12 @@ namespace SFR {
     struct PRR1 {
         static const uint16_t address = 0x65;
         enum bits : uint8_t {
-            PRTIM5   = 32, // Power Reduction Timer/Counter5
-            PRUSART1 = 1,  // Power Reduction USART1
-            PRUSART2 = 2,  // Power Reduction USART2
-            PRUSART3 = 4,  // Power Reduction USART3
-            PRTIM3   = 8,  // Power Reduction Timer/Counter3
-            PRTIM4   = 16, // Power Reduction Timer/Counter4
+            PRTIM5 = 32,  // Power Reduction Timer/Counter5
+            PRUSART1 = 1, // Power Reduction USART1
+            PRUSART2 = 2, // Power Reduction USART2
+            PRUSART3 = 4, // Power Reduction USART3
+            PRTIM3 = 8,   // Power Reduction Timer/Counter3
+            PRTIM4 = 16,  // Power Reduction Timer/Counter4
         };
     };
 
@@ -1337,13 +1337,13 @@ namespace SFR {
     struct PRR0 {
         static const uint16_t address = 0x64;
         enum bits : uint8_t {
-            PRTWI    = 128, // Power Reduction TWI
-            PRADC    = 1,   // Power Reduction ADC
-            PRUSART0 = 2,   // Power Reduction USART0
-            PRTIM2   = 64,  // Power Reduction Timer/Counter2
-            PRSPI    = 4,   // Power Reduction Serial Peripheral Interface
-            PRTIM0   = 32,  // Power Reduction Timer/Counter0
-            PRTIM1   = 8,   // Power Reduction Timer/Counter1
+            PRTWI = 128,  // Power Reduction TWI
+            PRADC = 1,    // Power Reduction ADC
+            PRUSART0 = 2, // Power Reduction USART0
+            PRTIM2 = 64,  // Power Reduction Timer/Counter2
+            PRSPI = 4,    // Power Reduction Serial Peripheral Interface
+            PRTIM0 = 32,  // Power Reduction Timer/Counter0
+            PRTIM1 = 8,   // Power Reduction Timer/Counter1
         };
     };
 
@@ -1352,13 +1352,13 @@ namespace SFR {
         static const uint16_t address = 0x7c;
         enum bits : uint8_t {
             REFS0 = 64,  // Reference Selection Bits
-            MUX0  = 1,   // Analog Channel and Gain Selection Bits
+            MUX0 = 1,    // Analog Channel and Gain Selection Bits
             ADLAR = 32,  // Left Adjust Result
-            MUX1  = 2,   // Analog Channel and Gain Selection Bits
+            MUX1 = 2,    // Analog Channel and Gain Selection Bits
             REFS1 = 128, // Reference Selection Bits
-            MUX2  = 4,   // Analog Channel and Gain Selection Bits
-            MUX3  = 8,   // Analog Channel and Gain Selection Bits
-            MUX4  = 16,  // Analog Channel and Gain Selection Bits
+            MUX2 = 4,    // Analog Channel and Gain Selection Bits
+            MUX3 = 8,    // Analog Channel and Gain Selection Bits
+            MUX4 = 16,   // Analog Channel and Gain Selection Bits
         };
     };
 
@@ -1371,14 +1371,14 @@ namespace SFR {
     struct ADCSRA {
         static const uint16_t address = 0x7a;
         enum bits : uint8_t {
-            ADSC  = 64,  // ADC Start Conversion
-            ADPS0 = 1,   // ADC  Prescaler Select Bits
-            ADPS1 = 2,   // ADC  Prescaler Select Bits
-            ADEN  = 128, // ADC Enable
-            ADPS2 = 4,   // ADC  Prescaler Select Bits
-            ADATE = 32,  // ADC  Auto Trigger Enable
-            ADIE  = 8,   // ADC Interrupt Enable
-            ADIF  = 16,  // ADC Interrupt Flag
+            ADSC = 64,  // ADC Start Conversion
+            ADPS0 = 1,  // ADC  Prescaler Select Bits
+            ADPS1 = 2,  // ADC  Prescaler Select Bits
+            ADEN = 128, // ADC Enable
+            ADPS2 = 4,  // ADC  Prescaler Select Bits
+            ADATE = 32, // ADC  Auto Trigger Enable
+            ADIE = 8,   // ADC Interrupt Enable
+            ADIF = 16,  // ADC Interrupt Flag
         };
     };
 
@@ -1388,8 +1388,8 @@ namespace SFR {
         enum bits : uint8_t {
             ADC14D = 64,  //
             ADC15D = 128, //
-            ADC9D  = 2,   //
-            ADC8D  = 1,   //
+            ADC9D = 2,    //
+            ADC8D = 1,    //
             ADC10D = 4,   //
             ADC13D = 32,  //
             ADC11D = 8,   //
@@ -1416,14 +1416,14 @@ namespace SFR {
     struct SPMCSR {
         static const uint16_t address = 0x57;
         enum bits : uint8_t {
-            RWWSB  = 64,  // Read While Write Section Busy
-            SPMEN  = 1,   // Store Program Memory Enable
-            PGERS  = 2,   // Page Erase
-            SIGRD  = 32,  // Signature Row Read
-            SPMIE  = 128, // SPM Interrupt Enable
-            PGWRT  = 4,   // Page Write
-            BLBSET = 8,   // Boot Lock Bit Set
-            RWWSRE = 16,  // Read While Write section read enable
+            RWWSB = 64,  // Read While Write Section Busy
+            SPMEN = 1,   // Store Program Memory Enable
+            PGERS = 2,   // Page Erase
+            SIGRD = 32,  // Signature Row Read
+            SPMIE = 128, // SPM Interrupt Enable
+            PGWRT = 4,   // Page Write
+            BLBSET = 8,  // Boot Lock Bit Set
+            RWWSRE = 16, // Read While Write section read enable
         };
     };
 

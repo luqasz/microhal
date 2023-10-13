@@ -32,11 +32,11 @@ namespace cobs {
     constexpr usize
     encode(const buffer::Span<const u8> in, DST & out)
     {
-        const u8 *  current    = in.begin();
+        const u8 * current = in.begin();
         const usize free_start = out.free();
         while (current < in.end()) {
             const u8 * end = cobs_end(current, in.end());
-            const u8   len = u8(end - current);
+            const u8 len = u8(end - current);
             out.write(len + 1);
             while (current < end) {
                 out.write(*current++);
@@ -53,11 +53,11 @@ namespace cobs {
     encode(const buffer::Span<const u8> in, buffer::Span<u8> out)
     {
         const u8 * current = in.begin();
-        usize      wrote   = 0;
+        usize wrote = 0;
         while (current < in.end()) {
             const u8 * end = cobs_end(current, in.end());
-            const u8   len = u8(end - current);
-            out[wrote++]   = len + 1;
+            const u8 len = u8(end - current);
+            out[wrote++] = len + 1;
             while (current < end) {
                 out[wrote++] = *current++;
             }
@@ -73,7 +73,7 @@ namespace cobs {
     decode(const buffer::Span<const u8> in, buffer::Span<u8> out)
     {
         // Out span index.
-        usize dst    = 0;
+        usize dst = 0;
         usize in_pos = 0;
         while (in_pos < in.size()) {
             // Number of bytes to copy.
