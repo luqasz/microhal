@@ -110,13 +110,11 @@ namespace buffer {
         }
 
         constexpr bool
-        operator==(const Span<T> & other) const
+        operator==(const Span<const T> & other) const
         {
-            if (size() != other.size()) {
-                return false;
-            }
+            const usize limit = min(size(), other.size());
             usize idx = 0;
-            while (idx < size()) {
+            while (idx < limit) {
                 if ((*this)[idx] != other[idx]) {
                     return false;
                 }
