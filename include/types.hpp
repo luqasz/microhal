@@ -16,34 +16,35 @@ using i64 = int64_t;
 
 template <typename T>
 struct limits {
+    static constexpr usize bits = 0;
     static constexpr usize max = 0;
     static constexpr usize min = 0;
 };
 
 template <>
-struct limits<u8> {
-    static constexpr u8 max = 255;
-    static constexpr u8 min = 0;
-    static constexpr u8 bytes = 1;
+struct limits<unsigned char> {
+    static constexpr unsigned char bits = 8;
+    static constexpr unsigned char max = 255;
+    static constexpr unsigned char min = 0;
 };
 
 template <>
-struct limits<u16> {
-    static constexpr u16 max = 65535;
-    static constexpr u16 min = 0;
-    static constexpr u16 bytes = 2;
+struct limits<unsigned short> {
+    static constexpr unsigned short bits = 8 * (sizeof(unsigned short) / sizeof(u8));
+    static constexpr unsigned short max = static_cast<unsigned short>(UINT64_MAX);
+    static constexpr unsigned short min = 0;
 };
 
 template <>
-struct limits<u32> {
-    static constexpr u32 max = 4294967295;
-    static constexpr u32 min = 0;
-    static constexpr u32 bytes = 4;
+struct limits<unsigned int> {
+    static constexpr unsigned int bits = 8 * (sizeof(unsigned int) / sizeof(u8));
+    static constexpr unsigned int max = static_cast<unsigned int>(UINT64_MAX);
+    static constexpr unsigned int min = 0;
 };
 
 template <>
-struct limits<u64> {
-    static constexpr u64 max = 18446744073709551615UL;
-    static constexpr u64 min = 0;
-    static constexpr u64 bytes = 8;
+struct limits<unsigned long> {
+    static constexpr unsigned long bits = 8 * (sizeof(unsigned long) / sizeof(u8));
+    static constexpr unsigned long max = static_cast<unsigned long>(UINT64_MAX);
+    static constexpr unsigned long min = 0;
 };
